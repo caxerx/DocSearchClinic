@@ -1,10 +1,10 @@
 <template>
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap>
-      <v-flex xs2>
+      <v-flex xs4>
         <reservation-form/>
       </v-flex>
-      <v-flex xs6>
+      <v-flex xs8>
         <v-card>
           <v-card-text>6asdsad</v-card-text>
         </v-card>
