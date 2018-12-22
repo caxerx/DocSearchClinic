@@ -1,20 +1,24 @@
 <template>
-  
-   <div>
-     
-     
-      home
-     </div>
-   
+ <div>
+   home
+ </div>
 </template>
 
+
 <script>
-// @ is an alias to /src
-import NavBar from "@/components/NavBar.vue";
+import ReservationForm from "@/components/ReservationForm.vue";
+
 
 export default {
+  name: "App",
   components: {
-    NavBar
-  }
+    ReservationForm,
+  },
+
+  computed: {
+    
+  },
+
+  data: () => ({})
 };
 </script>

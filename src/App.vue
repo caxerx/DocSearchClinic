@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="isSuccess">
-      <nav-bar/>
+      <drawer/>
     </div>
     <div v-else>
       <login/>
@@ -11,13 +11,13 @@
 
 <script>
 import Login from "./pages/Login.vue";
-import NavBar from "./components/NavBar.vue";
+import Drawer from "./components/Drawer.vue";
 import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {
   name: "App",
   components: {
-    NavBar,
+    Drawer,
     Login
   },
 
@@ -27,10 +27,6 @@ export default {
     })
   },
 
-  data() {
-    return {
-      //
-    };
-  }
+  data: () => ({})
 };
 </script>
