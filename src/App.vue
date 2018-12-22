@@ -1,31 +1,36 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div>
+    <div v-if="isSuccess">
+      <nav-bar/>
     </div>
-    <router-view/>
+    <div v-else>
+      <login/>
+    </div>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
+<script>
+import Login from "./pages/Login.vue";
+import NavBar from "./components/NavBar.vue";
+import { mapGetters, mapActions, mapState } from "vuex";
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+export default {
+  name: "App",
+  components: {
+    NavBar,
+    Login
+  },
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  computed: {
+    ...mapGetters({
+      isSuccess: "getIsSuccess"
+    })
+  },
+
+  data() {
+    return {
+      //
+    };
+  }
+};
+</script>
