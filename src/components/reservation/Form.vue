@@ -1,7 +1,7 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
     <date-picker/>
-    <v-text-field prepend-icon="access_time" v-model="selectTime" label="Time" :checked="time"></v-text-field>
+    <v-text-field prepend-icon="access_time" v-model="selectTime" label="Time" :checked="time" disabled></v-text-field>
     <v-btn :disabled="!valid" @click="submit" style="float:left">submit</v-btn>
     <v-btn @click="clear" style="float:left">clear</v-btn>
   </v-form>
@@ -37,7 +37,7 @@ export default {
 
     selectTime(){
       return this.time;
-    }
+    },
   },
 
   components: {
@@ -59,8 +59,8 @@ export default {
       }
     },
     clear() {
+      
       this.actionReset();
-      this.$refs.form.reset();
     }
   }
 };

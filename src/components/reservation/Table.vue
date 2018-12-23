@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-data-table :items="contents" class="elevation-1" :headers="headers" :rows-per-page-items="rowsPerPageItems" hide-actions>
+    <v-data-table :items="contents" id="createResTable" class="elevation-1" :headers="headers" :rows-per-page-items="rowsPerPageItems" hide-actions>
       <template slot="items" slot-scope="props">
         <td class="text-xs-left">{{ props.item.text }}</td>
         <td
@@ -21,11 +21,7 @@ import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
-      averageMinutes: 10,
-      maxMinutes: 60,
-      workingHour: 9,
-      startHour: 9,
-     
+
     };
   },
 
@@ -62,7 +58,7 @@ export default {
 </script>
 
 <style>
-.v-table__overflow {
+#createResTable {
   max-height: 550px;
   overflow-y: auto;
 }

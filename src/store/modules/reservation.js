@@ -45,6 +45,9 @@ const actions = {
 const mutations = {
     ["setDate"](state, newDate) {
         state.tableData.date = newDate;
+        //reset
+        state.tableData.time="";
+        state.tableData.contents=[];
         var value = state.startHour;
         var minutes = [];
         for (var i = 0; i < state.maxMinutes; i += state.averageMinutes) {
@@ -99,7 +102,7 @@ const mutations = {
     },
     ["reset"](state) {
         state.tableData.time = "";
-        state.tableData.date = "";
+        state.tableData.date = new Date().toISOString().substr(0, 10);
         state.tableData.contents = [];
     },
     ["setDefaultTableData"](state) {

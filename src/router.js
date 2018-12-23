@@ -3,7 +3,9 @@ import Router from 'vue-router'
 import Home from './pages/Home.vue'
 import Login from './pages/Login.vue'
 import About from './pages/About.vue'
-import Reservation from './pages/Reservation.vue'
+import CreateReservation from './pages/reservation/CreateReservation.vue'
+import ViewReservation from './pages/reservation/ViewReservation.vue'
+import SettingReservation from './pages/reservation/SettingReservation.vue'
 import App from './App.vue'
 
 Vue.use(Router)
@@ -18,9 +20,19 @@ export default new Router({
       component: Home
     },
     {
-      path: '/reservation',
-      name: 'reservation',
-      component: Reservation
+      path: '/createReservation',
+      name: 'createReservation',
+      component: CreateReservation
+    },
+    {
+      path: '/settingReservation',
+      name: 'settingeservation',
+      component: SettingReservation
+    },
+    {
+      path: '/viewReservation',
+      name: 'viewReservation',
+      component: ViewReservation
     },
     {
       path: '/login',

@@ -21,7 +21,7 @@
             </v-list-tile-content>
           </v-list-tile>
 
-          <v-list-group  no-action prepend-icon="date_range">
+          <v-list-group no-action prepend-icon="date_range">
             <v-list-tile slot="activator">
               <v-list-tile-title>Reservation</v-list-tile-title>
             </v-list-tile>
@@ -33,12 +33,20 @@
                 <v-list-tile-title>Create Reservation</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-             <v-list-tile @click="viewReservation">
+            <v-list-tile @click="viewReservation">
               <v-list-tile-action>
                 <v-icon>remove_red_eye</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>View Reservation</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile @click="settingReservation">
+              <v-list-tile-action>
+                <v-icon>settings</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Reservation Setting</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
@@ -86,10 +94,13 @@ export default {
     },
     reservation() {
       this.actionSetDefaultTableData();
-      this.$router.push("/reservation");
+      this.$router.push("/createReservation");
+    },
+    settingReservation() {
+      this.$router.push("/settingReservation");
     },
 
-    viewReservation(){
+    viewReservation() {
       this.$router.push("/viewReservation");
     },
     about() {
