@@ -15,18 +15,19 @@
         slot="activator"
         v-model="computedDateFormatted"
         label="Date (read only text field)"
-        hint="MM/DD/YYYY format"
+        hint="DD/MM/YYYY format"
         persistent-hint
         prepend-icon="event"
         readonly
       ></v-text-field>
-      <v-date-picker v-model="date" no-title @input="menu2 = false"></v-date-picker>
+      <v-date-picker v-model="date" no-title @input="menu2 = false" @change="setDate"></v-date-picker>
     </v-menu>
   </div>
 </template>
 
 
 <script>
+import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   data: vm => ({
     date: new Date().toISOString().substr(0, 10),
@@ -48,16 +49,20 @@ export default {
   },
 
   methods: {
+    ...mapActions(["actionSetDate"]),
+    setDate() {
+      this.actionSetDate(this.date);
+    },
     formatDate(date) {
       if (!date) return null;
 
       const [year, month, day] = date.split("-");
-      return `${month}/${day}/${year}`;
+      return `${day}/${month}/${year}`;
     },
     parseDate(date) {
       if (!date) return null;
 
-      const [month, day, year] = date.split("/");
+      const [day, month, year] = date.split("/");
       return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     }
   }

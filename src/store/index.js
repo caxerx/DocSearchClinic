@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 
 // modules
 import login from './modules/login';
+import reservation from './modules/reservation';
 import count from './modules/count';
 
 
@@ -17,8 +18,8 @@ export default new Vuex.Store({
   // 將整理好的 modules 放到 vuex 中組合
   modules: {
     login,
-    count
-
+    count,
+    reservation
   },
   // 嚴格模式，禁止直接修改 state
   strict: true

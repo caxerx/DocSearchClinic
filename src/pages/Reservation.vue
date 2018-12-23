@@ -1,13 +1,11 @@
 <template>
   <v-container grid-list-md text-xs-center>
-    <v-layout row wrap>
-      <v-flex xs4>
+    <v-layout row wrap justify-space-around>
+      <v-flex xs5>
         <reservation-form/>
       </v-flex>
-      <v-flex xs8>
-        <v-card>
-          <v-card-text>6asdsad</v-card-text>
-        </v-card>
+      <v-flex xs7>
+          <reservation-table/>
       </v-flex>
     </v-layout>
   </v-container>
@@ -15,7 +13,8 @@
 
 
 <script>
-import ReservationForm from "@/components/ReservationForm.vue";
+import ReservationForm from "@/components/reservation/Form.vue";
+import ReservationTable from "@/components/reservation/Table.vue";
 
 
 
@@ -23,6 +22,7 @@ export default {
   name: "App",
   components: {
     ReservationForm,
+    ReservationTable,
   },
 
   computed: {

@@ -11,14 +11,7 @@
               <v-list-tile-title>Home</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile @click="reservation">
-            <v-list-tile-action>
-              <v-icon>date_range</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Reservation</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+
           <v-list-tile @click="about">
             <v-list-tile-action>
               <v-icon>contact_mail</v-icon>
@@ -27,6 +20,28 @@
               <v-list-tile-title>About</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
+
+          <v-list-group  no-action prepend-icon="date_range">
+            <v-list-tile slot="activator">
+              <v-list-tile-title>Reservation</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile @click="reservation">
+              <v-list-tile-action>
+                <v-icon>add</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Create Reservation</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+             <v-list-tile @click="viewReservation">
+              <v-list-tile-action>
+                <v-icon>remove_red_eye</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>View Reservation</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list-group>
         </v-list>
       </v-navigation-drawer>
       <v-toolbar color="indigo" fixed dark app>
@@ -64,13 +79,18 @@ export default {
     drawer: null
   }),
   methods: {
-    ...mapActions(["actionLogout"]),
+    ...mapActions(["actionLogout", "actionSetDefaultTableData"]),
 
     home() {
       this.$router.push("/home");
     },
     reservation() {
+      this.actionSetDefaultTableData();
       this.$router.push("/reservation");
+    },
+
+    viewReservation(){
+      this.$router.push("/viewReservation");
     },
     about() {
       this.$router.push("/about");
