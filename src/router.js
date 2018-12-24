@@ -6,6 +6,7 @@ import About from './pages/About.vue'
 import CreateReservation from './pages/reservation/CreateReservation.vue'
 import ViewReservation from './pages/reservation/ViewReservation.vue'
 import SettingReservation from './pages/reservation/SettingReservation.vue'
+import QueueList from './pages/queue/QueueList'
 import App from './App.vue'
 
 Vue.use(Router)
@@ -33,6 +34,11 @@ export default new Router({
       path: '/viewReservation',
       name: 'viewReservation',
       component: ViewReservation
+    },
+    {
+      path: '/queueList',
+      name: 'queueList',
+      component: QueueList
     },
     {
       path: '/login',

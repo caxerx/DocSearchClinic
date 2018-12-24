@@ -1,7 +1,7 @@
 <template>
-  <v-layout>
-    <v-flex xs12 sm7 offset-sm1>
-      <h1>Your Reservation</h1><br/>
+    <container>
+      <div slot="content">
+      <h1 >Your Reservation</h1><br/>
       <v-data-table
         id="viewResTable"
         :items="details"
@@ -16,11 +16,13 @@
       </v-data-table><br/>
 
      <v-btn small color="error">Cancel</v-btn>
-    </v-flex>
-  </v-layout>
+      </div>
+    </container>
+
 </template>
 
 <script>
+import Container from '@/components/Container.vue'
 export default {
   data() {
     return {
@@ -40,9 +42,19 @@ export default {
           name: "Note",
           detail:
             "asdasdsaoidjosiajdoiasjdiosajdiosjaoidasdisoajdoiajsodijsaoidasdsaoijdoisajdoisajdoiajsodijsaoidjasoidjsaoijdoisajdoisajdoisajodijsaasdoijasdiojasiodjasoidjoiasjdioajsdoijsaoid"
+        },
+         {
+          value: false,
+          name: "Status",
+          detail:
+            "Waiting Approval"
         }
       ]
     };
+  },
+  
+  components:{
+    Container
   }
 };
 </script>

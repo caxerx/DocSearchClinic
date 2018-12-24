@@ -50,6 +50,19 @@
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
+          <v-list-group no-action prepend-icon="format_list_bulleted">
+            <v-list-tile slot="activator">
+              <v-list-tile-title>Queue</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile @click="queueList">
+              <v-list-tile-action>
+                <v-icon>list</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Queue List</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list-group>
         </v-list>
       </v-navigation-drawer>
       <v-toolbar color="indigo" fixed dark app>
@@ -87,7 +100,7 @@ export default {
     drawer: null
   }),
   methods: {
-    ...mapActions(["actionLogout", "actionSetDefaultTableData"]),
+    ...mapActions(["actionLogout", "actionSetDefaultTableData","actionInitializeQueueList"]),
 
     home() {
       this.$router.push("/home");
@@ -102,6 +115,10 @@ export default {
 
     viewReservation() {
       this.$router.push("/viewReservation");
+    },
+    queueList() {
+      this.actionInitializeQueueList();
+      this.$router.push("/queueList");
     },
     about() {
       this.$router.push("/about");

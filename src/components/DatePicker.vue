@@ -20,7 +20,14 @@
         prepend-icon="event"
         readonly
       ></v-text-field>
-      <v-date-picker v-model="newDate" no-title @input="menu2 = false" @change="setDate"></v-date-picker>
+      <v-date-picker
+        v-model="newDate"
+        no-title
+        @input="menu2 = false"
+        @change="setDate"
+        :event-color="test"
+        :events="functionEvents"
+      ></v-date-picker>
     </v-menu>
   </div>
 </template>
@@ -34,13 +41,24 @@ export default {
     // dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
     menu1: false,
     menu2: false,
+    arrayEvents: null,
     newDate: ""
   }),
+
 
   computed: {
     ...mapGetters({
       date: "getDate"
     }),
+    test() {
+      return function(date) {
+        var days = [1,2,3,4,5,6,7,8,9,10];
+        const [, , day] = date.split("-");
+        var color =days.includes(parseInt(day))? "red" : "green"
+        console.log(color);
+        return color;
+      };
+    },
 
     defaultDate() {
       return this.date;
@@ -54,16 +72,21 @@ export default {
     }
   },
 
-//   watch: {
-//     newDate(val) {
-//       this.dateFormatted = this.formatDate(this.newDate);
-//     }
-//   },
+  //   watch: {
+  //     newDate(val) {
+  //       this.dateFormatted = this.formatDate(this.newDate);
+  //     }
+  //   },
 
   methods: {
     ...mapActions(["actionSetDate"]),
     setDate() {
       this.actionSetDate(this.newDate);
+    },
+    functionEvents(date) {
+      const [, , day] = date.split("-");
+
+      return true;
     },
     formatDate(newDate) {
       if (!newDate) return null;
