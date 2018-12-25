@@ -1,19 +1,21 @@
 
 
+
 const state = {
     dialog: false,
-    headers: [
+    waiting_headers: [
         {
-            text: "Dessert (100g serving)",
+            text: "No.",
             align: "left",
-            sortable: false,
-            value: "name"
+            value:"no"
+   
         },
-        { text: "Name", value: "calories" },
-        { text: "Fat (g)", value: "fat" },
-        { text: "Carbs (g)", value: "carbs" },
-        { text: "Protein (g)", value: "protein" },
-        { text: "Actions", value: "name", sortable: false }
+        { text: "Name",value:"name"},
+        { text: "Start Time"},
+        { text: "End Time"},
+        { text: "Medicine Allergy"},
+        { text: "status" },
+        { text: "Actions",  sortable: false }
     ],
     tableData: [],
     editedIndex: -1,
@@ -30,17 +32,27 @@ const state = {
         fat: 0,
         carbs: 0,
         protein: 0
-    }
+    },
+    allergyItem: {
+
+    },
+
+    startDate:"",
+    endDate:"",
 }
 
 
 const getters = {
     getDialog: state => state.dialog,
-    getHeaders: state => state.headers,
+    getWaitingHeaders: state => state.waiting_headers,
     getTableData: state => state.tableData,
     getEditedIndex: state => state.editedIndex,
     getEditedItem: state => state.editedItem,
-    getDefaultItem: state => state.defaultItem
+    getDefaultItem: state => state.defaultItem,
+    getStartDate: state => state.startDate,
+    getEndDate: state => state.endDate,
+    getAllergyItem: state => state.allergyItem,
+
 
 }
 
@@ -62,10 +74,20 @@ const actions = {
         commit("closeDialog");
 
     },
-
     actionSaveItemFromQueue({commit}) {
         commit("saveItemFromQueue");
     },
+    actionSetStartDate({commit},newDate){
+        commit("startDate",newDate);
+    },
+    actionSetEndDate({commit},newDate){
+        commit("endDate",newDate);
+    },
+    actionViewAllergy({ commit }, item){
+        commit("viewAllergy",item)
+    }
+
+
 
 
 
@@ -77,9 +99,21 @@ const mutations = {
         state.editedItem = Object.assign({}, item);
         state.dialog = true;
     },
+    ["startDate"](state, newDate) {
+        state.startDate = newDate;
+        console.log(state.startDate)
+    },
+    ["endDate"](state, newDate) {
+       state.endDate = newDate;
+       console.log(state.endDate)
+    },
 
     ["approvalItem"](state,item){
         state.dialog=true;
+    },
+    ["viewAllergy"](state,item){
+        state.dialog=true;
+        state.allergyItem = item;
     },
     ["closeDialog"](state) {
             state.dialog = false;
@@ -103,75 +137,32 @@ const mutations = {
         state.dialog=false;
         state.tableData = [
             {
+                no:1,
                 name: "Frozen Yogurt",
-                calories: 159,
-                fat: 6.0,
-                carbs: 24,
-                protein: 4.0
+                isMedicineAllergy:true,
+                startTime:"10:00",
+                endTime:"10:10",
+                medicineAllergy:[
+                    {id:1,name:"allergy1",detail:"asdsad"},
+                    {id:2,name:"allergy2",detail:"asdsad"},
+                    {id:3,name:"allergy3",detail:"asdsad"},
+                ],
+                status:"Waiting",
+
+
             },
             {
-                name: "Ice cream sandwich",
-                calories: 237,
-                fat: 9.0,
-                carbs: 37,
-                protein: 4.3
+                no:2,
+                name: "Frozen Yogurt",
+                isMedicineAllergy:false,
+                startTime:"10:10",
+                endTime:"10:20",
+                medicineAllergy:["1","2","3"],
+                status:"Waiting",
+                
+
             },
-            {
-                name: "Eclair",
-                calories: 262,
-                fat: 16.0,
-                carbs: 23,
-                protein: 6.0
-            },
-            {
-                name: "Cupcake",
-                calories: 305,
-                fat: 3.7,
-                carbs: 67,
-                protein: 4.3
-            },
-            {
-                name: "Gingerbread",
-                calories: 356,
-                fat: 16.0,
-                carbs: 49,
-                protein: 3.9
-            },
-            {
-                name: "Jelly bean",
-                calories: 375,
-                fat: 0.0,
-                carbs: 94,
-                protein: 0.0
-            },
-            {
-                name: "Lollipop",
-                calories: 392,
-                fat: 0.2,
-                carbs: 98,
-                protein: 0
-            },
-            {
-                name: "Honeycomb",
-                calories: 408,
-                fat: 3.2,
-                carbs: 87,
-                protein: 6.5
-            },
-            {
-                name: "Donut",
-                calories: 452,
-                fat: 25.0,
-                carbs: 51,
-                protein: 4.9
-            },
-            {
-                name: "KitKat",
-                calories: 518,
-                fat: 26.0,
-                carbs: 65,
-                protein: 7
-            }
+           
         ];
     }
 }

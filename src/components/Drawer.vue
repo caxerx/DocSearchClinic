@@ -54,12 +54,12 @@
             <v-list-tile slot="activator">
               <v-list-tile-title>Queue</v-list-tile-title>
             </v-list-tile>
-            <v-list-tile @click="queueList">
+            <v-list-tile @click="waitingList">
               <v-list-tile-action>
                 <v-icon>list</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>Queue List</v-list-tile-title>
+                <v-list-tile-title>Waiting List</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
@@ -100,13 +100,19 @@ export default {
     drawer: null
   }),
   methods: {
-    ...mapActions(["actionLogout", "actionSetDefaultTableData","actionInitializeQueueList"]),
+    ...mapActions([
+      "actionLogout",
+      "actionSetDefaultFMreservation",
+      "actionInitializeQueueList",
+      "actionDatePickerType"
+    ]),
 
     home() {
       this.$router.push("/home");
     },
     reservation() {
-      this.actionSetDefaultTableData();
+      this.actionDatePickerType("reservation")
+      this.actionSetDefaultFMreservation();
       this.$router.push("/createReservation");
     },
     settingReservation() {
@@ -116,9 +122,10 @@ export default {
     viewReservation() {
       this.$router.push("/viewReservation");
     },
-    queueList() {
+    waitingList() {
+      this.actionDatePickerType("queue")
       this.actionInitializeQueueList();
-      this.$router.push("/queueList");
+      this.$router.push("/waitingList");
     },
     about() {
       this.$router.push("/about");

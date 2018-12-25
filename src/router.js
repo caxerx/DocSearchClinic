@@ -6,7 +6,7 @@ import About from './pages/About.vue'
 import CreateReservation from './pages/reservation/CreateReservation.vue'
 import ViewReservation from './pages/reservation/ViewReservation.vue'
 import SettingReservation from './pages/reservation/SettingReservation.vue'
-import QueueList from './pages/queue/QueueList'
+import WaitingList from './pages/queue/WaitingList'
 import App from './App.vue'
 
 Vue.use(Router)
@@ -36,9 +36,9 @@ export default new Router({
       component: ViewReservation
     },
     {
-      path: '/queueList',
-      name: 'queueList',
-      component: QueueList
+      path: '/waitingList',
+      name: 'waitingList',
+      component: WaitingList
     },
     {
       path: '/login',

@@ -2,8 +2,8 @@
 <container>
   <div slot="content"> 
        
-      <h1>Queue List</h1><br/>
-  
+      <h1>Waiting List</h1><br/>
+    <data-picker-form/>
     <!-- table  -->
     <data-table/>
     
@@ -13,8 +13,8 @@
 
 
 <script>
-import DataTable from '@/components/queue/Table.vue'
-
+import DataTable from '@/components/queue/WaitingListTable.vue'
+import DataPickerForm from '@/components/queue/DatePickerForm.vue'
 import Container from '@/components/Container.vue'
 import { mapGetters, mapActions, mapState } from "vuex";
 
@@ -26,7 +26,7 @@ export default {
  components: {
     DataTable,
     Container,
-    
+    DataPickerForm,
     
   },
 

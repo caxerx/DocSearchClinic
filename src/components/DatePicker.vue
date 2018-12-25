@@ -1,34 +1,91 @@
 <template>
   <div>
-    <v-menu
-      :close-on-content-click="false"
-      v-model="menu2"
-      :nudge-right="40"
-      lazy
-      transition="scale-transition"
-      offset-y
-      full-width
-      max-width="290px"
-      min-width="290px"
-    >
-      <v-text-field
-        slot="activator"
-        v-model="computedDateFormatted"
-        label="Date (read only text field)"
-        hint="YYYY-MM-DD format"
-        persistent-hint
-        prepend-icon="event"
-        readonly
-      ></v-text-field>
-      <v-date-picker
-        v-model="newDate"
-        no-title
-        @input="menu2 = false"
-        @change="setDate"
-        :event-color="test"
-        :events="functionEvents"
-      ></v-date-picker>
-    </v-menu>
+    <div v-if="computedType==='reservation'">
+      <v-menu
+        :close-on-content-click="false"
+        v-model="menu1"
+        :nudge-right="40"
+        lazy
+        transition="scale-transition"
+        offset-y
+        full-width
+        max-width="290px"
+        min-width="290px"
+      >
+        <v-text-field
+          slot="activator"
+          v-model="date"
+          label="Date (read only text field)"
+          hint="YYYY-MM-DD format"
+          persistent-hint
+          prepend-icon="event"
+          readonly
+        ></v-text-field>
+        <v-date-picker
+          v-model="newDate"
+          no-title
+          @input="close"
+          @change="setDate"
+          :event-color="eventColor"
+          :events="functionEvents"
+        ></v-date-picker>
+      </v-menu>
+    </div>
+    <div v-else-if="computedType==='queue'">
+    
+        <v-layout row wrap>
+          <v-flex xs5>
+            <v-menu
+              :close-on-content-click="false"
+              v-model="menu1"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              max-width="290px"
+              min-width="290px"
+            >
+              <v-text-field
+                slot="activator"
+                v-model="newStartDate"
+                label="Start Date"
+                hint="YYYY-MM-DD format"
+                persistent-hint
+                prepend-icon="event"
+                readonly
+              ></v-text-field>
+              <v-date-picker v-model="newStartDate" @change="setStartDate" no-title @input="close"></v-date-picker>
+            </v-menu>
+          </v-flex>
+          <v-flex xs5>
+            <v-menu
+              :close-on-content-click="false"
+              v-model="menu2"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              max-width="290px"
+              min-width="290px"
+            >
+              <v-text-field
+                slot="activator"
+                v-model="newEndDate"
+                label="End Date "
+                hint="YYYY-MM-DD format"
+                persistent-hint
+                prepend-icon="event"
+                readonly
+              ></v-text-field>
+              <v-date-picker v-model="newEndDate" @change="setEndDate" no-title @input="close"></v-date-picker>
+            </v-menu>
+          </v-flex>
+            <slot name="btn1"></slot>
+        </v-layout>
+
+    </div>
   </div>
 </template>
 
@@ -36,56 +93,59 @@
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
 export default {
-  data: vm => ({
+  data: () => ({
     // date: new Date().toISOString().substr(0, 10),
     // dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
     menu1: false,
     menu2: false,
     arrayEvents: null,
-    newDate: ""
-  }),
 
+    //reservation
+    newDate: "",
+    //queue
+    newStartDate: "",
+    newEndDate: ""
+  }),
 
   computed: {
     ...mapGetters({
-      date: "getDate"
+      date: "getDate",
+      type: "getDatePickerType",
+      startDate: "getStartDate",
+      endDate: "getEndDate"
     }),
-    test() {
+    computedType() {
+      console.log(this.type);
+      return this.type;
+    },
+    eventColor() {
       return function(date) {
-        var days = [1,2,3,4,5,6,7,8,9,10];
+        var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const [, , day] = date.split("-");
-        var color =days.includes(parseInt(day))? "red" : "green"
-        console.log(color);
+        var color = days.includes(parseInt(day)) ? "red" : "green";
         return color;
       };
-    },
-
-    defaultDate() {
-      return this.date;
-    },
-    computedDateFormatted() {
-      if (this.newDate == "") {
-        return this.date;
-      } else {
-        return this.formatDate(this.newDate);
-      }
     }
   },
-
-  //   watch: {
-  //     newDate(val) {
-  //       this.dateFormatted = this.formatDate(this.newDate);
-  //     }
-  //   },
-
   methods: {
-    ...mapActions(["actionSetDate"]),
+    ...mapActions(["actionSetDate", "actionSetStartDate", "actionSetEndDate"]),
+
+    close() {
+      this.menu1 = false;
+      this.menu2 = false;
+    },
     setDate() {
       this.actionSetDate(this.newDate);
     },
+
+    setStartDate() {
+      this.actionSetStartDate(this.newStartDate);
+    },
+    setEndDate() {
+      this.actionSetEndDate(this.newEndDate);
+    },
     functionEvents(date) {
       const [, , day] = date.split("-");
-
       return true;
     },
     formatDate(newDate) {
@@ -94,12 +154,6 @@ export default {
       const [year, month, day] = newDate.split("-");
       return `${year}-${month}-${day}`;
     }
-    // parseDate(date) {
-    //   if (!date) return null;
-
-    //   const [day, month, year] = date.split("/");
-    //   return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-    // }
   }
 };
 </script>
