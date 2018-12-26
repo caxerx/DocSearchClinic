@@ -53,12 +53,12 @@
             <v-list-tile slot="activator">
               <v-list-tile-title>Queue</v-list-tile-title>
             </v-list-tile>
-            <v-list-tile @click="waitingList">
+            <v-list-tile @click="reservationList">
               <v-list-tile-action>
                 <v-icon>list</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>Waiting List</v-list-tile-title>
+                <v-list-tile-title>Reservation List</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
             <v-list-tile @click="approvalList">
@@ -147,10 +147,10 @@ export default {
     viewReservation() {
       this.$router.push("/viewReservation");
     },
-    waitingList() {
+    reservationList() {
       this.actionDatePickerType("queue");
       this.actionInitializeQueueList();
-      this.$router.push("/waitingList");
+      this.$router.push("/reservationList");
     },
     onlineQueueList() {
       this.actionDatePickerType("queue");

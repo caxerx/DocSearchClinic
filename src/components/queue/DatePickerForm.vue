@@ -1,8 +1,8 @@
 <template>
   <div>
     <date-picker>
-        <v-btn slot="btn1" color="primary" >submit</v-btn>
-        <v-btn slot="btn2" color="primary" >clear</v-btn>
+        <v-btn slot="btn1" color="primary"  >submit</v-btn>
+        <!-- <v-btn slot="btn2" color="primary" >clear</v-btn> -->
     </date-picker>
     <br/>
   </div>

@@ -79,10 +79,13 @@
                 prepend-icon="event"
                 readonly
               ></v-text-field>
+             
               <v-date-picker v-model="newEndDate" @change="setEndDate" no-title @input="close"></v-date-picker>
             </v-menu>
           </v-flex>
+           <v-flex xs2 style="text-align: right;">
             <slot name="btn1"></slot>
+             </v-flex>
         </v-layout>
 
     </div>

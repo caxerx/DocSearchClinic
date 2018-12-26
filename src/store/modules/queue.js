@@ -3,21 +3,20 @@
 
 const state = {
     dialog: false,
-    waiting_headers: [
+    reservation_list_headers: [
         {
             text: "No.",
             align: "left",
-            value:"no"
-   
+            value: "no"
+
         },
-        { text: "Name",value:"name"},
-        { text: "Start Time"},
-        { text: "End Time"},
-        { text: "Medicine Allergy"},
-        { text: "status" },
-        { text: "Actions",  sortable: false }
+        { text: "Name", value: "name" },
+        { text: "Start Time", value: "startTime" },
+        { text: "End Time", value: "endTime" },
+        { text: "status", value: "status" },
+        { text: "Actions", sortable: false }
     ],
-    tableData: [],
+    reservation_list_tableData: [],
     editedIndex: -1,
     editedItem: {
         name: "",
@@ -37,15 +36,15 @@ const state = {
 
     },
 
-    startDate:"",
-    endDate:"",
+    startDate: "",
+    endDate: "",
 }
 
 
 const getters = {
     getDialog: state => state.dialog,
-    getWaitingHeaders: state => state.waiting_headers,
-    getTableData: state => state.tableData,
+    getReservationListHeaders: state => state.reservation_list_headers,
+    getReservationListTableData: state => state.reservation_list_tableData,
     getEditedIndex: state => state.editedIndex,
     getEditedItem: state => state.editedItem,
     getDefaultItem: state => state.defaultItem,
@@ -69,22 +68,25 @@ const actions = {
     actionEditItemFromQueue({ commit }, item) {
         commit("editItem", item);
     },
+    actionOpenDialog({ commit }) {
+        commit("openDialog");
+    },
 
-    actionCloseDialog({commit}) {
+    actionCloseDialog({ commit }) {
         commit("closeDialog");
 
     },
-    actionSaveItemFromQueue({commit}) {
+    actionSaveItemFromQueue({ commit }) {
         commit("saveItemFromQueue");
     },
-    actionSetStartDate({commit},newDate){
-        commit("startDate",newDate);
+    actionSetStartDate({ commit }, newDate) {
+        commit("startDate", newDate);
     },
-    actionSetEndDate({commit},newDate){
-        commit("endDate",newDate);
+    actionSetEndDate({ commit }, newDate) {
+        commit("endDate", newDate);
     },
-    actionViewAllergy({ commit }, item){
-        commit("viewAllergy",item)
+    actionViewAllergy({ commit }, item) {
+        commit("viewAllergy", item)
     }
 }
 // mutations
@@ -99,77 +101,105 @@ const mutations = {
         console.log(state.startDate)
     },
     ["endDate"](state, newDate) {
-       state.endDate = newDate;
-       console.log(state.endDate)
+        state.endDate = newDate;
+        console.log(state.endDate)
     },
 
-    ["approvalItem"](state,item){
-        state.dialog=true;
+    ["approvalItem"](state, item) {
+        state.dialog = true;
     },
-    ["viewAllergy"](state,item){
-        state.dialog=true;
+    ["viewAllergy"](state, item) {
+        state.dialog = true;
         state.allergyItem = item;
     },
     ["closeDialog"](state) {
-            state.dialog = false;
-            // state.editedItem = Object.assign({}, state.defaultItem);
-            // state.editedIndex = -1;
+        state.dialog = false;
+        // state.editedItem = Object.assign({}, state.defaultItem);
+        // state.editedIndex = -1;
+    },
+    ["openDialog"](state) {
+        state.dialog = true;
+        // state.editedItem = Object.assign({}, state.defaultItem);
+        // state.editedIndex = -1;
     },
 
     ["saveItemFromQueue"](state) {
         if (state.editedIndex > -1) {
-            Object.assign(state.tableData[state.editedIndex], state.editedItem);
+            Object.assign(state.reservation_list_tableData[state.editedIndex], state.editedItem);
         } else {
-            state.tableData.push(state.editedItem);
+            state.reservation_list_tableData.push(state.editedItem);
         }
 
-            state.editedItem = Object.assign({}, state.defaultItem);
-            state.editedIndex = -1;
+        state.editedItem = Object.assign({}, state.defaultItem);
+        state.editedIndex = -1;
 
     },
 
     ["initialize"](state) {
         //reset
-        state.dialog=false;
-        state.startTime="";
-        state.endTime="";
+        state.dialog = false;
+        state.startTime = "";
+        state.endTime = "";
         hallo();
 
-        state.tableData = [
+        state.reservation_list_tableData = [
             {
-                no:1,
+                no: 1,
                 name: "Frozen Yogurt",
-                isMedicineAllergy:true,
-                startTime:"10:00",
-                endTime:"10:10",
-                medicineAllergy:[
-                    {id:1,name:"allergy1",detail:"asdsad"},
-                    {id:2,name:"allergy2",detail:"asdsad"},
-                    {id:3,name:"allergy3",detail:"asdsad"},
+
+                startTime: "10:00",
+                endTime: "10:10",
+                isMedicineAllergy: true,
+                medicineAllergy: [
+                    { id: 1, name: "allergy1", detail: "asdsad" },
+                    { id: 2, name: "allergy2", detail: "asdsad" },
+                    { id: 3, name: "allergy3", detail: "asdsad" },
                 ],
-                status:"Waiting",
+                status: "Waiting",
 
 
             },
             {
-                no:2,
+                no: 2,
                 name: "Frozen Yogurt",
-                isMedicineAllergy:false,
-                startTime:"10:10",
-                endTime:"10:20",
-                medicineAllergy:["1","2","3"],
-                status:"Waiting",
-                
+                isMedicineAllergy: false,
+                startTime: "10:10",
+                endTime: "10:20",
+                medicineAllergy: ["1", "2", "3"],
+                status: "Waiting",
+
 
             },
-           
+            {
+                no: 3,
+                name: "Frozen Yogurt",
+                isMedicineAllergy: false,
+                startTime: "10:20",
+                endTime: "10:30",
+                medicineAllergy: ["1", "2", "3"],
+                status: "Approval",
+
+
+            },
+            {
+                no: 4,
+                name: "Frozen Yogurt",
+                isMedicineAllergy: false,
+                startTime: "10:30",
+                endTime: "10:40",
+                medicineAllergy: ["1", "2", "3"],
+                status: "Finish",
+
+
+            },
+
         ];
     },
 
 }
 
-function hallo(){
-   
+function hallo() {
+
 }
 
 export default {
