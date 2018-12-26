@@ -7,6 +7,9 @@ import CreateReservation from './pages/reservation/CreateReservation.vue'
 import ViewReservation from './pages/reservation/ViewReservation.vue'
 import SettingReservation from './pages/reservation/SettingReservation.vue'
 import WaitingList from './pages/queue/WaitingList'
+import ApprovalList from './pages/queue/ApprovalList'
+import OnlineQueueList from './pages/queue/OnlineQueueList'
+import ClincQueueList from './pages/queue/ClincQueueList'
 import App from './App.vue'
 
 Vue.use(Router)
@@ -39,6 +42,21 @@ export default new Router({
       path: '/waitingList',
       name: 'waitingList',
       component: WaitingList
+    },
+    {
+      path: '/approvalList',
+      name: 'approvalList',
+      component: ApprovalList
+    },
+    {
+      path: '/onlineQueueList',
+      name: 'onlineQueueList',
+      component: OnlineQueueList
+    },
+    {
+      path: '/clincQueueList',
+      name: 'clincQueueList',
+      component: ClincQueueList
     },
     {
       path: '/login',

@@ -62,6 +62,30 @@
                 <v-list-tile-title>Waiting List</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
+            <v-list-tile @click="approvalList">
+              <v-list-tile-action>
+                <v-icon>list</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Approval List</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile @click="onlineQueueList">
+              <v-list-tile-action>
+                <v-icon>list</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Online Queue List</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile @click="clincQueueList">
+              <v-list-tile-action>
+                <v-icon>list</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Clinc Queue List</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
           </v-list-group>
         </v-list>
       </v-navigation-drawer>
@@ -111,7 +135,7 @@ export default {
       this.$router.push("/home");
     },
     reservation() {
-      this.actionDatePickerType("reservation")
+      this.actionDatePickerType("reservation");
       this.actionSetDefaultFMreservation();
       this.$router.push("/createReservation");
     },
@@ -123,9 +147,21 @@ export default {
       this.$router.push("/viewReservation");
     },
     waitingList() {
-      this.actionDatePickerType("queue")
+      this.actionDatePickerType("queue");
       this.actionInitializeQueueList();
       this.$router.push("/waitingList");
+    },
+    onlineQueueList() {
+      this.actionDatePickerType("queue");
+       this.$router.push("/onlineQueueList");
+    },
+    clincQueueList() {
+      this.actionDatePickerType("queue");
+      this.$router.push("/clincQueueList");
+    },
+    approvalList() {
+      this.actionDatePickerType("queue");
+         this.$router.push("/approvalList");
     },
     about() {
       this.$router.push("/about");

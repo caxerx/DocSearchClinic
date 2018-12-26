@@ -86,11 +86,6 @@ const actions = {
     actionViewAllergy({ commit }, item){
         commit("viewAllergy",item)
     }
-
-
-
-
-
 }
 // mutations
 const mutations = {
@@ -134,7 +129,11 @@ const mutations = {
     },
 
     ["initialize"](state) {
+        //reset
         state.dialog=false;
+        state.startTime="";
+        state.endTime="";
+        this.hallo();
         state.tableData = [
             {
                 no:1,
@@ -164,8 +163,11 @@ const mutations = {
             },
            
         ];
-    }
-}
+    },
+
+},
+
+
 
 export default {
     state,
