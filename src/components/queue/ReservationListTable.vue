@@ -1,31 +1,25 @@
 <template>
   <div>
     <!-- dialog  -->
-    <queue-dialog>
-      <div slot="title">hi</div>
+    <div v-if="dialogType=='add'">
+      <add-item-form/>
+    </div>
+    <div v-else-if="dialogType=='edit'">
+      <edit-item-form/>
+    </div>
 
-      <div slot="content">
-        <div v-if="dialogType=='add'">asdsad</div>
-        <div v-if="dialogType=='approval'"></div>
-        <div v-else-if="dialogType=='edit'"></div>
-      </div>
-      <div slot="button">
-        <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-        <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
-      </div>
-    </queue-dialog>
-
+    <!-- search and add item -->
     <v-layout row wrap justify-space-between>
       <v-flex xs4>
         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-flex>
       <v-flex xs2 style="text-align:right">
-        <v-btn  @click="open()" color="primary" dark class="mb-2">New Item</v-btn>
+        <v-btn @click="open()" color="primary" dark class="mb-2">New Item</v-btn>
       </v-flex>
     </v-layout>
     <br>
     <!-- table -->
-    <v-data-table :headers="headers" :search="search" :items="tableData" class="elevation-1">
+    <v-data-table :headers="headers" :search="search" :items="contents" class="elevation-1">
       <template slot="items" slot-scope="props">
         <td>{{ props.item.no }}</td>
         <td class="text-xs-left">{{ props.item.name }}</td>
@@ -38,46 +32,72 @@
           v-if="props.item.status==='Waiting'"
           style="color:red"
         >{{ props.item.status }}</td>
+
+        <td class="text-xs-left" v-if="props.item.status==='Waiting'">
+          <v-btn flat icon color="blue" @click="approvalItem(props.item)">
+            <v-icon class="mr-2">done</v-icon>
+          </v-btn>
+          <v-btn flat icon color="green" @click="editItem(props.item)">
+            <v-icon class="mr-2">edit</v-icon>
+          </v-btn>
+          <v-btn flat icon color="red" @click="deleteItem(props.item)">
+            <v-icon>clear</v-icon>
+          </v-btn>
+        </td>
         <!-- Approval -->
         <td
           class="text-xs-left"
           v-else-if="props.item.status==='Approval'"
           style="color:blue"
         >{{ props.item.status }}</td>
+
+        <td class="text-xs-left" v-if="props.item.status==='Approval'">
+          <v-btn flat icon disabled>
+            <v-icon class="mr-2">done</v-icon>
+          </v-btn>
+          <v-btn flat icon color="green" disabled>
+            <v-icon class="mr-2">edit</v-icon>
+          </v-btn>
+          <v-btn flat icon color="red" @click="deleteItem(props.item)">
+            <v-icon>clear</v-icon>
+          </v-btn>
+        </td>
         <!-- Finish -->
         <td
           class="text-xs-left"
           v-else-if="props.item.status==='Finish'"
           style="color:green"
         >{{ props.item.status }}</td>
-
-        <!-- waiting -->
-        <td class="text-xs-left" v-if="props.item.status==='Waiting'">
-          <v-btn flat icon color="blue" @click="approvalItem(props.item)">
-            <v-icon class="mr-2">done</v-icon>
-          </v-btn>
-          <v-btn flat icon color="red" @click="deleteItem(props.item)">
-            <v-icon>clear</v-icon>
-          </v-btn>
-        </td>
-        <!-- Approval -->
-        <td class="text-xs-left" v-if="props.item.status==='Approval'">
-          <v-btn flat icon disabled>
-            <v-icon class="mr-2">done</v-icon>
-          </v-btn>
-          <v-btn flat icon color="red" @click="deleteItem(props.item)">
-            <v-icon>clear</v-icon>
-          </v-btn>
-        </td>
         <td class="text-xs-left" v-if="props.item.status==='Finish'">
           <v-btn flat icon disabled>
             <v-icon class="mr-2">done</v-icon>
           </v-btn>
+          <v-btn flat icon color="green" disabled>
+            <v-icon class="mr-2">edit</v-icon>
+          </v-btn>
           <v-btn flat icon disabled>
             <v-icon>clear</v-icon>
           </v-btn>
         </td>
-        <!-- Finish -->
+        <!-- cancel -->
+         <td
+          class="text-xs-left"
+          v-else-if="props.item.status==='Cancel'"
+          style="color:grey"
+        >{{ props.item.status }}</td>
+        <td class="text-xs-left" v-if="props.item.status==='Cancel'">
+          <v-btn flat icon disabled>
+            <v-icon class="mr-2">done</v-icon>
+          </v-btn>
+          <v-btn flat icon color="green" disabled>
+            <v-icon class="mr-2">edit</v-icon>
+          </v-btn>
+          <v-btn flat icon disabled>
+            <v-icon>clear</v-icon>
+          </v-btn>
+        </td>
+
+        
       </template>
 
       <v-alert
@@ -94,6 +114,8 @@
 import { mapGetters, mapActions, mapState } from "vuex";
 import QueueDialog from "@/components/Dialog.vue";
 import DatePicker from "@/components/DatePicker.vue";
+import AddItemForm from "@/components/queue/AddItemForm.vue";
+import EditItemForm from "@/components/queue/EditItemForm.vue";
 
 export default {
   data: () => ({
@@ -106,19 +128,27 @@ export default {
     //   return this.editedIndex === -1 ? "New Item" : "Edit Item";
     // }
     ...mapGetters({
-      dialog: "getDialog",
-      headers: "getReservationListHeaders",
-      tableData: "getReservationListTableData",
-      editedIndex: "getEditedIndex",
-      editedItem: "getEditedItem",
-      defaultItem: "getDefaultItem",
-      allergyItem: "getAllergyItem"
-    })
+      queueData:"getQueueData",
+
+    }),
+    dialog(){
+      return this.queueData.dialog;
+    },
+    headers(){
+      return this.queueData.headers;
+    },
+    contents(){
+      return this.queueData.contents;
+    },
+
+
   },
 
   components: {
     QueueDialog,
-    DatePicker
+    DatePicker,
+    AddItemForm,
+    EditItemForm
   },
 
   //   watch: {

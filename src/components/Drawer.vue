@@ -61,14 +61,7 @@
                 <v-list-tile-title>Reservation List</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile @click="approvalList">
-              <v-list-tile-action>
-                <v-icon>list</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>Approval List</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+
             <v-list-tile @click="onlineQueueList">
               <v-list-tile-action>
                 <v-icon>list</v-icon>
@@ -129,7 +122,8 @@ export default {
       "actionLogout",
       "actionSetDefaultFMreservation",
       "actionInitializeQueueList",
-      "actionDatePickerType"
+      "actionDatePickerType",
+      "actionSetDefaultFMreservation",
     ]),
 
     home() {
@@ -150,6 +144,7 @@ export default {
     reservationList() {
       this.actionDatePickerType("queue");
       this.actionInitializeQueueList();
+      this.actionSetDefaultFMreservation();
       this.$router.push("/reservationList");
     },
     onlineQueueList() {
@@ -160,10 +155,7 @@ export default {
       this.actionDatePickerType("queue");
       this.$router.push("/clincQueueList");
     },
-    approvalList() {
-      this.actionDatePickerType("queue");
-      this.$router.push("/approvalList");
-    },
+
     about() {
       this.$router.push("/about");
     },

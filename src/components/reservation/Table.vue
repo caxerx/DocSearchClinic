@@ -2,7 +2,7 @@
   <div>
     <h2>{{date}}</h2>
     <v-data-table
-      :items="contents"
+      :items="timeList"
       id="createResTable"
       class="elevation-1"
       :headers="headers"
@@ -35,10 +35,19 @@ export default {
 
   computed: {
     ...mapGetters({
-      date: "getDate",
-      contents: "getContents",
-      headers:"getReservationHeaders",
+      reservationData:"getReservationData"
     }),
+
+    date(){
+      return this.reservationData.date;
+    },
+    timeList(){
+      return this.reservationData.timeList;
+    },
+    headers(){
+      return this.reservationData.headers;
+    }
+
 
     // rowsPerPageItems(){
     //   return [ 9, 20, 30, { "text": "$vuetify.dataIterator.rowsPerPageAll", "value": -1 } ];

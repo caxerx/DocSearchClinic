@@ -1,5 +1,4 @@
 
-  export const getDatePickerType = state => { 
-    console.log(state.datePickerType)
-    return state.datePickerType
+  export const getPublicData = state => { 
+    return state.publicData
   }

@@ -1,7 +1,7 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
     <date-picker/>
-    <v-text-field prepend-icon="access_time" v-model="computedTime" label="Time" :checked="time" disabled></v-text-field>
+    <v-text-field prepend-icon="access_time" v-model="time" label="Time" :checked="time" disabled></v-text-field>
     <v-btn :disabled="!valid" @click="submit" style="float:left">submit</v-btn>
     <v-btn @click="clear" style="float:left">clear</v-btn>
   </v-form>
@@ -32,11 +32,11 @@ export default {
 
   computed: {
     ...mapGetters({
-      time: "getTime"
+     reservationData : "getReservationData"
     }),
 
-    computedTime(){
-      return this.time;
+    time(){
+      return this.reservationData.time;
     },
   },
 

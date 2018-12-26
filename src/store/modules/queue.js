@@ -2,56 +2,50 @@
 
 
 const state = {
-    dialog: false,
-    reservation_list_headers: [
-        {
-            text: "No.",
-            align: "left",
-            value: "no"
-
+    queueData:{
+        dialog: false,
+        headers: [
+            {
+                text: "No.",
+                align: "left",
+                value: "no"
+    
+            },
+            { text: "Name", value: "name" },
+            { text: "Start Time", value: "startTime" },
+            { text: "End Time", value: "endTime" },
+            { text: "status", value: "status" },
+            { text: "Actions", sortable: false }
+        ],
+        contents: [],
+        editedIndex: -1,
+        editedItem: {
+            name: "",
+            calories: 0,
+            fat: 0,
+            carbs: 0,
+            protein: 0
         },
-        { text: "Name", value: "name" },
-        { text: "Start Time", value: "startTime" },
-        { text: "End Time", value: "endTime" },
-        { text: "status", value: "status" },
-        { text: "Actions", sortable: false }
-    ],
-    reservation_list_tableData: [],
-    editedIndex: -1,
-    editedItem: {
-        name: "",
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0
-    },
-    defaultItem: {
-        name: "",
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0
-    },
-    allergyItem: {
-
+        defaultItem: {
+            name: "",
+            calories: 0,
+            fat: 0,
+            carbs: 0,
+            protein: 0
+        },
+        allergyItem: {
+    
+        },
+    
+        startDate: "",
+        endDate: "",
     },
 
-    startDate: "",
-    endDate: "",
 }
 
 
 const getters = {
-    getDialog: state => state.dialog,
-    getReservationListHeaders: state => state.reservation_list_headers,
-    getReservationListTableData: state => state.reservation_list_tableData,
-    getEditedIndex: state => state.editedIndex,
-    getEditedItem: state => state.editedItem,
-    getDefaultItem: state => state.defaultItem,
-    getStartDate: state => state.startDate,
-    getEndDate: state => state.endDate,
-    getAllergyItem: state => state.allergyItem,
-
+    getQueueData:state =>state.queueData,
 
 }
 
@@ -92,57 +86,54 @@ const actions = {
 // mutations
 const mutations = {
     ["editItem"](state, item) {
-        state.editedIndex = state.tableData.indexOf(item);
-        state.editedItem = Object.assign({}, item);
-        state.dialog = true;
+        state.queueData.editedIndex = state.queueData.indexOf(item);
+        state.queueData.editedItem = Object.assign({}, item);
+        state.queueData.dialog = true;
     },
-    ["startDate"](state, newDate) {
-        state.startDate = newDate;
-        console.log(state.startDate)
+    ["queueStartDate"](state, newDate) {
+        state.queueData.startDate = newDate;
+        console.log(state.queueData.startDate)
     },
-    ["endDate"](state, newDate) {
-        state.endDate = newDate;
-        console.log(state.endDate)
+    ["queueEndDate"](state, newDate) {
+        state.queueData.endDate = newDate;
+        console.log(state.queueData.endDate)
     },
 
     ["approvalItem"](state, item) {
-        state.dialog = true;
+        state.queueData.dialog = true;
     },
     ["viewAllergy"](state, item) {
-        state.dialog = true;
-        state.allergyItem = item;
+        state.queueData.dialog = true;
+        state.queueData.allergyItem = item;
     },
     ["closeDialog"](state) {
-        state.dialog = false;
-        // state.editedItem = Object.assign({}, state.defaultItem);
-        // state.editedIndex = -1;
+        state.queueData.dialog = false;
+        // state.queueData.editedItem = Object.assign({}, state.queueData.defaultItem);
+        // state.queueData.editedIndex = -1;
     },
     ["openDialog"](state) {
-        state.dialog = true;
-        // state.editedItem = Object.assign({}, state.defaultItem);
-        // state.editedIndex = -1;
+        state.queueData.dialog = true;
+        // state.queueData.editedItem = Object.assign({}, state.queueData.defaultItem);
+        // state.queueData.editedIndex = -1;
     },
 
     ["saveItemFromQueue"](state) {
-        if (state.editedIndex > -1) {
-            Object.assign(state.reservation_list_tableData[state.editedIndex], state.editedItem);
+        if (state.queueData.editedIndex > -1) {
+            Object.assign(state.queueData.contents[state.queueData.editedIndex], state.queueData.editedItem);
         } else {
-            state.reservation_list_tableData.push(state.editedItem);
+            state.queueData.contents.push(state.queueData.editedItem);
         }
 
-        state.editedItem = Object.assign({}, state.defaultItem);
-        state.editedIndex = -1;
+        state.queueData.editedItem = Object.assign({}, state.queueData.defaultItem);
+        state.queueData.editedIndex = -1;
 
     },
 
     ["initialize"](state) {
         //reset
-        state.dialog = false;
-        state.startTime = "";
-        state.endTime = "";
-        hallo();
+        reset();
 
-        state.reservation_list_tableData = [
+        state.queueData.contents = [
             {
                 no: 1,
                 name: "Frozen Yogurt",
@@ -189,8 +180,15 @@ const mutations = {
                 endTime: "10:40",
                 medicineAllergy: ["1", "2", "3"],
                 status: "Finish",
-
-
+            },
+            {
+                no: 5,
+                name: "Frozen Yogurt",
+                isMedicineAllergy: false,
+                startTime: "10:40",
+                endTime: "10:50",
+                medicineAllergy: ["1", "2", "3"],
+                status: "Cancel",
             },
 
         ];
@@ -198,8 +196,45 @@ const mutations = {
 
 }
 
-function hallo() {
-
+function reset() {
+    state.queueData = {
+        dialog: false,
+        headers: [
+            {
+                text: "No.",
+                align: "left",
+                value: "no"
+    
+            },
+            { text: "Name", value: "name" },
+            { text: "Start Time", value: "startTime" },
+            { text: "End Time", value: "endTime" },
+            { text: "status", value: "status" },
+            { text: "Actions", sortable: false }
+        ],
+        contents: [],
+        editedIndex: -1,
+        editedItem: {
+            name: "",
+            calories: 0,
+            fat: 0,
+            carbs: 0,
+            protein: 0
+        },
+        defaultItem: {
+            name: "",
+            calories: 0,
+            fat: 0,
+            carbs: 0,
+            protein: 0
+        },
+        allergyItem: {
+    
+        },
+    
+        startDate: "",
+        endDate: "",
+    }
 }
 
 export default {
