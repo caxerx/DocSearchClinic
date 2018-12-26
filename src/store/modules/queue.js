@@ -133,7 +133,6 @@ const mutations = {
         state.dialog=false;
         state.startTime="";
         state.endTime="";
-        this.hallo();
         state.tableData = [
             {
                 no:1,
@@ -165,7 +164,7 @@ const mutations = {
         ];
     },
 
-},
+}
 
 
 
