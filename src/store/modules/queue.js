@@ -133,6 +133,8 @@ const mutations = {
         state.dialog=false;
         state.startTime="";
         state.endTime="";
+        hallo();
+
         state.tableData = [
             {
                 no:1,
@@ -166,7 +168,9 @@ const mutations = {
 
 }
 
-
+function hallo(){
+   
+}
 
 export default {
     state,
@@ -174,3 +178,4 @@ export default {
     actions,
     mutations
 }
+

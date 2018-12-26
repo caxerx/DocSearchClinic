@@ -71,7 +71,7 @@ export default {
     ...mapActions(["actionLogin", "actionLoginFail", "actionLoginSuccess"]),
 
     loginSuccess() {
-      this.$router.push("/home");
+      this.$router.push("/about");
       this.actionLogin(true);
     },
 

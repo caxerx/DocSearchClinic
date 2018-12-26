@@ -3,15 +3,14 @@
     <v-app id="inspire">
       <v-navigation-drawer v-model="drawer" fixed app>
         <v-list dense>
-          <v-list-tile @click="home">
+          <!-- <v-list-tile @click="home">
             <v-list-tile-action>
               <v-icon>home</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>Home</v-list-tile-title>
             </v-list-tile-content>
-          </v-list-tile>
-
+          </v-list-tile>-->
           <v-list-tile @click="about">
             <v-list-tile-action>
               <v-icon>contact_mail</v-icon>
@@ -99,7 +98,6 @@
         <v-btn icon>
           <v-icon>person</v-icon>
         </v-btn>
-
         <v-btn icon>
           <v-icon @click="logout">exit_to_app</v-icon>
         </v-btn>
@@ -108,11 +106,6 @@
         <router-view/>
       </v-content>
     </v-app>
-
-    <!-- <router-link to="/home">Home</router-link>|
-    <router-link to="/about">About</router-link>|
-    <button @click="logout">Logout</button>
-    <router-view/>-->
   </div>
 </template>
 
@@ -123,6 +116,14 @@ export default {
   data: () => ({
     drawer: null
   }),
+
+  components: {},
+
+  computed: {
+    ...mapGetters({
+      isSuccess: "getIsSuccess"
+    })
+  },
   methods: {
     ...mapActions([
       "actionLogout",
@@ -153,7 +154,7 @@ export default {
     },
     onlineQueueList() {
       this.actionDatePickerType("queue");
-       this.$router.push("/onlineQueueList");
+      this.$router.push("/onlineQueueList");
     },
     clincQueueList() {
       this.actionDatePickerType("queue");
@@ -161,7 +162,7 @@ export default {
     },
     approvalList() {
       this.actionDatePickerType("queue");
-         this.$router.push("/approvalList");
+      this.$router.push("/approvalList");
     },
     about() {
       this.$router.push("/about");
