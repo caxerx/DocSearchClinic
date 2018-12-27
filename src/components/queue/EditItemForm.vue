@@ -5,15 +5,6 @@
     <div slot="content">
       <v-form>
         <v-text-field prepend-icon="person" v-model="name" label="Name"></v-text-field>
-        <date-picker/>
-        <v-select
-          prepend-icon="access_time"
-          :items="computedTimeList"
-          v-model="time"
-          label="Time"
-          data-vv-name="select"
-          required
-        ></v-select>
         <v-select
           prepend-icon="toc"
           :items="statusList"
@@ -50,57 +41,29 @@ export default {
     }),
 
     $state() {
-      return this.$store.state;
-    },
-    $datePickerType() {
-      return this.$state.reservationList.reservationListData.datePickerType;
-    },
-
-    date() {
-      if (this.$datePickerType == "editItemDialog") {
-        return this.$state.reservationList.reservationListData.editedItem.date;
-      } else if (this.$datePickerType == "addItemDialog") {
-        return this.$state.reservationList.reservationListData.datePickerDate;
-      }
+      return this.$store.state.queue.queueData;
     },
 
     name: {
       get() {
-        return this.$state.reservationList.reservationListData.editedItem.name;
+        return this.$state.editedItem.name;
       },
       set(name) {}
     },
 
-    time: {
-      get() {
-        var startTime = this.$state.reservationList.reservationListData.editedItem.startTime;
-        var endTime = this.$state.reservationList.reservationListData.editedItem.endTime;
-        return startTime + " - " + endTime;
-      },
-      set(time) {}
-    },
 
     statusList() {
-      return this.$state.reservationList.reservationListData.defaultItem.status;
+      return this.$state.defaultItem.status;
     },
 
     status: {
       get() {
-        var status = this.$state.reservationList.reservationListData.editedItem.status;
+        var status = this.$state.editedItem.status;
         return status;
       },
       set(status) {}
     },
 
-    computedTimeList() {
-      var timeList = [];
-      var rTimeList = this.reservationData.timeList;
-      console.log(rTimeList);
-      for (var i = 0; i < rTimeList.length; i++) {
-        timeList.push(rTimeList[i].startTime + " - " + rTimeList[i].endTime);
-      }
-      return timeList;
-    }
   },
 
   components: {

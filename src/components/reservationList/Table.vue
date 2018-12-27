@@ -110,7 +110,6 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
-import DoubleDatePicker from "@/components/reservationList/DoubleDatePicker.vue";
 import AddItemForm from "@/components/reservationList/AddItemForm.vue";
 import EditItemForm from "@/components/reservationList/EditItemForm.vue";
 
@@ -139,7 +138,6 @@ export default {
   },
 
   components: {
-    DoubleDatePicker,
     AddItemForm,
     EditItemForm
   },
@@ -158,7 +156,7 @@ export default {
       "actionApprovalItemFromReservationList",
       "actionViewAllergy",
       "actionOpenDialog",
-      "actionSetDatePickerType"
+      "actionSetDatePickerTypeFromReservationList"
     ]),
 
     approvalItem(item) {
@@ -174,14 +172,14 @@ export default {
     open() {
       this.dialogType = "add";
       this.actionOpenDialog();
-      this.actionSetDatePickerType("addItemDialog");
+      this.actionSetDatePickerTypeFromReservationList("addItemDialog");
     },
 
     editItem(item) {
       this.dialogType = "edit";
       console.log(item);
       this.actionOpenDialog();
-      this.actionSetDatePickerType("editItemDialog");
+      this.actionSetDatePickerTypeFromReservationList("editItemDialog");
       this.actionEditItemFromReservationList(item);
     },
 

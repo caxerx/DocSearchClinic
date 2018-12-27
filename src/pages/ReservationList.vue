@@ -13,7 +13,7 @@
 
 
 <script>
-import DataTable from '@/components/reservationList/ReservationListTable.vue'
+import DataTable from '@/components/reservationList/Table.vue'
 import DataPickerForm from '@/components/reservationList/Form.vue'
 import Container from '@/components/Container.vue'
 

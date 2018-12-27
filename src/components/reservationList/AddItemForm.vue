@@ -1,5 +1,5 @@
 <template>
-  <reservation-list-dialog>
+ <normal-dialog>
     <div slot="title">Add Item</div>
 
     <div slot="content">
@@ -14,14 +14,14 @@
       <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
       <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
     </div>
-  </reservation-list-dialog>
+ </normal-dialog>
 </template>
 
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
 import DatePicker from './DatePicker.vue';
-import ReservationListDialog from "@/components/Dialog.vue";
+import NormalDialog from "@/components/Dialog.vue";
 
 export default {
   data: () => ({
@@ -54,7 +54,7 @@ export default {
   },
 
   components: {
-    ReservationListDialog,
+    NormalDialog,
     DatePicker
   },
 

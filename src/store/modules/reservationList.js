@@ -78,7 +78,7 @@ const actions = {
     },
 
     actionEditItemFromReservationList({ commit }, item) {
-        commit("editItem", item);
+        commit("editItemFromReservationList", item);
     },
 
     actionSaveItemFromReservationList({ commit }) {
@@ -96,13 +96,13 @@ const actions = {
     actionResetEditDate({ commit }) {
         commit("resetEditDate");
     },
-    actionSetDatePickerType({ commit },type) {
-        commit("setDatePickerType",type);
+    actionSetDatePickerTypeFromReservationList({ commit },type) {
+        commit("setDatePickerTypeFromReservationList",type);
     },
 }
 // mutations
 const mutations = {
-    ["editItem"](state, item) {
+    ["editItemFromReservationList"](state, item) {
         state.reservationListData.editedIndex = state.reservationListData.contents.indexOf(item);
         state.reservationListData.editedItem = Object.assign({}, item);
     },
@@ -119,10 +119,10 @@ const mutations = {
     },
 
 
-    ["setDatePickerDate"](state, newDate) {
+    ["setDatePickerDateFromReservationList"](state, newDate) {
         state.reservationListData.datePickerDate = newDate;
     },
-    ["setDatePickerType"](state,type){
+    ["setDatePickerTypeFromReservationList"](state,type){
         state.reservationListData.datePickerType=type;
     },
 
