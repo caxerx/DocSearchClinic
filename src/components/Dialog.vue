@@ -3,22 +3,20 @@
   <v-dialog :value="dialog" max-width="500px" @input="close">
     <v-card>
       <v-card-title>
-        <span class="headline"><slot name="title"></slot></span>
+        <span class="headline">
+          <slot name="title"></slot>
+        </span>
       </v-card-title>
 
       <v-card-text>
-          <slot name="content">
-        
-          </slot>
+        <slot name="content"></slot>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <slot name="button">
-
-        </slot>
+        <slot name="button"></slot>
         <!-- <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-        <v-btn color="blue darken-1" flat @click="save">Save</v-btn> -->
+        <v-btn color="blue darken-1" flat @click="save">Save</v-btn>-->
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -30,19 +28,17 @@ export default {
   data: () => ({}),
   computed: {
     ...mapGetters({
-     dialog: "getDialog",
-    })
+      dialog: "getDialog"
+    }),
+
   },
 
-  methods:{
-      ...mapActions([
-      "actionCloseDialog",
-    ]),
-
+  methods: {
+    ...mapActions(["actionCloseDialog"]),
 
     close() {
       this.actionCloseDialog();
-    },
+    }
   }
 };
 </script>

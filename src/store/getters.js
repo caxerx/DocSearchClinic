@@ -1,4 +1,4 @@
 
-  export const getPublicData = state => { 
-    return state.publicData
+  export const getDialog = state => { 
+    return state.dialog
   }

@@ -1,19 +1,19 @@
 <template>
   <div>
-    <date-picker>
+    <double-date-picker>
         <v-btn slot="btn1" color="primary"  >submit</v-btn>
         <!-- <v-btn slot="btn2" color="primary" >clear</v-btn> -->
-    </date-picker>
+    </double-date-picker>
     <br/>
   </div>
 </template>
 
 <script>
-import DatePicker from "../DatePicker.vue";
+import DoubleDatePicker from "./DoubleDatePicker.vue";
 
 export default {
   components: {
-    DatePicker
+    DoubleDatePicker
   }
 };
 </script>

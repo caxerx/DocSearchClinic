@@ -120,18 +120,17 @@ export default {
   methods: {
     ...mapActions([
       "actionLogout",
-      "actionSetDefaultFMreservation",
-      "actionInitializeQueueList",
+      "actionInitializeReservationList",
       "actionDatePickerType",
-      "actionSetDefaultFMreservation",
+      "actionSetDefaultReservation",
+      "actionSetDatePickerType",
     ]),
 
     home() {
       this.$router.push("/home");
     },
     reservation() {
-      this.actionDatePickerType("reservation");
-      this.actionSetDefaultFMreservation();
+      this.actionSetDefaultReservation();
       this.$router.push("/createReservation");
     },
     settingReservation() {
@@ -142,17 +141,17 @@ export default {
       this.$router.push("/viewReservation");
     },
     reservationList() {
-      this.actionDatePickerType("queue");
-      this.actionInitializeQueueList();
-      this.actionSetDefaultFMreservation();
+      this.actionSetDatePickerType("reservationList");
+      this.actionInitializeReservationList();
+      this.actionSetDefaultReservation();
       this.$router.push("/reservationList");
     },
     onlineQueueList() {
-      this.actionDatePickerType("queue");
+      this.actionSetDatePickerType("onlineQueueList");
       this.$router.push("/onlineQueueList");
     },
     clincQueueList() {
-      this.actionDatePickerType("queue");
+      this.actionSetDatePickerType("clincQueueList");
       this.$router.push("/clincQueueList");
     },
 

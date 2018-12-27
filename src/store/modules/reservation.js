@@ -31,8 +31,8 @@ const actions = {
         commit("setDate", newDate);
     },
 
-    actionSetDefaultFMreservation({ commit }) {
-        commit("setDefaultFMreservation");
+    actionSetDefaultReservation({ commit }) {
+        commit("setDefaultReservation");
     },
     actionSetTime({ commit }, time) {
         commit("setTime", time);
@@ -65,14 +65,12 @@ const mutations = {
         state.reservationData.date = new Date().toISOString().substr(0, 10);
         state.reservationData.timeList = [];
     },
-    ["setDefaultFMreservation"](state) {
+    ["setDefaultReservation"](state) {
         //reset
         state.reservationData.time = "";
         state.reservationData.timeList = [];
 
         setTestReservationData(state);
-
-
 
     },
 

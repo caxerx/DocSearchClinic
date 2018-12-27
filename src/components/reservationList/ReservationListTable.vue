@@ -55,7 +55,7 @@
           <v-btn flat icon disabled>
             <v-icon class="mr-2">done</v-icon>
           </v-btn>
-          <v-btn flat icon color="green" disabled>
+          <v-btn flat icon color="green" @click="editItem(props.item)">
             <v-icon class="mr-2">edit</v-icon>
           </v-btn>
           <v-btn flat icon color="red" @click="deleteItem(props.item)">
@@ -80,7 +80,7 @@
           </v-btn>
         </td>
         <!-- cancel -->
-         <td
+        <td
           class="text-xs-left"
           v-else-if="props.item.status==='Cancel'"
           style="color:grey"
@@ -96,8 +96,6 @@
             <v-icon>clear</v-icon>
           </v-btn>
         </td>
-
-        
       </template>
 
       <v-alert
@@ -112,10 +110,9 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
-import QueueDialog from "@/components/Dialog.vue";
-import DatePicker from "@/components/DatePicker.vue";
-import AddItemForm from "@/components/queue/AddItemForm.vue";
-import EditItemForm from "@/components/queue/EditItemForm.vue";
+import DoubleDatePicker from "@/components/reservationList/DoubleDatePicker.vue";
+import AddItemForm from "@/components/reservationList/AddItemForm.vue";
+import EditItemForm from "@/components/reservationList/EditItemForm.vue";
 
 export default {
   data: () => ({
@@ -128,25 +125,21 @@ export default {
     //   return this.editedIndex === -1 ? "New Item" : "Edit Item";
     // }
     ...mapGetters({
-      queueData:"getQueueData",
-
+      reservationListData: "getReservationListData"
     }),
-    dialog(){
-      return this.queueData.dialog;
+    dialog() {
+      return this.reservationListData.dialog;
     },
-    headers(){
-      return this.queueData.headers;
+    headers() {
+      return this.reservationListData.headers;
     },
-    contents(){
-      return this.queueData.contents;
-    },
-
-
+    contents() {
+      return this.reservationListData.contents;
+    }
   },
 
   components: {
-    QueueDialog,
-    DatePicker,
+    DoubleDatePicker,
     AddItemForm,
     EditItemForm
   },
@@ -159,17 +152,18 @@ export default {
 
   methods: {
     ...mapActions([
-      "actionEditItemFromQueue",
+      "actionEditItemFromReservationList",
       "actionCloseDialog",
-      "actionSaveItemFromQueue",
-      "actionApprovalItemFromQueue",
+      "actionSaveItemFromReservationList",
+      "actionApprovalItemFromReservationList",
       "actionViewAllergy",
-      "actionOpenDialog"
+      "actionOpenDialog",
+      "actionSetDatePickerType"
     ]),
 
     approvalItem(item) {
       this.dialogType = "approval";
-      this.actionApprovalItemFromQueue(item);
+      this.actionApprovalItemFromReservationList(item);
     },
 
     viewAllergyDetail(item) {
@@ -180,11 +174,15 @@ export default {
     open() {
       this.dialogType = "add";
       this.actionOpenDialog();
+      this.actionSetDatePickerType("addItemDialog");
     },
 
     editItem(item) {
       this.dialogType = "edit";
-      this.actionEditItemFromQueue(item);
+      console.log(item);
+      this.actionOpenDialog();
+      this.actionSetDatePickerType("editItemDialog");
+      this.actionEditItemFromReservationList(item);
     },
 
     close() {
@@ -192,7 +190,7 @@ export default {
     },
 
     save() {
-      this.actionSaveItemFromQueue();
+      this.actionSaveItemFromReservationList();
     }
   }
 };

@@ -9,7 +9,7 @@
 
 <script>
 import axios from "axios";
-import DatePicker from "../DatePicker";
+import DatePicker from "./DatePicker";
 import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {

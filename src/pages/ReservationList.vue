@@ -13,10 +13,10 @@
 
 
 <script>
-import DataTable from '@/components/queue/ReservationListTable.vue'
-import DataPickerForm from '@/components/queue/DatePickerForm.vue'
+import DataTable from '@/components/reservationList/ReservationListTable.vue'
+import DataPickerForm from '@/components/reservationList/Form.vue'
 import Container from '@/components/Container.vue'
-import { mapGetters, mapActions, mapState } from "vuex";
+
 
 export default {
   data: () => ({

@@ -2,18 +2,20 @@ import Vue from 'vue'
 
 // state
 export const state = {
-    publicData:{
-        datePickerType: ""
-    }
-    
+        dialog: false
 }
 
 // mutations
 export const mutations = {
-   
-    ["datePickerType"](state,type) {
-        console.log(state.publicData)
-        state.publicData.datePickerType = type;
+
+    ["openDialog"](state) {
+        state.dialog = true;
+        // state.reservationListData.editedItem = Object.assign({}, state.reservationListData.defaultItem);
+        // state.reservationListData.editedIndex = -1;
+    }, ["closeDialog"](state) {
+        state.dialog = false;
+        // state.reservationListData.editedItem = Object.assign({}, state.reservationListData.defaultItem);
+        // state.reservationListData.editedIndex = -1;
     },
 
 }

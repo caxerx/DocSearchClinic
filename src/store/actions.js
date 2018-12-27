@@ -1,5 +1,9 @@
 
-export const actionDatePickerType = ({ commit },type) => {
-  commit("datePickerType",type);
+export const actionOpenDialog = ({ commit }) => {
+  commit("openDialog");
+}
+
+export const actionCloseDialog = ({ commit }) => {
+  commit("closeDialog");
 }
 
