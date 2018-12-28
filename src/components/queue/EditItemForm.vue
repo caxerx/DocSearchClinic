@@ -81,7 +81,7 @@ export default {
       "actionOpenDialog"
     ]),
     close() {
-      this.actionCloseDialog();
+      this.actionCloseDialog("normal");
     },
 
     save() {

@@ -171,20 +171,20 @@ export default {
 
     open() {
       this.dialogType = "add";
-      this.actionOpenDialog();
+      this.actionOpenDialog("normal");
       this.actionSetDatePickerTypeFromReservationList("addItemDialog");
     },
 
     editItem(item) {
       this.dialogType = "edit";
       console.log(item);
-      this.actionOpenDialog();
+      this.actionOpenDialog("normal");
       this.actionSetDatePickerTypeFromReservationList("editItemDialog");
       this.actionEditItemFromReservationList(item);
     },
 
     close() {
-      this.actionCloseDialog();
+      this.actionCloseDialog("normal");
     },
 
     save() {

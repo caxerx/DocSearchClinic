@@ -1,9 +1,9 @@
 
-export const actionOpenDialog = ({ commit }) => {
-  commit("openDialog");
+export const actionOpenDialog = ({ commit },type) => {
+  commit("openDialog",type);
 }
 
-export const actionCloseDialog = ({ commit }) => {
-  commit("closeDialog");
+export const actionCloseDialog = ({ commit },type) => {
+  commit("closeDialog",type);
 }
 

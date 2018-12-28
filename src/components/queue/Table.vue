@@ -38,13 +38,13 @@
 
         <td class="text-xs-left" v-if="props.item.status==='Waiting'">
           <v-btn flat icon color="blue" @click="viewProfile(props.item)">
-            <v-icon class="mr-2">person</v-icon>
+            <v-icon >person</v-icon>
           </v-btn>
           <v-btn flat icon color="blue" @click="approvalItem(props.item)">
-            <v-icon class="mr-2">done</v-icon>
+            <v-icon >done</v-icon>
           </v-btn>
           <v-btn flat icon color="green" @click="editItem(props.item)">
-            <v-icon class="mr-2">edit</v-icon>
+            <v-icon>edit</v-icon>
           </v-btn>
         </td>
         <!-- Arrived -->
@@ -56,13 +56,13 @@
 
         <td class="text-xs-left" v-if="props.item.status==='Arrived'">
           <v-btn flat icon color="blue" @click="viewProfile(props.item)">
-            <v-icon class="mr-2">person</v-icon>
+            <v-icon >person</v-icon>
           </v-btn>
           <v-btn flat icon disabled>
-            <v-icon class="mr-2">done</v-icon>
+            <v-icon >done</v-icon>
           </v-btn>
           <v-btn flat icon color="green" @click="editItem(props.item)">
-            <v-icon class="mr-2">edit</v-icon>
+            <v-icon >edit</v-icon>
           </v-btn>
         </td>
 
@@ -74,13 +74,13 @@
         >{{ props.item.status }}</td>
         <td class="text-xs-left" v-if="props.item.status==='Cancel'">
           <v-btn flat icon color="blue" @click="viewProfile(props.item)">
-            <v-icon class="mr-2">person</v-icon>
+            <v-icon >person</v-icon>
           </v-btn>
           <v-btn flat icon disabled>
-            <v-icon class="mr-2">done</v-icon>
+            <v-icon >done</v-icon>
           </v-btn>
           <v-btn flat icon color="green" disabled>
-            <v-icon class="mr-2">edit</v-icon>
+            <v-icon >edit</v-icon>
           </v-btn>
         </td>
       </template>
@@ -114,9 +114,6 @@ export default {
     ...mapGetters({
       queueData: "getQueueData"
     }),
-    dialog() {
-      return this.queueData.dialog;
-    },
     headers() {
       return this.queueData.headers;
     },
@@ -148,13 +145,13 @@ export default {
 
     open() {
       this.dialogType = "add";
-      this.actionOpenDialog();
+      this.actionOpenDialog("normal");
       //   this.actionSetDatePickerType("addItemDialog");
     },
 
     editItem(item) {
       this.dialogType = "edit";
-      this.actionOpenDialog();
+      this.actionOpenDialog("normal");
       this.actionSetDatePickerTypeFromQueue("editItemDialog");
       this.actionEditItemFromQueue(item);
       //   this.actionSetDatePickerType("editItemDialog");
@@ -162,7 +159,7 @@ export default {
 
     viewProfile(item) {
       this.dialogType = "viewProfile";
-      this.actionOpenDialog();
+      this.actionOpenDialog("fullscreen");
       this.actionviewItemFromQueue(item);
       //   this.actionSetDatePickerType("viewItemDialog");
     },

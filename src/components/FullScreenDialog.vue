@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <v-dialog v-model="computedDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
         <v-toolbar dark color="primary">
           <v-btn icon dark @click="close">
@@ -22,6 +22,8 @@
         </container>
       </v-card>
     </v-dialog>
+
+    <slot name="normalDialog"></slot>
   </v-layout>
 </template>
 
@@ -33,18 +35,22 @@ export default {
     return {};
   },
   components: {
-    Container
+    Container,
+    
   },
   computed: {
     ...mapGetters({
       dialog: "getDialog"
-    })
+    }),
+      computedDialog(){
+      return this.dialog.fullscreen
+    }
   },
   methods: {
     ...mapActions(["actionCloseDialog"]),
 
     close() {
-      this.actionCloseDialog();
+      this.actionCloseDialog("fullscreen");
     }
   }
 };

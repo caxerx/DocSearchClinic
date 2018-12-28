@@ -1,6 +1,6 @@
 <template>
   <!-- dialog -->
-  <v-dialog :value="dialog" max-width="500px" @input="close">
+  <v-dialog :value="computedDialog" max-width="500px" @input="close">
     <v-card>
       <v-card-title>
         <span class="headline">
@@ -31,13 +31,17 @@ export default {
       dialog: "getDialog"
     }),
 
+    computedDialog(){
+      return this.dialog.normal
+    }
+
   },
 
   methods: {
     ...mapActions(["actionCloseDialog"]),
 
     close() {
-      this.actionCloseDialog();
+      this.actionCloseDialog("normal");
     }
   }
 };
