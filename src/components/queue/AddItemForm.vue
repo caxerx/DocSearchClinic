@@ -71,7 +71,7 @@ export default {
   methods: {
     ...mapActions(["actionCloseDialog"]),
     close() {
-      this.actionCloseDialog();
+      this.actionCloseDialog("normal");
     },
 
     save() {}

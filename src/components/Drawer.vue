@@ -79,6 +79,24 @@
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
+
+             <v-list-tile @click="medicineRecordList">
+            <v-list-tile-action>
+              <v-icon>bookmarks</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Medicine Record List</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
+          <v-list-tile @click="feedBack">
+            <v-list-tile-action>
+              <v-icon>comment</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>FeedBack</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
         </v-list>
       </v-navigation-drawer>
       <v-toolbar color="indigo" fixed dark app>
@@ -122,11 +140,14 @@ export default {
       "actionLogout",
       "actionInitializeReservationList",
       "actionSetDefaultReservation",
-      "actionSetDatePickerTypeFromReservationList",
+      "actionSetDatePickerTypeFromReservationList"
     ]),
 
     home() {
       this.$router.push("/home");
+    },
+    feedBack() {
+      this.$router.push("/feedBack");
     },
     reservation() {
       this.actionSetDefaultReservation();
@@ -135,7 +156,9 @@ export default {
     settingReservation() {
       this.$router.push("/settingReservation");
     },
-
+    medicineRecordList(){
+      this.$router.push("/medicineRecordList");
+    },
     viewReservation() {
       this.$router.push("/viewReservation");
     },

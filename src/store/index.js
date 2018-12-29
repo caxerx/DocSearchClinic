@@ -11,6 +11,7 @@ import reservation from './modules/reservation';
 import count from './modules/count';
 import queue from './modules/queue';
 import reservationList from './modules/reservationList';
+import medicineRecordList from './modules/medicineRecordList';
 
 
 
@@ -29,7 +30,8 @@ export default new Vuex.Store({
     count,
     reservation,
     queue,
-    reservationList
+    reservationList,
+    medicineRecordList
   },
 
   strict: true
