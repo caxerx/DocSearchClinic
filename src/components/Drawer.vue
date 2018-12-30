@@ -80,6 +80,15 @@
             </v-list-tile>
           </v-list-group>
 
+            <v-list-tile @click="consultation">
+            <v-list-tile-action>
+              <v-icon>mode_comment</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Online Consultation</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
              <v-list-tile @click="medicineRecordList">
             <v-list-tile-action>
               <v-icon>bookmarks</v-icon>
@@ -88,6 +97,30 @@
               <v-list-tile-title>Medicine Record List</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
+
+               <v-list-group no-action prepend-icon="print">
+            <v-list-tile slot="activator">
+              <v-list-tile-title>Printing</v-list-tile-title>
+            </v-list-tile>
+            <v-list-tile @click="sickLeave">
+              <v-list-tile-action>
+                <v-icon>description</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Sick Leave</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+
+            <v-list-tile @click="referralLetter">
+              <v-list-tile-action>
+                <v-icon>description</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Referral Letter</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+         
+          </v-list-group>
 
           <v-list-tile @click="feedBack">
             <v-list-tile-action>
@@ -143,6 +176,10 @@ export default {
       "actionSetDatePickerTypeFromReservationList"
     ]),
 
+    consultation(){
+      this.$router.push("/consultation");
+    },
+
     home() {
       this.$router.push("/home");
     },
@@ -176,7 +213,12 @@ export default {
       // this.actionSetDatePickerType("clincQueueList");
       this.$router.push("/clincQueueList");
     },
-
+    sickLeave(){
+      this.$router.push("/sickLeave");
+    },
+    referralLetter(){
+       this.$router.push("/referralLetter");
+    },
     about() {
       this.$router.push("/about");
     },

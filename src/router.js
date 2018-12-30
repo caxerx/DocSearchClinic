@@ -8,9 +8,12 @@ import ViewReservation from './pages/reservation/ViewReservation.vue'
 import SettingReservation from './pages/reservation/SettingReservation.vue'
 import ReservationList from './pages/ReservationList'
 import MedicineRecordList from './pages/MedicineRecordList.vue'
+import Consultation from './pages/Consultation.vue'
 import FeedBack from './pages/FeedBack'
 import OnlineQueueList from './pages/queue/OnlineQueueList'
 import ClincQueueList from './pages/queue/ClincQueueList'
+import SickLeave from './pages/printing/SickLeave'
+import ReferralLetter from './pages/printing/ReferralLetter'
 import App from './App.vue'
 
 Vue.use(Router)
@@ -58,6 +61,21 @@ export default new Router({
       path: '/clincQueueList',
       name: 'clincQueueList',
       component: ClincQueueList
+    },
+    {
+      path: '/sickLeave',
+      name: 'sickLeave',
+      component: SickLeave
+    },
+    {
+      path: '/referralLetter',
+      name: 'referralLetter',
+      component: ReferralLetter
+    },
+    {
+      path: '/consultation',
+      name: 'consultation',
+      component: Consultation
     },
     {
       path: '/login',

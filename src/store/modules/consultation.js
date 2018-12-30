@@ -2,7 +2,9 @@
 
 
 const state = {
-    medicineRecordListData: {
+    consultationData: {
+        name:"",
+        allergyList:["1","2","3"],
         headers: [
             {
                 text: "No.",
@@ -50,7 +52,7 @@ const state = {
 
 
 const getters = {
-    getMedicineRecordListData: state => state.medicineRecordListData,
+    getConsultationData: state => state.consultationData,
 
 }
 

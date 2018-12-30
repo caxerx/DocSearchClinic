@@ -1,11 +1,16 @@
 <template>
-  <div>
+  <full-screen-dialog>
+    <div slot="title">{{name}} Profile</div>
     <!-- dialog -->
     <div slot="normalDialog">
       <normal-dialog>
         <div slot="title">Add Item</div>
 
-        <div slot="content"></div>
+        <div slot="content">
+          <v-form>
+            <v-text-field prepend-icon="person" v-model="name" label="Name"></v-text-field>
+          </v-form>
+        </div>
         <div slot="button">
           <v-btn color="blue darken-1" flat @click="close('normal')">Cancel</v-btn>
           <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
@@ -14,8 +19,8 @@
     </div>
 
     <div slot="content">
-      <!-- <h1>Allergy List</h1>
-      <div v-for="allergy in allergyList" :key="allergy">{{allergy}}</div>-->
+      <h1>Allergy List</h1>
+      <div v-for="allergy in allergyList" :key="allergy">{{allergy}}</div>
       <br>
       <!-- search and add item -->
       <h1>Medicine Record</h1>
@@ -42,25 +47,8 @@
           <td class="text-xs-left">{{ props.item.startTime }}</td>
           <td class="text-xs-left">{{ props.item.endTime }}</td>
           <td class="text-xs-left">{{ props.item.symptom }}</td>
-
-          <td class="text-xs-left">
-            <div v-for="medicines in props.item.medicine" :key="medicines">
-                {{medicines}} 
-            </div>
-           
-          </td>
+          <td class="text-xs-left">{{ props.item.medicine }}</td>
           <td class="text-xs-left">{{ props.item.amount }}</td>
-          <td class="text-xs-left">
-            <v-btn flat icon color="green">
-              <v-icon>edit</v-icon>
-            </v-btn>
-            <v-btn flat icon color="blue">
-              <v-icon>remove_red_eye</v-icon>
-            </v-btn>
-            <v-btn flat icon color="black">
-              <v-icon>print</v-icon>
-            </v-btn>
-          </td>
         </template>
 
         <v-alert
@@ -72,13 +60,12 @@
       </v-data-table>
     </div>
     <v-btn slot="button" dark flat @click="close('fullscreen')">Save</v-btn>
-  </div>
+  </full-screen-dialog>
 </template>
 
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
-import DatePicker from "./DatePicker.vue";
 import FullScreenDialog from "@/components/FullScreenDialog.vue";
 import NormalDialog from "@/components/Dialog.vue";
 import Container from "@/components/Container.vue";
@@ -92,31 +79,37 @@ export default {
 
   computed: {
     ...mapGetters({
-      medicineRecordListData: "getMedicineRecordListData"
+      consultationData: "getConsultationData"
     }),
 
+    name() {
+      return this.consultationData.name;
+    },
+
+    allergyList() {
+      return this.consultationData.allergyList;
+    },
     headers() {
-      return this.medicineRecordListData.headers;
+      return this.consultationData.headers;
     },
     contents() {
-      return this.medicineRecordListData.contents;
+      return this.consultationData.contents;
     }
   },
 
   components: {
     FullScreenDialog,
-    DatePicker,
     Container,
     NormalDialog
   },
 
   methods: {
-    ...mapActions(["actionOpenDialog", "actionCloseDialog"]),
+    ...mapActions(["actionOpenDialog","actionCloseDialog"]),
     newRecord() {
       this.actionOpenDialog("normal");
     },
     close(type) {
-      console.log(type);
+      console.log(type)
       if (type === "fullscreen") {
         this.actionCloseDialog("fullscreen");
       } else if (type === "normal") {
