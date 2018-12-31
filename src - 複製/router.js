@@ -7,13 +7,8 @@ import CreateReservation from './pages/reservation/CreateReservation.vue'
 import ViewReservation from './pages/reservation/ViewReservation.vue'
 import SettingReservation from './pages/reservation/SettingReservation.vue'
 import ReservationList from './pages/ReservationList'
-import MedicineRecordList from './pages/MedicineRecordList.vue'
-import Consultation from './pages/Consultation.vue'
-import FeedBack from './pages/FeedBack'
 import OnlineQueueList from './pages/queue/OnlineQueueList'
 import ClincQueueList from './pages/queue/ClincQueueList'
-import SickLeave from './pages/printing/SickLeave'
-import ReferralLetter from './pages/printing/ReferralLetter'
 import ViewDoctorInfo from './pages/DoctorInfo/ViewDoctorInfo'
 import App from './App.vue'
 
@@ -44,11 +39,6 @@ export default new Router({
       component: ViewReservation
     },
     {
-      path: '/medicineRecordList',
-      name: 'medicineRecordList',
-      component: MedicineRecordList
-    },
-    {
       path: '/reservationList',
       name: 'reservationList',
       component: ReservationList
@@ -64,40 +54,20 @@ export default new Router({
       component: ClincQueueList
     },
     {
-      path: '/sickLeave',
-      name: 'sickLeave',
-      component: SickLeave
-    },
-    {
-      path: '/referralLetter',
-      name: 'referralLetter',
-      component: ReferralLetter
-    },
-    {
-      path: '/consultation',
-      name: 'consultation',
-      component: Consultation
-    },
-    {
       path: '/login',
       name: 'Login',
       component: Login
     },
     {
-      path: '/feedBack',
-      name: 'feedBack',
-      component: FeedBack
-    },
-    {
       path: '/about',
       name: 'about',
-      component:About
-      
+      component:About     
     },
     {
       path: '/ViewDoctorInfo', 
       name: 'ViewDoctorInfo', 
       component:ViewDoctorInfo
     }
+    
   ]
 })
