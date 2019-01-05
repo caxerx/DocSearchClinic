@@ -11,6 +11,7 @@ import SickLeave from './pages/printing/SickLeave.vue'
 import Drawer from './components/Drawer.vue'
 import Logo from './components/Logo.vue'
 import Test from './pages/Test.vue'
+import Doctor from './pages/DoctorInfo/ViewDoctorInfo.vue'
 
 
 
