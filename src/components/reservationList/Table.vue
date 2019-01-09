@@ -8,16 +8,37 @@
       <edit-item-form/>
     </div>
 
+
+
+
+  <template>
+  <v-toolbar dark color="primary">
+      <v-flex xs2> 
+    <v-toolbar-title class="white--text">Reservation List</v-toolbar-title>
+      </v-flex>
+      <v-flex xs4 > 
+       <v-text-field  color="white" v-model="search" append-icon="search" label="Search" single-line hide-details ></v-text-field>
+      </v-flex>
+      <v-flex xs6 style="text-align:right">
+        <v-btn @click="open()" color="primary" dark class="mb-2">New Item</v-btn>
+      </v-flex>
+    <v-spacer></v-spacer>
+
+  </v-toolbar>
+</template>
     <!-- search and add item -->
+    <!-- <v-card color="blue">
     <v-layout row wrap justify-space-between>
+      <v-flex xs2>   <v-toolbar-title>Inbox</v-toolbar-title></v-flex>
       <v-flex xs4>
-        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+        <v-text-field  style="background-color:white" v-model="search" append-icon="search" label="Search" single-line hide-details ></v-text-field>
       </v-flex>
       <v-flex xs2 style="text-align:right">
         <v-btn @click="open()" color="primary" dark class="mb-2">New Item</v-btn>
       </v-flex>
     </v-layout>
-    <br>
+    </v-card> -->
+
     <!-- table -->
     <v-data-table :headers="headers" :search="search" :items="contents" class="elevation-1">
       <template slot="items" slot-scope="props">
@@ -193,3 +214,4 @@ export default {
   }
 };
 </script>
+

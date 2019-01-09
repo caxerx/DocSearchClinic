@@ -15,6 +15,7 @@ import ClincQueueList from './pages/queue/ClincQueueList'
 import SickLeave from './pages/printing/SickLeave'
 import ReferralLetter from './pages/printing/ReferralLetter'
 import ViewDoctorInfo from './pages/DoctorInfo/ViewDoctorInfo'
+import Test from './pages/Test'
 import App from './App.vue'
 
 Vue.use(Router)
@@ -27,6 +28,11 @@ export default new Router({
       path: '/home',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test
     },
     {
       path: '/createReservation',

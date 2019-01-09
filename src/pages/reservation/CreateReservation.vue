@@ -1,5 +1,7 @@
 <template>
-  <v-container grid-list-md text-xs-center>
+  <container>
+    <div slot="content">
+      <h1>Create Reservation</h1>
     <v-layout row wrap justify-space-around>
       <v-flex xs6>
         <reservation-form/>
@@ -8,13 +10,16 @@
           <reservation-table/>
       </v-flex>
     </v-layout>
-  </v-container>
+    </div>
+  </container>
+
 </template>
 
 
 <script>
 import ReservationForm from "@/components/reservation/Form.vue";
 import ReservationTable from "@/components/reservation/Table.vue";
+import Container from "@/components/Container";
 
 
 
@@ -23,6 +28,7 @@ export default {
   components: {
     ReservationForm,
     ReservationTable,
+    Container,
   },
 
   computed: {
@@ -32,3 +38,4 @@ export default {
   data: () => ({})
 };
 </script>
+

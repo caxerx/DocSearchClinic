@@ -1,5 +1,5 @@
 <template>
-  <small-container>
+  <container>
     <div slot="content">
       <h1>Period Setting</h1>
       <v-form ref="form" >
@@ -26,14 +26,16 @@
         <v-btn small>clear</v-btn>
       </v-form>
     </div>
-  </small-container>
+  </container>
 </template>
 
 <script>
 import SmallContainer from "@/components/SmallContainer.vue";
+import Container from "@/components/Container.vue";
 export default {
   components: {
-    SmallContainer
+    SmallContainer,
+    Container
   }
 };
 </script>

@@ -85,7 +85,7 @@
   
 </template>
 <style>
-table {
+/* table {
   border-collapse: collapse;
   width: 100%;
   border:1px solid #ddd;
@@ -98,7 +98,7 @@ th, td {
   border-bottom: 1px solid #ddd;
 }
 
-tr:hover {background-color:#f5f5f5;}
+tr:hover {background-color:#f5f5f5;} */
 </style>
 <script>
 

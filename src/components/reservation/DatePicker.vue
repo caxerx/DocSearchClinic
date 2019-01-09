@@ -1,7 +1,6 @@
 <template>
   <div>
-
-      <v-menu
+  <v-menu
         :close-on-content-click="false"
         v-model="menu1"
         :nudge-right="40"
