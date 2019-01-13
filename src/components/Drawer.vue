@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <v-app id="inspire">
-      <v-navigation-drawer v-model="drawer" fixed app>
+ <v-app>
+      <v-navigation-drawer v-model="drawer"  
+       app>
         <v-list dense>
           <!-- <v-list-tile @click="home">
             <v-list-tile-action>
@@ -149,8 +149,7 @@
       <v-content>
         <router-view/>
       </v-content>
-    </v-app>
-  </div>
+ </v-app>
 </template>
 
 <script>

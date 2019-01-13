@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import './plugins/vuetify'
 import './plugins/vuetify'
+import Vuetify from 'vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -13,6 +14,7 @@ import Logo from './components/Logo.vue'
 import Test from './pages/Test.vue'
 
 
+Vue.use(Vuetify);
 
 Vue.config.productionTip = false
 
