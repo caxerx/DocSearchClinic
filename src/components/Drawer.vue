@@ -24,7 +24,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-title>Reservation</v-list-tile-title>
             </v-list-tile>
-            <v-list-tile @click="reservation">
+            <!-- <v-list-tile @click="reservation">
               <v-list-tile-action>
                 <v-icon>add</v-icon>
               </v-list-tile-action>
@@ -39,7 +39,7 @@
               <v-list-tile-content>
                 <v-list-tile-title>View Reservation</v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile>
+            </v-list-tile> -->
             <v-list-tile @click="settingReservation">
               <v-list-tile-action>
                 <v-icon>settings</v-icon>
