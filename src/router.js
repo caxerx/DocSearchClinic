@@ -3,8 +3,6 @@ import Router from 'vue-router'
 import Home from './pages/Home.vue'
 import Login from './pages/Login.vue'
 import About from './pages/About.vue'
-import CreateReservation from './pages/reservation/CreateReservation.vue'
-import ViewReservation from './pages/reservation/ViewReservation.vue'
 import SettingReservation from './pages/reservation/SettingReservation.vue'
 import ReservationList from './pages/ReservationList'
 import MedicineRecordList from './pages/MedicineRecordList.vue'
@@ -41,19 +39,9 @@ export default new Router({
       component: PatientList
     },
     {
-      path: '/createReservation',
-      name: 'createReservation',
-      component: CreateReservation
-    },
-    {
       path: '/settingReservation',
       name: 'settingeservation',
       component: SettingReservation
-    },
-    {
-      path: '/viewReservation',
-      name: 'viewReservation',
-      component: ViewReservation
     },
     {
       path: '/medicineRecordList',
@@ -64,11 +52,6 @@ export default new Router({
       path: '/reservationList',
       name: 'reservationList',
       component: ReservationList
-    },
-    {
-      path: '/onlineQueueList',
-      name: 'onlineQueueList',
-      component: OnlineQueueList
     },
     {
       path: '/clincQueueList',

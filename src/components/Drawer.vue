@@ -3,15 +3,7 @@
       <v-navigation-drawer v-model="drawer"  
        app>
         <v-list dense>
-          <!-- <v-list-tile @click="home">
-            <v-list-tile-action>
-              <v-icon>home</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Home</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>-->
-          <v-list-tile @click="about">
+          <v-list-tile @click="linkTo('about')">
             <v-list-tile-action>
               <v-icon>contact_mail</v-icon>
             </v-list-tile-action>
@@ -24,23 +16,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-title>Reservation</v-list-tile-title>
             </v-list-tile>
-            <!-- <v-list-tile @click="reservation">
-              <v-list-tile-action>
-                <v-icon>add</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>Create Reservation</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile @click="viewReservation">
-              <v-list-tile-action>
-                <v-icon>remove_red_eye</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>View Reservation</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile> -->
-            <v-list-tile @click="settingReservation">
+            <v-list-tile @click="linkTo('settingReservation')">
               <v-list-tile-action>
                 <v-icon>settings</v-icon>
               </v-list-tile-action>
@@ -53,7 +29,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-title>Queue</v-list-tile-title>
             </v-list-tile>
-            <v-list-tile @click="reservationList">
+            <v-list-tile @click="linkTo('reservationList')">
               <v-list-tile-action>
                 <v-icon>list</v-icon>
               </v-list-tile-action>
@@ -62,15 +38,7 @@
               </v-list-tile-content>
             </v-list-tile>
 
-            <!-- <v-list-tile @click="onlineQueueList">
-              <v-list-tile-action>
-                <v-icon>list</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>Online Queue List</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile> -->
-            <v-list-tile @click="clincQueueList">
+            <v-list-tile @click="linkTo('clincQueueList')">
               <v-list-tile-action>
                 <v-icon>list</v-icon>
               </v-list-tile-action>
@@ -80,7 +48,7 @@
             </v-list-tile>
           </v-list-group>
 
-            <v-list-tile @click="consultation">
+            <v-list-tile @click="linkTo('consultation')">
             <v-list-tile-action>
               <v-icon>mode_comment</v-icon>
             </v-list-tile-action>
@@ -89,7 +57,7 @@
             </v-list-tile-content>
           </v-list-tile>
 
-             <v-list-tile @click="medicineRecordList">
+             <v-list-tile @click="linkTo('about')">
             <v-list-tile-action>
               <v-icon>bookmarks</v-icon>
             </v-list-tile-action>
@@ -102,7 +70,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-title>Printing</v-list-tile-title>
             </v-list-tile>
-            <v-list-tile @click="sickLeave">
+            <v-list-tile @click="linkTo('sickLeave')">
               <v-list-tile-action>
                 <v-icon>description</v-icon>
               </v-list-tile-action>
@@ -111,7 +79,7 @@
               </v-list-tile-content>
             </v-list-tile>
 
-            <v-list-tile @click="referralLetter">
+            <v-list-tile @click="linkTo('referralLetter')">
               <v-list-tile-action>
                 <v-icon>description</v-icon>
               </v-list-tile-action>
@@ -122,7 +90,7 @@
          
           </v-list-group>
 
-          <v-list-tile @click="feedBack">
+          <v-list-tile @click="linkTo('feedBack')">
             <v-list-tile-action>
               <v-icon>comment</v-icon>
             </v-list-tile-action>
@@ -170,57 +138,12 @@ export default {
   methods: {
     ...mapActions([
       "actionLogout",
-      "actionInitializeReservationList",
-      "actionSetDefaultReservation",
-      "actionSetDatePickerTypeFromReservationList"
     ]),
 
-    consultation(){
-      this.$router.push("/consultation");
+    linkTo(link){
+      this.$router.push("/"+link);
     },
 
-    home() {
-      this.$router.push("/home");
-    },
-    feedBack() {
-      this.$router.push("/feedBack");
-    },
-    reservation() {
-      this.actionSetDefaultReservation();
-      this.$router.push("/createReservation");
-    },
-    settingReservation() {
-      this.$router.push("/settingReservation");
-    },
-    medicineRecordList(){
-      this.$router.push("/medicineRecordList");
-    },
-    viewReservation() {
-      this.$router.push("/viewReservation");
-    },
-    reservationList() {
-      this.actionSetDatePickerTypeFromReservationList("reservationList");
-      this.actionInitializeReservationList();
-      this.actionSetDefaultReservation();
-      this.$router.push("/reservationList");
-    },
-    onlineQueueList() {
-      // this.actionSetDatePickerType("onlineQueueList");
-      this.$router.push("/onlineQueueList");
-    },
-    clincQueueList() {
-      // this.actionSetDatePickerType("clincQueueList");
-      this.$router.push("/clincQueueList");
-    },
-    sickLeave(){
-      this.$router.push("/sickLeave");
-    },
-    referralLetter(){
-       this.$router.push("/referralLetter");
-    },
-    about() {
-      this.$router.push("/about");
-    },
     logout() {
       this.$router.push("/");
       this.actionLogout();

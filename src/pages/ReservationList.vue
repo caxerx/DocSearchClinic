@@ -3,9 +3,8 @@
   <div slot="content"> 
        
       <h1>Reservation List</h1><br/>
-    <data-picker-form/>
-    <!-- table  -->
-    <data-table/>
+
+      <calendar/>
     
   </div>
 </container>
@@ -13,9 +12,9 @@
 
 
 <script>
-import DataTable from '@/components/reservationList/Table.vue'
-import DataPickerForm from '@/components/reservationList/Form.vue'
+
 import Container from '@/components/Container.vue'
+import Calendar from '@/components/reservationList/Calendar.vue'
 
 
 export default {
@@ -24,9 +23,8 @@ export default {
   }),
 
  components: {
-    DataTable,
     Container,
-    DataPickerForm,
+    Calendar
     
   },
 
