@@ -67,7 +67,7 @@
         {
           title: 'Mash Potatoes',
           date: '2019-01-09',
-          time: '12:30',
+          time: '12:00',
           duration: 180
         }
       ]

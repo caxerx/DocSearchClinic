@@ -1,54 +1,42 @@
 <template>
-<container>
-  <div slot="content"> 
-       
-      <h1>Clinc Queue List</h1><br/>
-       <v-layout row wrap>
-        <v-flex xs4>
-    <date-picker/>
-        </v-flex>
-       </v-layout>
-    <!-- table  -->
-    <data-table/>
-    
-  </div>
-</container>
+  <v-card class="vcard">
+    <container>
+      <div slot="content">
+        <h1>Clinc Queue List</h1>
+        <br>
+        <v-layout row wrap>
+          <v-flex xs4>
+            <date-picker/>
+          </v-flex>
+        </v-layout>
+        <!-- table  -->
+        <data-table/>
+      </div>
+    </container>
+  </v-card>
 </template>
 
 
 <script>
-import DataTable from '@/components/queue/Table.vue'
-import DatePicker from '@/components/queue/DatePicker.vue'
-import Container from '@/components/Container.vue'
-
+import DataTable from "@/components/queue/Table.vue";
+import DatePicker from "@/components/queue/DatePicker.vue";
+import Container from "@/components/Container.vue";
 
 export default {
-  data: () => ({
-   
-  }),
+  data: () => ({}),
 
- components: {
+  components: {
     DataTable,
     Container,
-    DatePicker,
-    
-    
+    DatePicker
   },
 
-  computed: {
-    
-  },
+  computed: {},
 
-  watch: {
-    
-  },
+  watch: {},
 
-  created() {
-  },
+  created() {},
 
-  methods: {
-    
-    
-  }
+  methods: {}
 };
 </script>

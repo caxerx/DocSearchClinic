@@ -18,7 +18,7 @@
       </normal-dialog>
     </div>
 
-    <div slot="content">
+    <span slot="content" >
       <h1>Allergy List</h1>
       <div v-for="allergy in allergyList" :key="allergy">{{allergy}}</div>
       <br>
@@ -58,7 +58,7 @@
           icon="warning"
         >Your search for "{{ search }}" found no results.</v-alert>
       </v-data-table>
-    </div>
+    </span>
     <v-btn slot="button" dark flat @click="close('fullscreen')">Save</v-btn>
   </full-screen-dialog>
 </template>

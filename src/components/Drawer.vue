@@ -1,7 +1,7 @@
 <template>
  <v-app>
       <v-navigation-drawer v-model="drawer"  
-       app>
+       app temporary>
         <v-list dense>
           <v-list-tile @click="linkTo('about')">
             <v-list-tile-action>

@@ -2,31 +2,24 @@
   <v-layout style="height:100%">
     <v-flex xs12>
       <!-- <v-flex xs12 sm10 offset-sm1> -->
-      <v-card id="vcard">
+      <div id="content">
         <v-flex xs12 sm10 offset-sm1 style="mar">
-          <div id="content">
           <slot name="content"></slot>
-          </div>
         </v-flex>
-      </v-card>
+      </div>
     </v-flex>
   </v-layout>
 </template>
 
-<style>
-#vcard {
-  margin-top: 3%;
+<style scoped>
+
+#content {
+  padding-top: 3%;
   height: 100%;
-  
 }
 
-#content{
-  padding-top:3%;
+h1 {
+  color: blue;
 }
-
-h1{
-  color:blue;
-}
-
 </style>
 

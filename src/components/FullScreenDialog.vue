@@ -1,5 +1,5 @@
 <template>
-  <v-layout row justify-center>
+  <v-layout >
     <v-dialog v-model="computedDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
         <v-toolbar dark color="primary">
@@ -17,7 +17,7 @@
         </v-toolbar>
         <container>
             <div slot="content">
-            <slot name="content"></slot>
+            <slot name="content" id="dContent"></slot>
             </div>
         </container>
       </v-card>
