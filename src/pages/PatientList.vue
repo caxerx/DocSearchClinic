@@ -7,8 +7,8 @@
         <v-flex xs4>
         </v-flex>
        </v-layout>
-    <!-- table  -->
-    <data-table/>
+    <!-- list  -->
+    <list/>
     
   </div>
 </container>
@@ -16,7 +16,7 @@
 
 
 <script>
-import DataTable from '@/components/patientList/Table.vue'
+import List from '@/components/patientList/List.vue'
 import Container from '@/components/Container.vue'
 
 
@@ -26,7 +26,7 @@ export default {
   }),
 
  components: {
-    DataTable,
+    List,
     Container,
     
     
