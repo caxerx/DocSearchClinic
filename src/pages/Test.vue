@@ -1,46 +1,63 @@
 <template>
   <v-layout>
     <v-flex>
-      <v-sheet height="400">
-        <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
+      <v-sheet height="500">
         <v-calendar
-          ref="calendar"
           :now="today"
           :value="today"
           color="primary"
-          type="week"
         >
-          <!-- the events at the top (all-day) -->
-          <template
-            slot="dayHeader"
-            slot-scope="{ date }"
-          >
+          <template v-slot:day="{ date }">
             <template v-for="event in eventsMap[date]">
-              <!-- all day events don't have time -->
-              <div
-                v-if="!event.time"
+              <v-menu
                 :key="event.title"
-                class="my-event"
-                @click="open(event)"
-                v-html="event.title"
-              ></div>
-            </template>
-          </template>
-          <!-- the events at the bottom (timed) -->
-          <template
-            slot="dayBody"
-            slot-scope="{ date, timeToY, minutesToPixels }"
-          >
-            <template v-for="event in eventsMap[date]">
-              <!-- timed events -->
-              <div
-                v-if="event.time"
-                :key="event.title"
-                :style="{ top: timeToY(event.time) + 'px', height: minutesToPixels(event.duration) + 'px' }"
-                class="my-event with-time"
-                @click="open(event)"
-                v-html="event.title"
-              ></div>
+                v-model="event.open"
+                full-width
+                offset-x
+              >
+                <template v-slot:activator="{ on }">
+                  <div
+                    v-if="!event.time"
+                    v-ripple
+                    class="my-event"
+                    v-on="on"
+                    v-html="event.title"
+                  ></div>
+                </template>
+                <v-card
+                  color="grey lighten-4"
+                  min-width="350px"
+                  flat
+                >
+                  <v-toolbar
+                    color="primary"
+                    dark
+                  >
+                    <v-btn icon>
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+                    <v-toolbar-title v-html="event.title"></v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn icon>
+                      <v-icon>favorite</v-icon>
+                    </v-btn>
+                    <v-btn icon>
+                      <v-icon>more_vert</v-icon>
+                    </v-btn>
+                  </v-toolbar>
+                  <v-card-title primary-title>
+                    <span v-html="event.details"></span>
+                  </v-card-title>
+                  <v-card-actions>
+                    <v-btn
+                      flat
+                      color="secondary"
+                    >
+                      Cancel
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-menu>
             </template>
           </template>
         </v-calendar>
@@ -49,26 +66,75 @@
   </v-layout>
 </template>
 
+<style lang="stylus" scoped>
+  .my-event {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: 2px;
+    background-color: #1867c0;
+    color: #ffffff;
+    border: 1px solid #1867c0;
+    width: 100%;
+    font-size: 12px;
+    padding: 3px;
+    cursor: pointer;
+    margin-bottom: 1px;
+  }
+</style>
+
 <script>
   export default {
     data: () => ({
       today: '2019-01-08',
       events: [
         {
-          title: 'Weekly Meeting',
+          title: 'Vacation',
+          details: 'Going to the beach!',
+          date: '2018-12-30',
+          open: false
+        },
+        {
+          title: 'Vacation',
+          details: 'Going to the beach!',
+          date: '2018-12-31',
+          open: false
+        },
+        {
+          title: 'Vacation',
+          details: 'Going to the beach!',
+          date: '2019-01-01',
+          open: false
+        },
+        {
+          title: 'Meeting',
+          details: 'Spending time on how we do not have enough time',
           date: '2019-01-07',
-          time: '09:00',
-          duration: 45
+          open: false
         },
         {
-          title: 'Thomas\' Birthday',
-          date: '2019-01-10'
+          title: '30th Birthday',
+          details: 'Celebrate responsibly',
+          date: '2019-01-03',
+          open: false
         },
         {
-          title: 'Mash Potatoes',
-          date: '2019-01-09',
-          time: '12:00',
-          duration: 180
+          title: 'New Year',
+          details: 'Eat chocolate until you pass out',
+          date: '2019-01-01',
+          open: false
+        },
+        {
+          title: 'Conference',
+          details: 'Mute myself the whole time and wonder why I am on this call',
+          date: '2019-01-21',
+          open: false
+        },
+        {
+          title: 'Hackathon',
+          details: 'Code like there is no tommorrow',
+          date: '2019-02-01',
+          open: false
         }
       ]
     }),
@@ -80,9 +146,6 @@
         return map
       }
     },
-    mounted () {
-      this.$refs.calendar.scrollToTime('08:00')
-    },
     methods: {
       open (event) {
         alert(event.title)
@@ -90,28 +153,3 @@
     }
   }
 </script>
-
-<style lang="stylus" scoped>
-  .my-event {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    border-radius: 2px;
-    background-color: #1867c0;
-    color: #ffffff;
-    border: 1px solid #1867c0;
-    font-size: 12px;
-    padding: 3px;
-    cursor: pointer;
-    margin-bottom: 1px;
-    left: 4px;
-    margin-right: 8px;
-    position: relative;
-
-    &.with-time {
-      position: absolute;
-      right: 4px;
-      margin-right: 0px;
-    }
-  }
-</style>

@@ -6,6 +6,35 @@ const state = {
         patient:{
 
         },
+        patientList: [
+            {
+              name: "patient1",
+              gender: "Male",
+              email: "ikouhaha888@gmail.com",
+              phoneNo: "12345678",
+              dob: "09/09/1999",
+              hkid: "R1234567(7)",
+              allergy: "1,2,3,4,5"
+            },
+            {
+              name: "patient2",
+              gender: "Male",
+              email: "ikouhaha888@gmail.com",
+              phoneNo: "12345678",
+              dob: "09/09/1999",
+              hkid: "R1234567(7)",
+              allergy: "1,2,3,4,5"
+            },
+            {
+              name: "patient3",
+              gender: "Male",
+              email: "ikouhaha888@gmail.com",
+              phoneNo: "12345678",
+              dob: "09/09/1999",
+              hkid: "R1234567(7)",
+              allergy: "1,2,3,4,5"
+            }
+          ],
         headers: [
             {
                 text: "No.",

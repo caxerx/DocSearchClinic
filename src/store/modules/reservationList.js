@@ -5,26 +5,46 @@ const state = {
     reservationListData: {
         events: [
             {
-                title: 'Fuck you man',
+                name: 'patient1',
                 date: new Date().toISOString().substr(0, 10),
+                details: 'Going to the beach!',
                 time: '09:00',
-                duration: 45
+                duration: 45,
+                gender: "Male",
+                email: "ikouhaha888@gmail.com",
+                phoneNo: "12345678",
+                dob: "09/09/1999",
+                hkid: "R1234567(7)",
+                allergy: "1,2,3,4,5"
+             
             },
             {
-                title: 'Thomas\' Birthday',
-                date: new Date().toISOString().substr(0, 10)
-            },
-            {
-                title: 'Mash Potatoes',
-                date: new Date().toISOString().substr(0, 10),
+                name: 'patient2',
+                date: '2019-03-10',
+                details: 'Going to the beach!',
                 time: '12:30',
-                duration: 30
+                duration: 30,
+                gender: "Male",
+                email: "ikouhaha888@gmail.com",
+                phoneNo: "12345678",
+                dob: "09/09/1999",
+                hkid: "R1234567(7)",
+                allergy: "1,2,3,4,5"
+                
             },
             {
-                title: 'asdasd ',
+                name: 'patient3',
                 date: new Date().toISOString().substr(0, 10),
+                details: 'Going to the beach!',
                 time: '13:40',
-                duration: 30
+                duration: 30,
+                gender: "Male",
+                email: "ikouhaha888@gmail.com",
+                phoneNo: "12345678",
+                dob: "09/09/1999",
+                hkid: "R1234567(7)",
+                allergy: "1,2,3,4,5"
+               
             }
         ]
     },
