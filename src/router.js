@@ -5,7 +5,6 @@ import Login from './pages/Login.vue'
 import About from './pages/About.vue'
 import SettingReservation from './pages/reservation/SettingReservation.vue'
 import ReservationList from './pages/ReservationList'
-import MedicineRecordList from './pages/MedicineRecordList.vue'
 import Consultation from './pages/Consultation.vue'
 import FeedBack from './pages/FeedBack'
 import OnlineQueueList from './pages/queue/OnlineQueueList'
@@ -42,11 +41,6 @@ export default new Router({
       path: '/settingReservation',
       name: 'settingeservation',
       component: SettingReservation
-    },
-    {
-      path: '/medicineRecordList',
-      name: 'medicineRecordList',
-      component: MedicineRecordList
     },
     {
       path: '/reservationList',
