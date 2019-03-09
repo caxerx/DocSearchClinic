@@ -1,13 +1,7 @@
 <template>
 <container>
   <div slot="content"> 
-       
-      <h1>Patient List</h1><br/>
-       <v-layout row wrap>
-        <v-flex xs4>
-        </v-flex>
-       </v-layout>
-    <!-- list  -->
+
     <list/>
     
   </div>

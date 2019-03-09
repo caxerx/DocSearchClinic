@@ -15,6 +15,8 @@ import ViewDoctorInfo from './pages/DoctorInfo/ViewDoctorInfo'
 import PatientList from './pages/PatientList'
 import Test from './pages/Test'
 import App from './App.vue'
+import DocumentPrint from './pages/printing/DocumentPrint'
+import DocumentTemplate from './pages/printing/DocumentTemplate'
 
 Vue.use(Router)
 
@@ -80,13 +82,23 @@ export default new Router({
     {
       path: '/about',
       name: 'about',
-      component:About
-      
+      component: About
+
     },
     {
-      path: '/ViewDoctorInfo', 
-      name: 'ViewDoctorInfo', 
-      component:ViewDoctorInfo
+      path: '/ViewDoctorInfo',
+      name: 'ViewDoctorInfo',
+      component: ViewDoctorInfo
+    },
+    {
+      path: '/DocumentTemplate',
+      name: 'DocumentTemplate',
+      component: DocumentTemplate
+    },
+    {
+      path: '/DocumentPrint',
+      name: 'DocumentPrint',
+      component: DocumentPrint
     }
   ]
 })

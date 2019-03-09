@@ -105,25 +105,27 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-group no-action prepend-icon="print">
+        <v-list-group no-action prepend-icon="description">
+          
           <v-list-tile slot="activator">
-            <v-list-tile-title>Printing</v-list-tile-title>
+            <v-list-tile-title>Documents</v-list-tile-title>
           </v-list-tile>
-          <v-list-tile @click="linkTo('sickLeave')">
+
+          <v-list-tile @click="linkTo('documentTemplate')">
             <v-list-tile-action>
               <v-icon>description</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title>Sick Leave</v-list-tile-title>
+              <v-list-tile-title>Document Template</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
-          <v-list-tile @click="linkTo('referralLetter')">
+          <v-list-tile @click="linkTo('documentPrint')">
             <v-list-tile-action>
-              <v-icon>description</v-icon>
+              <v-icon>print</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title>Referral Letter</v-list-tile-title>
+              <v-list-tile-title>Document Print</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list-group>
@@ -133,7 +135,7 @@
             <v-icon>comment</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>FeedBack</v-list-tile-title>
+            <v-list-tile-title>Feedback</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -164,7 +166,7 @@ import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   data: () => ({
     drawer: null,
-    doctorList: 0
+    doctorList: -1
   }),
 
   components: {},
@@ -176,7 +178,7 @@ export default {
   },
   methods: {
     toggleDoctorList() {
-      this.doctorList = this.doctorList == 0 ? 1 : 0;
+      this.doctorList = this.doctorList == 0 ? -1 : 0;
     },
     ...mapActions(["actionLogout"]),
 
@@ -191,5 +193,3 @@ export default {
   }
 };
 </script>
-
-
