@@ -2,8 +2,6 @@
 <container>
   <div slot="content"> 
        
-      <h1>Reservation List</h1><br/>
-
       <calendar/>
     
   </div>

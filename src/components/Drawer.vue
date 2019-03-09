@@ -1,6 +1,46 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app temporary>
+    <v-navigation-drawer v-model="drawer" app permanent clipped>
+      <v-toolbar flat class="transparent">
+        <v-list class="pa-0">
+          <v-list-tile avatar @click="toggleDoctorList">
+            <v-list-tile-avatar>
+              <img src="https://randomuser.me/api/portraits/men/85.jpg">
+            </v-list-tile-avatar>
+
+            <v-list-tile-content>
+              <v-list-tile-title>Dr. Wang Michael</v-list-tile-title>
+              <v-list-tile-sub-title>MD Clinic</v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-icon>{{doctorList==0?'arrow_drop_up':'arrow_drop_down'}}</v-icon>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-list>
+      </v-toolbar>
+      <v-expansion-panel v-model="doctorList">
+        <v-expansion-panel-content>
+          <v-list>
+            <v-list-tile @click="toggleDoctorList">
+              <v-list-tile-avatar>
+                <img src="https://randomuser.me/api/portraits/men/85.jpg">
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>Dr. Michael Wang</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile @click="toggleDoctorList">
+              <v-list-tile-avatar>
+                <img src="https://randomuser.me/api/portraits/men/84.jpg">
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>Dr. Dennis Au Yeung</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-divider></v-divider>
       <v-list dense>
         <v-list-tile @click="linkTo('about')">
           <v-list-tile-action>
@@ -56,8 +96,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-
-         <v-list-tile @click="linkTo('patientList')">
+        <v-list-tile @click="linkTo('patientList')">
           <v-list-tile-action>
             <v-icon>bookmarks</v-icon>
           </v-list-tile-action>
@@ -99,7 +138,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar color="indigo" fixed dark app>
+    <v-toolbar color="indigo" fixed dark app clipped-left>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Clinc System</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -124,7 +163,8 @@ import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {
   data: () => ({
-    drawer: null
+    drawer: null,
+    doctorList: 0
   }),
 
   components: {},
@@ -135,6 +175,9 @@ export default {
     })
   },
   methods: {
+    toggleDoctorList() {
+      this.doctorList = this.doctorList == 0 ? 1 : 0;
+    },
     ...mapActions(["actionLogout"]),
 
     linkTo(link) {
