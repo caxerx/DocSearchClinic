@@ -1,44 +1,43 @@
 <template>
   <div>
     <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
-    <v-card>
-      <v-toolbar flat>
-        <v-btn icon @click="$refs.calendar.prev()">
-          <v-icon>arrow_left</v-icon>
-        </v-btn>
+    <v-toolbar flat absolute style="z-index:10">
+      <v-btn icon @click="$refs.calendar.prev()">
+        <v-icon>arrow_left</v-icon>
+      </v-btn>
 
-        <v-menu
-          ref="menu"
-          :close-on-content-click="false"
-          v-model="menu"
-          lazy
-          transition="scale-transition"
-          full-width
-          max-width="290px"
-          min-width="290px"
-          bottom
-          offset-y
-        >
-          <v-chip slot="activator">
-            <v-icon>calendar_today</v-icon>
-            {{start}}
-          </v-chip>
-          <v-date-picker v-model="start" no-title @input="menu = false"></v-date-picker>
-        </v-menu>
+      <v-menu
+        ref="menu"
+        :close-on-content-click="false"
+        v-model="menu"
+        lazy
+        transition="scale-transition"
+        full-width
+        max-width="290px"
+        min-width="290px"
+        bottom
+        offset-y
+      >
+        <v-chip slot="activator">
+          <v-icon>calendar_today</v-icon>
+          {{start}}
+        </v-chip>
+        <v-date-picker v-model="start" no-title @input="menu = false"></v-date-picker>
+      </v-menu>
 
-        <v-btn icon @click="$refs.calendar.next()">
-          <v-icon>arrow_right</v-icon>
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn-toggle v-model="calendarType">
-          <v-btn flat value="day">Day</v-btn>
-          <v-btn flat value="week">Week</v-btn>
-          <v-btn flat value="month">Month</v-btn>
-        </v-btn-toggle>
-      </v-toolbar>
-      <v-divider></v-divider>
-      <v-sheet height="75vh">
-        <v-calendar
+      <v-btn icon @click="$refs.calendar.next()">
+        <v-icon>arrow_right</v-icon>
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn-toggle v-model="calendarType">
+        <v-btn flat value="day">Day</v-btn>
+        <v-btn flat value="week">Week</v-btn>
+        <v-btn flat value="month">Month</v-btn>
+      </v-btn-toggle>
+    </v-toolbar>
+    <v-divider></v-divider>
+      <v-navigation-drawer absolute permanent style="width:100%; padding-top:64px">
+          <v-calendar
           ref="calendar"
           :now="today"
           v-model="start"
@@ -102,8 +101,7 @@
             </template>
           </template>
         </v-calendar>
-      </v-sheet>
-    </v-card>
+      </v-navigation-drawer>
   </div>
 </template>
 
