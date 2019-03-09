@@ -16,8 +16,15 @@ import Test from './pages/Test.vue'
 import Print from '@/plugins/print'
 
 
+import colors from 'vuetify/es5/util/colors'
 
-Vue.use(Vuetify);
+Vue.use(Vuetify, {
+  theme: {
+    primary: colors.lightBlue.darken4,
+    secondary: colors.blue.darken1,
+    accent: colors.indigo.base, 
+  }
+})
 
 Vue.use(Print);
 

@@ -2,7 +2,7 @@
   <v-card class="vcard">
     <container>
       <div slot="content">
-        <h1>Clinc Queue List</h1>
+        <h1 class="headline mb primary--text">Clinc Queue List</h1>
         <br>
         <v-layout row wrap>
           <v-flex xs4>

@@ -48,10 +48,10 @@
         </v-flex>
         <v-card-actions style="width:100%">
           <v-spacer></v-spacer>
-          <v-btn color="info">
+          <v-btn color="primary">
             <v-icon>local_phone</v-icon>Contact
           </v-btn>
-          <v-btn color="info" @click="viewMedicalRecord(patient)">
+          <v-btn color="primary" @click="viewMedicalRecord(patient)">
             <v-icon>remove_red_eye</v-icon>Medical Record
           </v-btn>
         </v-card-actions>
