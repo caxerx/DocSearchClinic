@@ -44,11 +44,10 @@
       style="width:100%;padding-top:64px;height:100%"
     >
       <v-layout row fill-height>
-        <v-flex sm2>
-          <!-- doctor list -->
+        <!-- <v-flex sm2>
           <doctor-list/>
-        </v-flex>
-        <v-flex sm7>
+        </v-flex> -->
+        <v-flex sm9>
           <v-calendar
             ref="calendar"
             :now="today"

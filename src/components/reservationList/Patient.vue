@@ -9,8 +9,8 @@
         <div v-if="isToday(patient.date)">
           <v-container>
             <v-layout>
-              <v-flex sm5>{{formatAMPM(patient.time)}}</v-flex>
-               <v-flex sm5>{{patient.name}}</v-flex>
+              <v-flex sm2 class="text-sm-right">{{formatAMPM(patient.time)}}</v-flex>
+              <v-flex sm5 offset-sm1>{{patient.name}}</v-flex>
             </v-layout>
           </v-container>
         </div>
@@ -51,17 +51,16 @@ export default {
       }
     },
 
-    //time to ampm 
+    //temporarily time to ampm
     formatAMPM(time) {
-      
       var hours = time.split(":")[0];
       var minutes = time.split(":")[1];
       console.log(minutes);
       var ampm = hours >= 12 ? "pm" : "am";
       hours = hours % 12;
       hours = hours ? hours : 12; // the hour '0' should be '12'
-      minutes = (minutes < 10 && minutes!='00' )? "0" + minutes : minutes;
-      var strTime = hours + ":" + minutes + "  <br/>" + ampm;
+      minutes = minutes < 10 && minutes != "00" ? "0" + minutes : minutes;
+      var strTime = hours + ":" + minutes + "  " + ampm;
       return strTime;
     }
   }
