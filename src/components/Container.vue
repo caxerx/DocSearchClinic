@@ -19,7 +19,7 @@
 }
 
 h1 {
-  color: blue;
+  color: black;
 }
 </style>
 
