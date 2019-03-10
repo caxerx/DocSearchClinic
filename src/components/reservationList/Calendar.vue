@@ -36,72 +36,101 @@
       </v-btn-toggle>
     </v-toolbar>
     <v-divider></v-divider>
-      <v-navigation-drawer absolute permanent style="width:100%; padding-top:64px">
-          <v-calendar
-          ref="calendar"
-          :now="today"
-          v-model="start"
-          :value="today"
-          color="primary"
-          :type="calendarType"
-        >
-          <!-- the events at the bottom (timed) -->
-          <template slot="dayBody" slot-scope="{ date, timeToY, minutesToPixels }">
-            <template v-for="event in eventsMap[date]">
-              <v-menu :key="event.name" full-width offset-x>
-                <!-- timed events -->
-                <template v-slot:activator="{ on }">
-                  <div
-                    v-if="event.time"
-                    :key="event.name"
-                    :style="{ top: timeToY((event.time+30)) + 'px', height: minutesToPixels(event.duration) + 'px' }"
-                    class="my-event with-time"
-                    v-on="on"
-                    v-html="event.name"
-                  ></div>
-                </template>
 
-                <v-card color="grey lighten-4" min-width="350px" flat>
-                  <v-toolbar color="primary" dark>
-                    <v-toolbar-title v-html="event.name"></v-toolbar-title>
-                    <v-spacer></v-spacer>
-                  </v-toolbar>
-                  <v-card-text>
-                    <div>
-                      <span class="cleft">DOB:</span>
-                      <span class="cright">{{event.dob}}</span>
-                    </div>
-                    <div>
-                      <span class="cleft">HKID:</span>
-                      <span class="cright">{{event.hkid}}</span>
-                    </div>
-                    <div>
-                      <span class="cleft">Date:</span>
-                      <span class="cright">{{event.date}}</span>
-                    </div>
-                    <div>
-                      <span class="cleft">Time:</span>
-                      <span class="cright">{{event.time}}</span>
-                    </div>
-                    <div>
-                      <span class="cleft">Duration:</span>
-                      <span class="cright">{{event.duration}} mins</span>
-                    </div>
-                    <div>
-                      <span class="cleft">Allergy:</span>
-                      <span class="cright">{{event.allergy}}</span>
-                    </div>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-btn flat color="error">Cancel</v-btn>
-                    <v-btn flat color="info">Approval</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-menu>
+    <v-navigation-drawer
+      class="indigo lighten-5"
+      absolute
+      permanent
+      style="width:100%;padding-top:64px;height:100%"
+    >
+      <v-layout row fill-height>
+        <v-flex sm2>
+          <!-- doctor list -->
+          <doctor-list/>
+        </v-flex>
+        <v-flex sm7>
+          <v-calendar
+            ref="calendar"
+            :now="today"
+            v-model="start"
+            :value="today"
+            color="primary"
+            :type="calendarType"
+          >
+            <!-- the events at the bottom (timed) -->
+            <template slot="dayBody" slot-scope="{ date, timeToY, minutesToPixels }">
+              <template v-for="event in eventsMap[date]">
+                <v-menu :key="event.name" full-width offset-x>
+                  <!-- timed events -->
+                  <template v-slot:activator="{ on }">
+                    <div
+                      v-if="event.time"
+                      :key="event.name"
+                      :style="{ top: timeToY((event.time+30)) + 'px', height: minutesToPixels(event.duration) + 'px' }"
+                      class="my-event with-time"
+                      v-on="on"
+                      v-html="event.name"
+                    ></div>
+                  </template>
+
+                  <v-card color="grey lighten-4" min-width="350px" flat>
+                    <v-toolbar color="primary" dark>
+                      <v-toolbar-title v-html="event.name"></v-toolbar-title>
+                      <v-spacer></v-spacer>
+                    </v-toolbar>
+                    <v-card-text>
+                      <div>
+                        <span class="cleft">DOB:</span>
+                        <span class="cright">{{event.dob}}</span>
+                      </div>
+                      <div>
+                        <span class="cleft">HKID:</span>
+                        <span class="cright">{{event.hkid}}</span>
+                      </div>
+                      <div>
+                        <span class="cleft">Date:</span>
+                        <span class="cright">{{event.date}}</span>
+                      </div>
+                      <div>
+                        <span class="cleft">Time:</span>
+                        <span class="cright">{{event.time}}</span>
+                      </div>
+                      <div>
+                        <span class="cleft">Duration:</span>
+                        <span class="cright">{{event.duration}} mins</span>
+                      </div>
+                      <div>
+                        <span class="cleft">Allergy:</span>
+                        <span class="cright">{{event.allergy}}</span>
+                      </div>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn flat color="error">Cancel</v-btn>
+                      <v-btn flat color="info">Approval</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-menu>
+              </template>
             </template>
-          </template>
-        </v-calendar>
-      </v-navigation-drawer>
+          </v-calendar>
+        </v-flex>
+        <v-flex sm3>
+          <div style="height:100%">
+            <v-card style="height:20%">
+              <v-card-title>Today's Schedule</v-card-title>
+              <div class="text-xs-center">
+                <v-btn outline color="indigo">Add Walk-in Appointment</v-btn>
+              </div>
+            </v-card>
+
+            <!-- patient -->
+            <div style="margin-top: 15%;height:71.5% ">
+              <patient/>
+            </div>
+          </div>
+        </v-flex>
+      </v-layout>
+    </v-navigation-drawer>
   </div>
 </template>
 
@@ -142,12 +171,19 @@
 .cright {
   display: inline-block;
 }
+
+#patient {
+  margin-top: 15%;
+}
 </style>
 
 
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
+import DoctorList from "@/components/reservationList/DoctorList.vue";
+import Patient from "@/components/reservationList/Patient.vue";
+
 export default {
   data: () => ({
     today: new Date().toISOString().substr(0, 10),
@@ -156,13 +192,17 @@ export default {
     calendarType: "week"
   }),
 
+  components: {
+    DoctorList,
+    Patient
+  },
   computed: {
     ...mapGetters({
       getter: "getReservationListData"
     }),
     // convert the list of events into a map of lists keyed by date
     events() {
-      return this.getter.events;
+      return this.getter.patientList;
     },
     eventsMap() {
       const map = {};

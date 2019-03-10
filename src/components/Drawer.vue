@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-navigation-drawer v-model="drawer" app permanent clipped>
+   <v-app class="indigo lighten-5">
+    <v-navigation-drawer v-model="drawer" app  clipped>
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar @click="toggleDoctorList">

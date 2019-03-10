@@ -3,7 +3,7 @@
 
 const state = {
     reservationListData: {
-        events: [
+        patientList: [
             {
                 name: 'patient1',
                 date: new Date().toISOString().substr(0, 10),
