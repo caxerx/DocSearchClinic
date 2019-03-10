@@ -1,6 +1,6 @@
 <template>
-   <v-app class="indigo lighten-5">
-    <v-navigation-drawer v-model="drawer" app  clipped>
+  <v-app class="indigo lighten-5">
+    <v-navigation-drawer v-model="drawer" app clipped>
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
           <v-list-tile avatar @click="toggleDoctorList">
@@ -55,7 +55,7 @@
           <v-list-tile slot="activator">
             <v-list-tile-title>Reservation</v-list-tile-title>
           </v-list-tile>
-            <v-list-tile @click="linkTo('reservationList')">
+          <v-list-tile @click="linkTo('reservationList')">
             <v-list-tile-action>
               <v-icon>list</v-icon>
             </v-list-tile-action>
@@ -63,13 +63,11 @@
               <v-list-tile-title>Reservation List</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          
         </v-list-group>
         <v-list-group no-action prepend-icon="format_list_bulleted">
           <v-list-tile slot="activator">
             <v-list-tile-title>Queue</v-list-tile-title>
           </v-list-tile>
-        
 
           <v-list-tile @click="linkTo('clincQueueList')">
             <v-list-tile-action>
@@ -100,7 +98,6 @@
         </v-list-tile>
 
         <v-list-group no-action prepend-icon="description">
-          
           <v-list-tile slot="activator">
             <v-list-tile-title>Documents</v-list-tile-title>
           </v-list-tile>
@@ -149,6 +146,8 @@
       </v-btn>
     </v-toolbar>
     <v-content>
+      <!-- breadcrumb -->
+      <breadcrumb/>
       <router-view/>
     </v-content>
   </v-app>
@@ -156,14 +155,18 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
+import Breadcrumb from '@/components/Breadcrumb.vue'
 
 export default {
   data: () => ({
     drawer: null,
-    doctorList: -1
+    doctorList: -1,
+
   }),
 
-  components: {},
+  components: {
+    Breadcrumb
+  },
 
   computed: {
     ...mapGetters({
