@@ -8,10 +8,10 @@
       <v-card v-for="(patient,index) in patientList" :key="index">
         <div v-if="isToday(patient.date)">
           <v-container>
-            <!-- <v-layout> -->
+            <v-layout>
               <v-flex sm5>{{formatAMPM(patient.time)}}</v-flex>
                <v-flex sm5>{{patient.name}}</v-flex>
-            <!-- </v-layout> -->
+            </v-layout>
           </v-container>
         </div>
       </v-card>
@@ -61,7 +61,7 @@ export default {
       hours = hours % 12;
       hours = hours ? hours : 12; // the hour '0' should be '12'
       minutes = (minutes < 10 && minutes!='00' )? "0" + minutes : minutes;
-      var strTime = hours + ":" + minutes + "  \n" + ampm;
+      var strTime = hours + ":" + minutes + "  <br/>" + ampm;
       return strTime;
     }
   }
