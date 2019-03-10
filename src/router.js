@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from './pages/Home.vue'
 import Login from './pages/Login.vue'
 import About from './pages/About.vue'
-import SettingReservation from './pages/reservation/SettingReservation.vue'
+
 import ReservationList from './pages/ReservationList'
 import Consultation from './pages/Consultation.vue'
 import FeedBack from './pages/FeedBack'
@@ -38,11 +38,6 @@ export default new Router({
       path: '/patientList',
       name: 'patientList',
       component: PatientList
-    },
-    {
-      path: '/settingReservation',
-      name: 'settingeservation',
-      component: SettingReservation
     },
     {
       path: '/reservationList',

@@ -55,20 +55,7 @@
           <v-list-tile slot="activator">
             <v-list-tile-title>Reservation</v-list-tile-title>
           </v-list-tile>
-          <v-list-tile @click="linkTo('settingReservation')">
-            <v-list-tile-action>
-              <v-icon>settings</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Reservation Setting</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list-group>
-        <v-list-group no-action prepend-icon="format_list_bulleted">
-          <v-list-tile slot="activator">
-            <v-list-tile-title>Queue</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile @click="linkTo('reservationList')">
+            <v-list-tile @click="linkTo('reservationList')">
             <v-list-tile-action>
               <v-icon>list</v-icon>
             </v-list-tile-action>
@@ -76,6 +63,13 @@
               <v-list-tile-title>Reservation List</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
+          
+        </v-list-group>
+        <v-list-group no-action prepend-icon="format_list_bulleted">
+          <v-list-tile slot="activator">
+            <v-list-tile-title>Queue</v-list-tile-title>
+          </v-list-tile>
+        
 
           <v-list-tile @click="linkTo('clincQueueList')">
             <v-list-tile-action>
