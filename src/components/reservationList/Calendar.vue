@@ -46,7 +46,7 @@
       <v-layout row fill-height>
         <!-- <v-flex sm2>
           <doctor-list/>
-        </v-flex> -->
+        </v-flex>-->
         <v-flex sm9>
           <v-calendar
             ref="calendar"
@@ -58,56 +58,45 @@
           >
             <!-- the events at the bottom (timed) -->
             <template slot="dayBody" slot-scope="{ date, timeToY, minutesToPixels }">
-              <template v-for="event in eventsMap[date]">
-                <v-menu :key="event.name" full-width offset-x>
+              <template v-for="patient in eventsMap[date]">
+                <v-menu :key="patient.name" full-width offset-x>
                   <!-- timed events -->
                   <template v-slot:activator="{ on }">
                     <div
-                      v-if="event.time"
-                      :key="event.name"
-                      :style="{ top: timeToY((event.time+30)) + 'px', height: minutesToPixels(event.duration) + 'px' }"
+                      v-if="patient.time"
+                      :key="patient.name"
+                      :style="{ top: timeToY((patient.time+30)) + 'px', height: minutesToPixels(patient.duration) + 'px' }"
                       class="my-event with-time"
                       v-on="on"
-                      v-html="event.name"
+                      v-html="patient.name"
                     ></div>
                   </template>
 
-                  <v-card color="grey lighten-4" min-width="350px" flat>
-                    <v-toolbar color="primary" dark>
-                      <v-toolbar-title v-html="event.name"></v-toolbar-title>
-                      <v-spacer></v-spacer>
-                    </v-toolbar>
-                    <v-card-text>
-                      <div>
-                        <span class="cleft">DOB:</span>
-                        <span class="cright">{{event.dob}}</span>
-                      </div>
-                      <div>
-                        <span class="cleft">HKID:</span>
-                        <span class="cright">{{event.hkid}}</span>
-                      </div>
-                      <div>
-                        <span class="cleft">Date:</span>
-                        <span class="cright">{{event.date}}</span>
-                      </div>
-                      <div>
-                        <span class="cleft">Time:</span>
-                        <span class="cright">{{event.time}}</span>
-                      </div>
-                      <div>
-                        <span class="cleft">Duration:</span>
-                        <span class="cright">{{event.duration}} mins</span>
-                      </div>
-                      <div>
-                        <span class="cleft">Allergy:</span>
-                        <span class="cright">{{event.allergy}}</span>
-                      </div>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn flat color="error">Cancel</v-btn>
-                      <v-btn flat color="info">Approval</v-btn>
-                    </v-card-actions>
-                  </v-card>
+                  <!-- pop up menu -->
+                  <menu-card>
+                    <span slot="icon">
+                      <img src="https://cdn.vuetifyjs.com/images/john.jpg">
+                    </span>
+                    <span slot="name">{{patient.name}}</span>
+                    <span slot="details">{{patient.details}}</span>
+                    <span slot="checkInBtn">
+                      <v-btn flat block outline>Check-in</v-btn>
+                    </span>
+                    <span slot="phone">{{patient.phoneNo}}</span>
+                    <span slot="email">{{patient.email}}</span>
+                    <span slot="time">{{formatAMPM(patient.time)}}</span>
+                    <span slot="duration">{{patient.duration}}</span>
+                    <span slot="editBtn">
+                      <v-btn icon left>
+                        <v-icon color="success">edit</v-icon>
+                      </v-btn>
+                    </span>
+                    <span slot="cancelBtn">
+                      <v-btn icon left>
+                        <v-icon color="error">cancel</v-icon>
+                      </v-btn>
+                    </span>
+                  </menu-card>
                 </v-menu>
               </template>
             </template>
@@ -182,6 +171,7 @@
 import { mapGetters, mapActions, mapState } from "vuex";
 import DoctorList from "@/components/reservationList/DoctorList.vue";
 import Patient from "@/components/reservationList/Patient.vue";
+import MenuCard from "@/components/reservationList/MenuCard.vue";
 
 export default {
   data: () => ({
@@ -193,19 +183,20 @@ export default {
 
   components: {
     DoctorList,
-    Patient
+    Patient,
+    MenuCard
   },
   computed: {
     ...mapGetters({
       getter: "getReservationListData"
     }),
     // convert the list of events into a map of lists keyed by date
-    events() {
+    patientList() {
       return this.getter.patientList;
     },
     eventsMap() {
       const map = {};
-      this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e));
+      this.patientList.forEach(e => (map[e.date] = map[e.date] || []).push(e));
       return map;
     }
   },
@@ -213,9 +204,18 @@ export default {
     this.$refs.calendar.scrollToTime("08:00");
   },
   methods: {
-    // open(event) {
-    //   // alert(event.time);
-    // }
+    //temporarily time to ampm
+    formatAMPM(time) {
+      var hours = time.split(":")[0];
+      var minutes = time.split(":")[1];
+      console.log(minutes);
+      var ampm = hours >= 12 ? "pm" : "am";
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 && minutes != "00" ? "0" + minutes : minutes;
+      var strTime = hours + ":" + minutes + "  " + ampm;
+      return strTime;
+    }
   }
 };
 </script>
