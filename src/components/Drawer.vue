@@ -121,7 +121,7 @@
           </v-list-tile>
         </v-list-group>
 
-         <v-list-group no-action prepend-icon="build">
+        <v-list-group no-action prepend-icon="build">
           <v-list-tile slot="activator">
             <v-list-tile-title>Setting</v-list-tile-title>
           </v-list-tile>
@@ -170,13 +170,13 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
-import Breadcrumb from '@/components/Breadcrumb.vue'
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 export default {
   data: () => ({
     drawer: null,
     doctorList: -1,
-
+    defaultId : 0,
   }),
 
   components: {
@@ -195,7 +195,9 @@ export default {
     ...mapActions(["actionLogout"]),
 
     linkTo(link) {
-      this.$router.push("/" + link);
+
+        this.$router.push('/'+ link );
+      
     },
 
     logout() {

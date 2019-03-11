@@ -3,15 +3,18 @@
 
 const state = {
     patientListData: {
-        patient:{
+        patient: {
 
+
+            medicalRecordList: [],
         },
 
-        clinc:{
-            name:"I visit a clinic - George Town",
+        clinc: {
+            name: "I visit a clinic - George Town",
 
             patientList: [
                 {
+                    id:1,
                     name: 'patient1',
                     date: new Date().toISOString().substr(0, 10),
                     details: 'break legs!',
@@ -23,11 +26,52 @@ const state = {
                     dob: "09/09/1999",
                     hkid: "R1234567(7)",
                     allergy: "1,2,3,4,5",
-                    doctor:"Dr. Michael Wong",
-                    clinc : "clinc1",
-                 
+                    doctor: "Dr. Michael Wong",
+                    clinc: "clinc1",
+                    medicalRecordList:         
+                       //tempoary only
+                        [
+                            {
+
+                                no: "1",
+                                clinc: "WeServeEveryone Clinic",
+                                doctor: "Dr. Nirmala Rajgopalan",
+                                date: "2018-11-15",
+                                startTime: "10:00",
+                                symptom: ["DIABETES MELLITUS (ICD-250.)", "HYPERTENSION, BENIGN ESSENTIAL (ICD-401.1)"],
+                                medicine: ["PRINIVIL TABS 20 MG (LISINOPRIL) 1 po qd", "Last Refill: #30 x 2 : Carl Savem MD (08/27/2010)", "HUMULIN INJ 70/30 (INSULIN REG & ISOPHANE (HUMAN)) 20 units ac breakfast", "Last Refill: #600 u x 0 : Carl Savem MD (08/27/2010)"],
+                                amount: 100,
+
+                            },
+                            {
+                                no: "2",
+                                clinc: "WeServeEveryone Clinic",
+                                doctor: "Dr. Nirmala Rajgopalan",
+                                date: "2018-11-16",
+                                startTime: "10:00",
+                                symptom: ["DIABETES MELLITUS (ICD-250.)"],
+                                medicine: ["PRINIVIL TABS 20 MG (LISINOPRIL) 1 po qd"],
+                                amount: 200,
+
+                            },
+                            {
+
+                                no: "1",
+                                clinc: "WeServeEveryone Clinic",
+                                doctor: "Dr. Nirmala Rajgopalan",
+                                date: "2018-11-15",
+                                startTime: "10:00",
+                                symptom: ["DIABETES MELLITUS (ICD-250.)", "HYPERTENSION, BENIGN ESSENTIAL (ICD-401.1)"],
+                                medicine: ["PRINIVIL TABS 20 MG (LISINOPRIL) 1 po qd", "Last Refill: #30 x 2 : Carl Savem MD (08/27/2010)", "HUMULIN INJ 70/30 (INSULIN REG & ISOPHANE (HUMAN)) 20 units ac breakfast", "Last Refill: #600 u x 0 : Carl Savem MD (08/27/2010)"],
+                                amount: 100,
+
+                            },
+                        ]
+
+
                 },
                 {
+                    id:2,
                     name: 'patient2',
                     date: '2019-03-15',
                     details: 'break legs!',
@@ -39,11 +83,13 @@ const state = {
                     dob: "09/09/1999",
                     hkid: "R1234567(7)",
                     allergy: "1,2,3,4,5",
-                    doctor:"Dr. Michael Wong",
-                    clinc : "clinc2",
-                    
+                    doctor: "Dr. Michael Wong",
+                    clinc: "clinc2",
+                    medicalRecordList: [],
+
                 },
                 {
+                    id:3,
                     name: 'patient3',
                     date: new Date().toISOString().substr(0, 10),
                     details: 'break legs!',
@@ -55,11 +101,13 @@ const state = {
                     dob: "09/09/1999",
                     hkid: "R1234567(7)",
                     allergy: "1,2,3,4,5",
-                    doctor:"Dr. Michael Wong",
-                    clinc : "clinc3",
-                   
+                    doctor: "Dr. Michael Wong",
+                    clinc: "clinc3",
+                    medicalRecordList:  [],
+
                 },
                 {
+                    id:4,
                     name: 'patient4',
                     date: '2019-03-16',
                     details: 'break legs!',
@@ -71,52 +119,16 @@ const state = {
                     dob: "09/09/1999",
                     hkid: "R1234567(7)",
                     allergy: "1,2,3,4,5",
-                    doctor:"Dr. Michael Wong",
-                    clinc : "clinc4",
-                   
+                    doctor: "Dr. Michael Wong",
+                    clinc: "clinc4",
+                    medicalRecordList:  [],
+
                 }
-              ],
+            ],
         },
-      
-        //tempoary only
-        medicalRecordList: [
-            {
 
-                no: "1",
-                clinc: "WeServeEveryone Clinic",
-                doctor:"Dr. Nirmala Rajgopalan",
-                date: "2018-11-15",
-                startTime: "10:00",
-                symptom: ["DIABETES MELLITUS (ICD-250.)", "HYPERTENSION, BENIGN ESSENTIAL (ICD-401.1)"],
-                medicine: ["PRINIVIL TABS 20 MG (LISINOPRIL) 1 po qd", "Last Refill: #30 x 2 : Carl Savem MD (08/27/2010)", "HUMULIN INJ 70/30 (INSULIN REG & ISOPHANE (HUMAN)) 20 units ac breakfast", "Last Refill: #600 u x 0 : Carl Savem MD (08/27/2010)"],
-                amount: 100,
 
-            },
-            {
-                no: "2",
-                clinc: "WeServeEveryone Clinic",
-                doctor:"Dr. Nirmala Rajgopalan",
-                date: "2018-11-16",
-                startTime: "10:00",
-                symptom: ["DIABETES MELLITUS (ICD-250.)"],
-                medicine: ["PRINIVIL TABS 20 MG (LISINOPRIL) 1 po qd"],
-                amount: 200,
 
-            },
-            {
-
-                no: "1",
-                clinc: "WeServeEveryone Clinic",
-                doctor:"Dr. Nirmala Rajgopalan",
-                date: "2018-11-15",
-                startTime: "10:00",
-                symptom: ["DIABETES MELLITUS (ICD-250.)", "HYPERTENSION, BENIGN ESSENTIAL (ICD-401.1)"],
-                medicine: ["PRINIVIL TABS 20 MG (LISINOPRIL) 1 po qd", "Last Refill: #30 x 2 : Carl Savem MD (08/27/2010)", "HUMULIN INJ 70/30 (INSULIN REG & ISOPHANE (HUMAN)) 20 units ac breakfast", "Last Refill: #600 u x 0 : Carl Savem MD (08/27/2010)"],
-                amount: 100,
-
-            },
-        ],
-        
     },
 }
 
@@ -130,17 +142,20 @@ const getters = {
 
 
 const actions = {
-    actionViewMedicalListFromPatientList({commit},patient){
-        commit("viewMedicalListFromPatientList",patient);
+    actionQueryMedicalRecordList({ commit }, patient) {
+        commit("queryMedicalRecordList", patient)
     }
+
 
 
 
 }
 
 const mutations = {
-    ["viewMedicalListFromPatientList"](state,patient){
+    ["queryMedicalRecordList"](state, patient) {
         state.patientListData.patient = patient;
+        console.log(state.patientListData.patient );
+
     }
 
 }

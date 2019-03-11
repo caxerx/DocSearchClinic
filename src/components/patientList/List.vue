@@ -1,23 +1,32 @@
 <template>
-  <div >
-    <!-- dialog  -->
-    <div v-if="dialogType=='medicalRecordList'">
-      <medical-record-list/>
-    </div>
-    
-    sad
+  <div style="height:100%">
+    <v-layout
+      v-if="!isClickPatient($route.query.id)"
+      align-center
+      justify-center
+      fill-height
+    >Select a patient to view details</v-layout>
+      <v-layout
+        v-else-if="isRecordEmpty(patient)"
+        align-center
+        justify-center
+        fill-height
+      >No Records in this Patient</v-layout>
+      <div v-else>
+        <medical-record-card/>
+      </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
 import MedicalRecordList from "@/components/patientList/MedicalRecordList.vue";
+import MedicalRecordCard from "@/components/patientList/MedicalRecordCard.vue";
 
 export default {
   data: () => ({
     search: "",
-    dialogType:"",
-   
+    dialogType: ""
   }),
 
   computed: {
@@ -25,16 +34,21 @@ export default {
     //   return this.editedIndex === -1 ? "New Item" : "Edit Item";
     // }
     ...mapGetters({
-      getter:"getPatientListData"
+      getter: "getPatientListData"
     }),
 
-    patientList(){
+    patientList() {
       return this.getter.patientList;
+    },
+
+    patient(){
+      return this.getter.patient;
     }
   },
 
   components: {
-    MedicalRecordList
+    MedicalRecordList,
+    MedicalRecordCard
   },
 
   //   watch: {
@@ -44,16 +58,20 @@ export default {
   //   },
 
   methods: {
-    ...mapActions([
-      "actionCloseDialog",
-      "actionOpenDialog",
-      "actionViewMedicalListFromPatientList"
-    ]),
+    isClickPatient(id) {
+      if (id === undefined) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    isRecordEmpty(patient) {
+      console.log(patient.medicalRecordList.length)
+      if (patient.medicalRecordList.length === 0) {
+        return true;
+      }
 
-    viewMedicalRecord(patient) {
-      this.dialogType = "medicalRecordList";
-      this.actionOpenDialog("fullscreen");
-      this.actionViewMedicalListFromPatientList(patient);
+      return false;
     }
   }
 };
