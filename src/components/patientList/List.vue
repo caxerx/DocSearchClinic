@@ -1,62 +1,11 @@
 <template>
-  <div>
+  <div >
     <!-- dialog  -->
     <div v-if="dialogType=='medicalRecordList'">
       <medical-record-list/>
     </div>
-    <v-flex xs4>
-      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-    </v-flex>
-
-    <v-card v-for="(patient,index) in patientList" :key="index" style="margin-top:20px">
-      <v-layout row wrap>
-        <v-flex xs4 sm2>
-          <v-card-title>
-            <img src="@/assets/person.png" class="icon">
-          </v-card-title>
-        </v-flex>
-        <v-flex xs6 sm7>
-          <v-card-text>
-            <h3 class="headline mb primary--text">{{patient.name}}</h3>
-          </v-card-text>
-          <v-card-text>
-            <div>
-              <span class="left_text">gender:</span>
-              <span class="right_text">{{patient.gender}}</span>
-            </div>
-            <div>
-              <span class="left_text">email :</span>
-              <span class="right_text">{{patient.email}}</span>
-            </div>
-            <div>
-              <span class="left_text">phoneNo :</span>
-              <span class="right_text">{{patient.phoneNo}}</span>
-            </div>
-            <div>
-              <span class="left_text">dob:</span>
-              <span class="right_text">{{patient.dob}}</span>
-            </div>
-            <div>
-              <span class="left_text">hkid:</span>
-              <span class="right_text">{{patient.hkid}}</span>
-            </div>
-            <div>
-              <span class="left_text">allergy:</span>
-              <span class="right_text">{{patient.allergy}}</span>
-            </div>
-          </v-card-text>
-        </v-flex>
-        <v-card-actions style="width:100%">
-          <v-spacer></v-spacer>
-          <v-btn color="primary">
-            <v-icon>local_phone</v-icon>Contact
-          </v-btn>
-          <v-btn color="primary" @click="viewMedicalRecord(patient)">
-            <v-icon>remove_red_eye</v-icon>Medical Record
-          </v-btn>
-        </v-card-actions>
-      </v-layout>
-    </v-card>
+    
+    sad
   </div>
 </template>
 

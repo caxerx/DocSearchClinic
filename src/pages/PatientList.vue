@@ -1,46 +1,37 @@
 <template>
-<container>
-  <div slot="content"> 
-
-    <list/>
-    
-  </div>
-</container>
+    <v-layout fill-height>
+      <v-flex sm3 >
+      <nevigation/>
+      </v-flex>
+      <v-flex sm9>
+        <v-card style="height: 100%">
+      <list/>
+        </v-card>
+      </v-flex>
+    </v-layout>
 </template>
 
 
 <script>
-import List from '@/components/patientList/List.vue'
-import Container from '@/components/Container.vue'
-
+import List from "@/components/patientList/List.vue";
+import Nevigation from "@/components/patientList/Nevigation.vue";
+import Container from "@/components/Container.vue";
 
 export default {
-  data: () => ({
-   
-  }),
+  data: () => ({}),
 
- components: {
+  components: {
     List,
     Container,
-    
-    
-    
+    Nevigation
   },
 
-  computed: {
-    
-  },
+  computed: {},
 
-  watch: {
-    
-  },
+  watch: {},
 
-  created() {
-  },
+  created() {},
 
-  methods: {
-    
-    
-  }
+  methods: {}
 };
 </script>

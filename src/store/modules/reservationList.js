@@ -16,7 +16,8 @@ const state = {
                 dob: "09/09/1999",
                 hkid: "R1234567(7)",
                 allergy: "1,2,3,4,5",
-                doctor:"Dr. Michael Wong"
+                doctor:"Dr. Michael Wong",
+                clinc : "clinc1",
              
             },
             {
@@ -31,7 +32,8 @@ const state = {
                 dob: "09/09/1999",
                 hkid: "R1234567(7)",
                 allergy: "1,2,3,4,5",
-                doctor:"Dr. Michael Wong"
+                doctor:"Dr. Michael Wong",
+                clinc : "clinc2",
                 
             },
             {
@@ -46,7 +48,8 @@ const state = {
                 dob: "09/09/1999",
                 hkid: "R1234567(7)",
                 allergy: "1,2,3,4,5",
-                doctor:"Dr. Michael Wong"
+                doctor:"Dr. Michael Wong",
+                clinc : "clinc3",
                
             },
             {
@@ -61,7 +64,8 @@ const state = {
                 dob: "09/09/1999",
                 hkid: "R1234567(7)",
                 allergy: "1,2,3,4,5",
-                doctor:"Dr. Michael Wong"
+                doctor:"Dr. Michael Wong",
+                clinc : "clinc4",
                
             }
         ]

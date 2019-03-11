@@ -1,10 +1,12 @@
 <template>
+  <div v-if="breadcrumbList.length>0">
 
-  <v-breadcrumbs :items="breadcrumbList">
-    <template v-slot:divider>
-      <v-icon>forward</v-icon>
-    </template>
-  </v-breadcrumbs>
+    <v-breadcrumbs :items="breadcrumbList">
+      <template v-slot:divider>
+        <v-icon>forward</v-icon>
+      </template>
+    </v-breadcrumbs>
+  </div>
 </template>
 
 <script>

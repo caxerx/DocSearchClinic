@@ -150,17 +150,8 @@ export default new Router({
       name: 'consultation',
       component: Consultation,
       meta: {
-        breadcrumb: [{
-          text: 'Home',
-          href: '/',
-          disabled: false,
-        },
-        {
-          text: 'consultation',
-          disabled: true,
-          href:'/consultation'
-          
-        }]
+        breadcrumb: [
+        ]
       }
     },
     {

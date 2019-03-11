@@ -6,53 +6,80 @@ const state = {
         patient:{
 
         },
-        patientList: [
-            {
-              name: "patient1",
-              gender: "Male",
-              email: "ikouhaha888@gmail.com",
-              phoneNo: "12345678",
-              dob: "09/09/1999",
-              hkid: "R1234567(7)",
-              allergy: "1,2,3,4,5"
-            },
-            {
-              name: "patient2",
-              gender: "Male",
-              email: "ikouhaha888@gmail.com",
-              phoneNo: "12345678",
-              dob: "09/09/1999",
-              hkid: "R1234567(7)",
-              allergy: "1,2,3,4,5"
-            },
-            {
-              name: "patient3",
-              gender: "Male",
-              email: "ikouhaha888@gmail.com",
-              phoneNo: "12345678",
-              dob: "09/09/1999",
-              hkid: "R1234567(7)",
-              allergy: "1,2,3,4,5"
-            }
-          ],
-        headers: [
-            {
-                text: "No.",
-                align: "left",
-                value: "no"
 
-            },
-            { text: "Date", value: "date" },
-            { text: "Start Time", value: "startTime" },
-            { text: "End Time", value: "endTime" },
-            { text: "Symptom", value: "symptom" },
-            { text: "Medicine", value: "medicine" },
-            { text: "Amount", value: "amount" },
-            { text: "Action",sortable:false},
+        clinc:{
+            name:"I visit a clinic - George Town",
 
-        ],
-        
-        contents: [
+            patientList: [
+                {
+                    name: 'patient1',
+                    date: new Date().toISOString().substr(0, 10),
+                    details: 'break legs!',
+                    time: '09:00',
+                    duration: 45,
+                    gender: "Male",
+                    email: "ikouhaha888@gmail.com",
+                    phoneNo: "12345678",
+                    dob: "09/09/1999",
+                    hkid: "R1234567(7)",
+                    allergy: "1,2,3,4,5",
+                    doctor:"Dr. Michael Wong",
+                    clinc : "clinc1",
+                 
+                },
+                {
+                    name: 'patient2',
+                    date: '2019-03-15',
+                    details: 'break legs!',
+                    time: '12:30',
+                    duration: 30,
+                    gender: "Male",
+                    email: "ikouhaha888@gmail.com",
+                    phoneNo: "12345678",
+                    dob: "09/09/1999",
+                    hkid: "R1234567(7)",
+                    allergy: "1,2,3,4,5",
+                    doctor:"Dr. Michael Wong",
+                    clinc : "clinc2",
+                    
+                },
+                {
+                    name: 'patient3',
+                    date: new Date().toISOString().substr(0, 10),
+                    details: 'break legs!',
+                    time: '13:40',
+                    duration: 30,
+                    gender: "Male",
+                    email: "ikouhaha888@gmail.com",
+                    phoneNo: "12345678",
+                    dob: "09/09/1999",
+                    hkid: "R1234567(7)",
+                    allergy: "1,2,3,4,5",
+                    doctor:"Dr. Michael Wong",
+                    clinc : "clinc3",
+                   
+                },
+                {
+                    name: 'patient4',
+                    date: '2019-03-16',
+                    details: 'break legs!',
+                    time: '13:40',
+                    duration: 30,
+                    gender: "Male",
+                    email: "ikouhaha888@gmail.com",
+                    phoneNo: "12345678",
+                    dob: "09/09/1999",
+                    hkid: "R1234567(7)",
+                    allergy: "1,2,3,4,5",
+                    doctor:"Dr. Michael Wong",
+                    clinc : "clinc4",
+                   
+                }
+              ],
+        },
+      
+        //tempoary only
+        medicalRecordList: [
             {
 
                 no: "1",
