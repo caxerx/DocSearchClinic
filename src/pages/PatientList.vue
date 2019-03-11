@@ -1,5 +1,5 @@
 <template>
-    <v-layout fill-height>
+    <v-layout style="height: 90%">
       <v-flex sm3 >
       <nevigation/>
       </v-flex>

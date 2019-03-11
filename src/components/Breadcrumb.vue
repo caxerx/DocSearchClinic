@@ -32,7 +32,6 @@ export default {
     },
     updateList() {
       this.breadcrumbList = this.$route.meta.breadcrumb;
-      console.log(this.breadcrumbList);
     }
   }
 };

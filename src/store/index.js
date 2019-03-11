@@ -7,7 +7,6 @@ import * as actions from './actions.js';
 import { state, mutations } from './mutations.js';
 // modules
 import login from './modules/login';
-import count from './modules/count';
 import queue from './modules/queue';
 import reservationList from './modules/reservationList';
 import consultation from './modules/consultation';
@@ -26,7 +25,6 @@ export default new Vuex.Store({
 
   modules: {
     login,
-    count,
     queue,
     reservationList,
     consultation,
