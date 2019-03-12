@@ -3,10 +3,8 @@
 
 const state = {
     patientListData: {
-        patient: {
+        patient:{
 
-
-            medicalRecordList: [],
         },
 
         clinc: {
@@ -14,7 +12,8 @@ const state = {
 
             patientList: [
                 {
-                    id:1,
+                    id: 1,
+                    sex:"male",
                     name: 'patient1',
                     date: new Date().toISOString().substr(0, 10),
                     details: 'break legs!',
@@ -28,8 +27,8 @@ const state = {
                     allergy: "1,2,3,4,5",
                     doctor: "Dr. Michael Wong",
                     clinc: "clinc1",
-                    medicalRecordList:         
-                       //tempoary only
+                    medicalRecordList:
+                        //tempoary only
                         [
                             {
 
@@ -71,7 +70,8 @@ const state = {
 
                 },
                 {
-                    id:2,
+                    id: 2,
+                    sex:"male",
                     name: 'patient2',
                     date: '2019-03-15',
                     details: 'break legs!',
@@ -89,7 +89,8 @@ const state = {
 
                 },
                 {
-                    id:3,
+                    id: 3,
+                    sex:"male",
                     name: 'patient3',
                     date: new Date().toISOString().substr(0, 10),
                     details: 'break legs!',
@@ -103,11 +104,12 @@ const state = {
                     allergy: "1,2,3,4,5",
                     doctor: "Dr. Michael Wong",
                     clinc: "clinc3",
-                    medicalRecordList:  [],
+                    medicalRecordList: [],
 
                 },
                 {
-                    id:4,
+                    id: 4,
+                    sex:"male",
                     name: 'patient4',
                     date: '2019-03-16',
                     details: 'break legs!',
@@ -121,7 +123,7 @@ const state = {
                     allergy: "1,2,3,4,5",
                     doctor: "Dr. Michael Wong",
                     clinc: "clinc4",
-                    medicalRecordList:  [],
+                    medicalRecordList: [],
 
                 }
             ],
@@ -142,8 +144,9 @@ const getters = {
 
 
 const actions = {
-    actionQueryMedicalRecordList({ commit }, patient) {
-        commit("queryMedicalRecordList", patient)
+
+    actionQueryPatientFromPatientList({ commit }, id) {
+        commit("queryPatientFromPatientList", id)
     }
 
 
@@ -152,10 +155,18 @@ const actions = {
 }
 
 const mutations = {
-    ["queryMedicalRecordList"](state, patient) {
-        state.patientListData.patient = patient;
-        console.log(state.patientListData.patient );
+    ["queryPatientFromPatientList"](state, id) {
+        let pList = state.patientListData.clinc.patientList;
+        let patient = "";
 
+        for (let i in pList) {
+            console.log()
+            if (pList[i].id == id) {
+                patient = pList[i];
+            }
+        }
+        
+        state.patientListData.patient = patient;
     }
 
 }

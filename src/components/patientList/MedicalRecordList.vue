@@ -1,22 +1,6 @@
 <template>
   <full-screen-dialog>
     <div slot="title">{{name}} Profile</div>
-    <!-- dialog -->
-    <!-- <div slot="normalDialog">
-      <normal-dialog>
-        <div slot="title">Add Item</div>
-
-        <div slot="content">
-          <v-form>
-            <v-text-field prepend-icon="person" v-model="name" label="Name"></v-text-field>
-          </v-form>
-        </div>
-        <div slot="button">
-          <v-btn color="blue darken-1" flat @click="close('normal')">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
-        </div>
-      </normal-dialog>
-    </div>-->
     <div slot="content">
       <!-- search and add item -->
       <h1>Medicine Record List</h1>

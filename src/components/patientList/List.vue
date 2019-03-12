@@ -6,15 +6,20 @@
       justify-center
       fill-height
     >Select a patient to view details</v-layout>
-      <v-layout
-        v-else-if="isRecordEmpty(patient)"
-        align-center
-        justify-center
-        fill-height
-      >No Records in this Patient</v-layout>
-      <div v-else>
-        <medical-record-card/>
-      </div>
+  <div  v-else-if="isRecordEmpty()" style="height:100%">
+     <patient-profile-card/>
+        <v-layout
+      align-center
+      justify-center
+      style="height:80%"
+    >No Records in this Patient</v-layout>
+  </div>
+
+    <div v-else>
+      <patient-profile-card/>
+    
+      <medical-record-card/>
+    </div>
   </div>
 </template>
 
@@ -22,6 +27,7 @@
 import { mapGetters, mapActions, mapState } from "vuex";
 import MedicalRecordList from "@/components/patientList/MedicalRecordList.vue";
 import MedicalRecordCard from "@/components/patientList/MedicalRecordCard.vue";
+import PatientProfileCard from "@/components/patientList/PatientProfileCard.vue";
 
 export default {
   data: () => ({
@@ -38,26 +44,36 @@ export default {
     }),
 
     patientList() {
-      return this.getter.patientList;
+      return this.getter.clinc.patientList;
     },
 
-    patient(){
+    patient() {
       return this.getter.patient;
+    },
+
+    id() {
+      return this.$route.query.id;
     }
   },
 
   components: {
     MedicalRecordList,
-    MedicalRecordCard
+    MedicalRecordCard,
+    PatientProfileCard
   },
 
-  //   watch: {
-  //     dialog(val) {
-  //       val || this.close();
-  //     }
-  //   },
+  created() {
+    this.actionQueryPatientFromPatientList(this.id);
+  },
+
+  watch: {
+    id: function(val) {
+      this.actionQueryPatientFromPatientList(this.id);
+    }
+  },
 
   methods: {
+    ...mapActions(["actionQueryPatientFromPatientList"]),
     isClickPatient(id) {
       if (id === undefined) {
         return false;
@@ -65,9 +81,8 @@ export default {
         return true;
       }
     },
-    isRecordEmpty(patient) {
-      console.log(patient.medicalRecordList.length)
-      if (patient.medicalRecordList.length === 0) {
+    isRecordEmpty() {
+      if (this.patient.medicalRecordList.length === 0) {
         return true;
       }
 
