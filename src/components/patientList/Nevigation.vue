@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-left:15%">
+  <div >
     <h3 class="headline mb --text">Patients</h3>
     <div class="black--text">{{name}}</div>
     <v-tabs v-model="active" slider-color="orange" color="transparent">

@@ -1,9 +1,9 @@
 <template>
   <v-layout style="height: 90%">
-    <v-flex sm3>
+    <v-flex sm2 d-flex style="padding-left:2%">
       <nevigation/>
     </v-flex>
-    <v-flex sm8>
+    <v-flex d-flex sm10 style="padding-left:7%;padding-right:3%">
       <v-card :style="{'height':computedHeight}">
         <list/>
       </v-card>

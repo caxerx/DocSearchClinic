@@ -15,17 +15,18 @@
               <v-list-tile>
                 <v-list-tile-content>
                   <v-layout style="width:100%">
-                    <v-flex sm1>
+                    <v-flex sm1 >
                       <v-list-tile-title><div class="custAlign">{{ getDate(medicalRecord.date) | moment("DD")}}</div></v-list-tile-title>
                       <v-list-tile-title>{{ getDate(medicalRecord.date) | moment("MMM'YY")}}</v-list-tile-title>
                     </v-flex>
-                    <v-divider vertical/>
-                    <v-flex sm9 style="padding-left:15px">
+                    <div style="padding-left:10px"></div>
+                    <v-divider vertical />
+                    <v-flex sm8 style="padding-left:15px">
                       <span>Appointment with&nbsp;</span>
                       <b class="black--text">{{patient.name}}</b>
                       <v-list-tile-sub-title>{{formatAMPM(medicalRecord.time)}} for {{medicalRecord.duration}} mins</v-list-tile-sub-title>
                     </v-flex>
-                    <v-flex sm2>
+                    <v-flex sm3>
                       <v-btn outline small color="orange">Add Record</v-btn>
                     </v-flex>
                   </v-layout>
