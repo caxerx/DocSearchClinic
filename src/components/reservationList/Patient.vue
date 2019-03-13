@@ -42,7 +42,6 @@ import { mapGetters, mapActions, mapState } from "vuex";
 import MenuCard from "@/components/reservationList/MenuCard.vue";
 
 export default {
-  name: "App",
   data() {
     return {
       search: "",

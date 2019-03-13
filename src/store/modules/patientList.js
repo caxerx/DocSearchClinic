@@ -12,7 +12,7 @@ const state = {
 
             patientList: [
                 {
-                    id: 1,
+                    id: 0,
                     sex:"male",
                     name: 'patient1',
                     date: new Date().toISOString().substr(0, 10),
@@ -31,7 +31,7 @@ const state = {
                         //tempoary only
                         [
                             {
-
+                                id:0,
                                 no: "1",
                                 clinc: "WeServeEveryone Clinic",
                                 doctor: "Dr. Nirmala Rajgopalan",
@@ -41,9 +41,12 @@ const state = {
                                 symptom: ["DIABETES MELLITUS (ICD-250.)", "HYPERTENSION, BENIGN ESSENTIAL (ICD-401.1)"],
                                 medicine: ["PRINIVIL TABS 20 MG (LISINOPRIL) 1 po qd", "Last Refill: #30 x 2 : Carl Savem MD (08/27/2010)", "HUMULIN INJ 70/30 (INSULIN REG & ISOPHANE (HUMAN)) 20 units ac breakfast", "Last Refill: #600 u x 0 : Carl Savem MD (08/27/2010)"],
                                 amount: 100,
+                                prescriptions: [],
+                                clincalNotes: []
 
                             },
                             {
+                                id:1,
                                 no: "2",
                                 clinc: "WeServeEveryone Clinic",
                                 doctor: "Dr. Nirmala Rajgopalan",
@@ -53,10 +56,12 @@ const state = {
                                 symptom: ["DIABETES MELLITUS (ICD-250.)"],
                                 medicine: ["PRINIVIL TABS 20 MG (LISINOPRIL) 1 po qd"],
                                 amount: 200,
+                                prescriptions: [],
+                                clincalNotes: []
 
                             },
                             {
-
+                                id:2,
                                 no: "1",
                                 clinc: "WeServeEveryone Clinic",
                                 doctor: "Dr. Nirmala Rajgopalan",
@@ -66,6 +71,8 @@ const state = {
                                 symptom: ["DIABETES MELLITUS (ICD-250.)", "HYPERTENSION, BENIGN ESSENTIAL (ICD-401.1)"],
                                 medicine: ["PRINIVIL TABS 20 MG (LISINOPRIL) 1 po qd", "Last Refill: #30 x 2 : Carl Savem MD (08/27/2010)", "HUMULIN INJ 70/30 (INSULIN REG & ISOPHANE (HUMAN)) 20 units ac breakfast", "Last Refill: #600 u x 0 : Carl Savem MD (08/27/2010)"],
                                 amount: 100,
+                                prescriptions: [],
+                                clincalNotes: []
 
                             },
                         ]
@@ -73,7 +80,7 @@ const state = {
 
                 },
                 {
-                    id: 2,
+                    id: 1,
                     sex:"male",
                     name: 'patient2',
                     date: '2019-03-15',
@@ -92,7 +99,7 @@ const state = {
 
                 },
                 {
-                    id: 3,
+                    id: 2,
                     sex:"male",
                     name: 'patient3',
                     date: new Date().toISOString().substr(0, 10),
@@ -111,7 +118,7 @@ const state = {
 
                 },
                 {
-                    id: 4,
+                    id: 3,
                     sex:"male",
                     name: 'patient4',
                     date: '2019-03-16',

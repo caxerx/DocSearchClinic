@@ -18,7 +18,7 @@
     <div v-else style="height:100%">
       <patient-profile-card/>
     
-      <medical-record-card/>
+      <medical-record-list/>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
 
-import MedicalRecordCard from "@/components/patientList/MedicalRecordCard.vue";
+import MedicalRecordList from "@/components/patientList/MedicalRecordList.vue";
 import PatientProfileCard from "@/components/patientList/PatientProfileCard.vue";
 
 export default {
@@ -57,7 +57,7 @@ export default {
   },
 
   components: {
-    MedicalRecordCard,
+    MedicalRecordList,
     PatientProfileCard
   },
 

@@ -5,6 +5,7 @@ const state = {
     reservationListData: {
         patientList: [
             {
+                id:0,
                 name: 'patient1',
                 date: new Date().toISOString().substr(0, 10),
                 details: 'break legs!',
@@ -21,6 +22,7 @@ const state = {
              
             },
             {
+                id:1,
                 name: 'patient2',
                 date: '2019-03-15',
                 details: 'break legs!',
@@ -37,6 +39,7 @@ const state = {
                 
             },
             {
+                id:2,
                 name: 'patient3',
                 date: new Date().toISOString().substr(0, 10),
                 details: 'break legs!',
@@ -53,6 +56,7 @@ const state = {
                
             },
             {
+                id:3,
                 name: 'patient4',
                 date: '2019-03-16',
                 details: 'break legs!',

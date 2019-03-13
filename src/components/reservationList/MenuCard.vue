@@ -8,7 +8,7 @@
 
         <v-list-tile-content>
           <v-list-tile-title>
-            <a href="/">{{patient.name}}</a>
+            <a :href="getPatientLink(patient.id)">{{patient.name}}</a>
           </v-list-tile-title>
           <v-list-tile-sub-title>{{patient.details}}</v-list-tile-sub-title>
         </v-list-tile-content>
@@ -65,8 +65,10 @@ export default {
     icon: String
   },
 
-  methods:{
-      //temporarily time to ampm
+  computed: {},
+
+  methods: {
+    //temporarily time to ampm
     formatAMPM(time) {
       var hours = time.split(":")[0];
       var minutes = time.split(":")[1];
@@ -76,6 +78,9 @@ export default {
       minutes = minutes < 10 && minutes != "00" ? "0" + minutes : minutes;
       var strTime = hours + ":" + minutes + "  " + ampm;
       return strTime;
+    },
+    getPatientLink(id) {
+      return "/patientList?id=" + id;
     }
   }
 };

@@ -11,7 +11,6 @@
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
 export default {
-  name: "App",
   data() {
     return {
       search: "",
