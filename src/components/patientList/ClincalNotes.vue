@@ -10,9 +10,22 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer/>
-        <slot name="cancelShow"/>
+        <v-btn @click="cancelShow()">Cancel</v-btn>
         <v-btn>Save</v-btn>
       </v-card-actions>
     </v-card>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    cancelShow() {
+      this.$emit("input", {});
+    }
+  }
+};
+</script>

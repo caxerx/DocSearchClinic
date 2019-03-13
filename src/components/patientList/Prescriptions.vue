@@ -51,7 +51,8 @@
 
     <v-list style="width:100%">
        <v-layout justify-end>
-        <slot name="cancelShow"></slot>
+         <v-btn @click="cancelShow()"> Cancel</v-btn>
+        <!-- <slot name="cancelShow"></slot> -->
         <v-btn>Save</v-btn>
        </v-layout>
     </v-list>
@@ -135,6 +136,10 @@ export default {
         this.prescriptions.push(this.editedItem);
       }
       this.close();
+    },
+
+    cancelShow(){
+        this.$emit('input',{});
     }
   }
 };

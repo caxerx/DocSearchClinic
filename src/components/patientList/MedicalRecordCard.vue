@@ -48,15 +48,13 @@
           </v-list-tile>
         </v-list>
         <v-divider/>
-        <div :id="medicalRecord.id">
+        <div :id="medicalRecord.id" >
           <v-list v-if="isShowPrescriptions(medicalRecord.id)">
-            <prescriptions>
-              <v-btn slot="cancelShow" @click="cancelShow(medicalRecord.id)">Cancel</v-btn>
+            <prescriptions v-model="showPrescriptions">
             </prescriptions>
           </v-list>
           <v-list v-else-if="isShowClincalNotes(medicalRecord.id)">
-            <clincal-notes>
-              <v-btn slot="cancelShow" @click="cancelShow(medicalRecord.id)">Cancel</v-btn>
+            <clincal-notes v-model="showClincalNotes">
             </clincal-notes>
           </v-list>
           <v-list v-else-if="isEmptyRecord(medicalRecord)">
@@ -160,6 +158,14 @@ export default {
         };
         this.showPrescriptions = {};
       }
+    },
+
+    cancelClincalNotes(val){
+        this.showClincalNotes = val;
+    },
+
+    cancelPrescriptions(val){
+        this.showPrescriptions = val;
     }
   }
 };
