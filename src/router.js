@@ -17,6 +17,7 @@ import Test from './pages/Test'
 import App from './App.vue'
 import DocumentPrint from './pages/printing/DocumentPrint'
 import DocumentTemplate from './pages/printing/DocumentTemplate'
+import CalendarSetting from './pages/Setting/CalendarSetting.vue'
 
 Vue.use(Router)
 
@@ -262,6 +263,24 @@ export default new Router({
           
         }]
       }
-    }
+    },
+    {
+      path: '/calendarSetting',
+      name: 'calendarSetting',
+      component: CalendarSetting,
+      meta: {
+        breadcrumb: [{
+          text: 'Home',
+          href: '/',
+          disabled: false,
+        },
+        {
+          text: 'calendarSetting',
+          disabled: true,
+          href:'/calendarSetting'
+          
+        }]
+      }
+    },
   ]
 })
