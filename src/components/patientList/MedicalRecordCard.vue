@@ -17,7 +17,7 @@
                   <v-list-tile-title>
                     <div class="custAlign">{{ getDate(medicalRecord.date) | moment("DD")}}</div>
                   </v-list-tile-title>
-                  <v-list-tile-title>{{ getDate(medicalRecord.date) | moment("MMM'YY")}}</v-list-tile-title>
+                  <v-list-tile-title style="overflow:unset">{{ getDate(medicalRecord.date) | moment("MMM'YY")}}</v-list-tile-title>
                 </v-flex>
                 <div style="padding-left:10px"></div>
                 <v-divider vertical/>
@@ -173,7 +173,7 @@ export default {
 
 <style scoped>
 .custAlign {
-  width: 80%;
+  width: 50%;
   margin: 0 auto;
 }
 

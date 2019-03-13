@@ -41,26 +41,23 @@
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
 export default {
-    data() {
+  data() {
     return {
-       search: "",
-   
+      search: ""
     };
   },
   components: {},
   computed: {
     ...mapGetters({
-       getter: "getPatientListData"
+      getter: "getPatientListData"
     }),
-     patient() {
+    patient() {
       return this.getter.patient;
-    },
-
+    }
   },
 
-
   methods: {
-  	...mapActions(["actionReset"]),
+    ...mapActions(["actionReset"])
   }
 };
 </script>
