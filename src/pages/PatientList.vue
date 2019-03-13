@@ -1,14 +1,14 @@
 <template>
-    <v-layout style="height: 90%">
-      <v-flex sm3 >
+  <v-layout style="height: 90%">
+    <v-flex sm3>
       <nevigation/>
-      </v-flex>
-      <v-flex sm9>
-        <v-card style="height: 100%">
-      <list/>
-        </v-card>
-      </v-flex>
-    </v-layout>
+    </v-flex>
+    <v-flex sm8>
+      <v-card :style="{'height':computedHeight}">
+        <list/>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 
@@ -18,7 +18,8 @@ import Nevigation from "@/components/patientList/Nevigation.vue";
 import Container from "@/components/Container.vue";
 
 export default {
-  data: () => ({}),
+  data: () => ({
+  }),
 
   components: {
     List,
@@ -26,9 +27,19 @@ export default {
     Nevigation
   },
 
-  computed: {},
+  computed: {
+    computedHeight() {
+      let windowHeight = window.innerHeight;
+      let maxHeight = windowHeight * 0.81 + "px";
+      return maxHeight;
+    }
+  },
 
-  watch: {},
+  watch: {
+    computedHeight: function(val) {
+      console.log(val);
+    }
+  },
 
   created() {},
 

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import './plugins/vuetify'
 import './plugins/vuetify'
 import './plugins/vuetify'
+
 import Vuetify from 'vuetify'
 import App from './App.vue'
 import router from './router'
@@ -27,6 +28,7 @@ Vue.use(Vuetify, {
 })
 
 Vue.use(Print);
+Vue.use(require('vue-moment'));
 
 
 

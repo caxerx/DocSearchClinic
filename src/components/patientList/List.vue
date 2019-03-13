@@ -15,7 +15,7 @@
     >No Records in this Patient</v-layout>
   </div>
 
-    <div v-else>
+    <div v-else style="height:100%">
       <patient-profile-card/>
     
       <medical-record-card/>
@@ -25,7 +25,7 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
-import MedicalRecordList from "@/components/patientList/MedicalRecordList.vue";
+
 import MedicalRecordCard from "@/components/patientList/MedicalRecordCard.vue";
 import PatientProfileCard from "@/components/patientList/PatientProfileCard.vue";
 
@@ -57,7 +57,6 @@ export default {
   },
 
   components: {
-    MedicalRecordList,
     MedicalRecordCard,
     PatientProfileCard
   },
