@@ -1,33 +1,106 @@
 <template>
-  <v-list two-line>
-    <template v-for="(item, index) in worktimes">
-      <v-list-tile :key="item.doctor" avatar ripple @click="toggle(index)">
-        <v-list-tile-content>
-          <v-list-tile-title>{{ item.doctor }}</v-list-tile-title>
-          <v-list-tile-sub-title v-for="(time, index) in item.times" :key="index">
-          <span v-for="(date, i) in item.times" :key="i"> {{time.date[i]}}, </span>  
-          <span v-for="(timeAm, j) in item.times" :key="j"> {{time.timeAm[j]}} </span> 
-           <span v-for="(timePm, k) in item.times" :key="k"> {{time.timePm[k]}} </span> 
-          
-           
-           
+  <div>
+    <v-list two-line>
+      <template v-for="(item, index) in worktimes">
+        <v-list-tile :key="item.doctor" avatar ripple @click="toggle(index)">
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.doctor }}</v-list-tile-title>
+            <v-list-tile-sub-title v-for="(time, index) in item.times" :key="index">
+              <span v-for="(date, i) in item.times" :key="i">{{time.date[i]}},</span>
+              <span v-for="(timeAm, j) in item.times" :key="j">{{time.timeAm[j]}}</span>
+              <span v-for="(timePm, k) in item.times" :key="k">{{time.timePm[k]}}</span>
+            </v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider v-if="index + 1 < worktimes.length" :key="index"></v-divider>
+      </template>
+    </v-list>
+    <v-dialog v-model="dialogOn" max-width="1000">
+      <v-card>
+        <v-card-title class="headline">Time Setting</v-card-title>
+        <v-divider></v-divider>
+        <v-card-text style="max-height:50vh;overflow:auto">
+          <div v-for="i in x" :key="i">
+            <v-layout row>
+              <v-flex>
+                <v-checkbox label="Sunday"></v-checkbox>
+              </v-flex>
+              <v-flex>
+                <v-checkbox label="Monday"></v-checkbox>
+              </v-flex>
+              <v-flex>
+                <v-checkbox label="Tuesday"></v-checkbox>
+              </v-flex>
+              <v-flex>
+                <v-checkbox label="Wednesday"></v-checkbox>
+              </v-flex>
+              <v-flex>
+                <v-checkbox label="Thursday"></v-checkbox>
+              </v-flex>
+              <v-flex>
+                <v-checkbox label="Friday"></v-checkbox>
+              </v-flex>
+              <v-flex>
+                <v-checkbox label="Saturday"></v-checkbox>
+              </v-flex>
+            </v-layout>
 
-          </v-list-tile-sub-title>
-        </v-list-tile-content>
+            <v-layout row>
+              <v-flex xs5>
+                <v-layout column>
+                  <v-flex>Session 1</v-flex>
+                  <v-flex>
+                    <v-layout row>
+                      <v-flex xs5>
+                        <v-select label="Start Time"></v-select>
+                      </v-flex>
+                      <v-flex xs5 offset-xs1>
+                        <v-select label="End Time"></v-select>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
 
-       
-      </v-list-tile>
-      <v-divider v-if="index + 1 < worktimes.length" :key="index"></v-divider>
-    </template>
-  </v-list>
+              <v-flex xs5 offset-xs1>
+                <v-layout column>
+                  <v-flex>Session 2</v-flex>
+                  <v-flex>
+                    <v-layout row>
+                      <v-flex xs5>
+                        <v-select label="Start Time"></v-select>
+                      </v-flex>
+                      <v-flex xs5 offset-xs1>
+                        <v-select label="End Time"></v-select>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout>
+
+            <v-divider></v-divider>
+          </div>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-layout justify-end class="pt-3">
+          <v-btn icon @click="x++">
+            <v-icon>add</v-icon>
+          </v-btn>
+        </v-layout>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 <script>
 export default {
   data: () => ({
+    x: 1,
+    dialogOn: false,
     selected: [2],
     worktimes: [
       {
-        doctor: "a",
+        doctor: "Doctor A",
         times: [
           {
             id: 0,
@@ -45,7 +118,7 @@ export default {
         ]
       },
       {
-        doctor: "b",
+        doctor: "Doctor B",
         times: [
           {
             id: 0,
@@ -64,18 +137,10 @@ export default {
       }
     ]
   }),
-  components: {
-    
-  },
-   methods: {
-    toggle (index) {
-      const i = this.selected.indexOf(index)
-
-      if (i > -1) {
-        this.selected.splice(i, 1)
-      } else {
-        this.selected.push(index)
-      }
+  components: {},
+  methods: {
+    toggle(index) {
+      this.dialogOn = !this.dialogOn;
     }
   }
 };
