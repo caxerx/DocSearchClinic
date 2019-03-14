@@ -12,7 +12,7 @@ import queue from './modules/queue';
 import reservationList from './modules/reservationList';
 import consultation from './modules/consultation';
 import patientList from './modules/patientList';
-
+import printing from './modules/printing';
 
 
 Vue.use( Vuex );
@@ -30,7 +30,8 @@ export default new Vuex.Store({
     queue,
     reservationList,
     consultation,
-    patientList
+    patientList,
+    printing
   },
 
   strict: true

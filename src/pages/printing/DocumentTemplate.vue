@@ -16,7 +16,7 @@
           <v-toolbar flat>
             <v-toolbar-title>Template Editor</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon>
+            <v-btn icon @click="saveTemplate">
               <v-icon>save</v-icon>
             </v-btn>
           </v-toolbar>
@@ -81,6 +81,9 @@ export default {
     }
   },
   methods: {
+    save(){
+      this.$store.printing.template = "123213"
+    },
     preview() {
       this.previewHtml = this.$refs.tuiEditor.invoke("getHtml");
       while (this.previewHtml.search("{DoctorName}") > 0) {
