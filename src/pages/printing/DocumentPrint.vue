@@ -105,7 +105,7 @@ export default {
       }
 
       if (this.previewHtml.includes("{DocContent}")) {
-        while (this.previewHtml.search("{}") > 0) {
+        while (this.previewHtml.search("{DocContent}") > 0) {
           this.previewHtml = this.previewHtml.replace(
             "{DocContent}",
             docContent
