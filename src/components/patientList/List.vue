@@ -1,74 +1,38 @@
 <template>
-  <div>
-    <!-- dialog  -->
-    <div v-if="dialogType=='medicalRecordList'">
+  <div style="height:100%">
+    <v-layout
+      v-if="!isClickPatient($route.query.id)"
+      align-center
+      justify-center
+      fill-height
+    >Select a patient to view details</v-layout>
+  <div  v-else-if="isRecordEmpty()" style="height:100%">
+     <patient-profile-card/>
+        <v-layout
+      align-center
+      justify-center
+      style="height:80%"
+    >No Records in this Patient</v-layout>
+  </div>
+
+    <div v-else style="height:100%">
+      <patient-profile-card/>
+    
       <medical-record-list/>
     </div>
-    <v-flex xs4>
-      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-    </v-flex>
-
-    <v-card v-for="(patient,index) in patientList" :key="index" style="margin-top:20px">
-      <v-layout row wrap>
-        <v-flex xs4 sm2>
-          <v-card-title>
-            <img src="@/assets/person.png" class="icon">
-          </v-card-title>
-        </v-flex>
-        <v-flex xs6 sm7>
-          <v-card-text>
-            <h3 class="headline mb primary--text">{{patient.name}}</h3>
-          </v-card-text>
-          <v-card-text>
-            <div>
-              <span class="left_text">gender:</span>
-              <span class="right_text">{{patient.gender}}</span>
-            </div>
-            <div>
-              <span class="left_text">email :</span>
-              <span class="right_text">{{patient.email}}</span>
-            </div>
-            <div>
-              <span class="left_text">phoneNo :</span>
-              <span class="right_text">{{patient.phoneNo}}</span>
-            </div>
-            <div>
-              <span class="left_text">dob:</span>
-              <span class="right_text">{{patient.dob}}</span>
-            </div>
-            <div>
-              <span class="left_text">hkid:</span>
-              <span class="right_text">{{patient.hkid}}</span>
-            </div>
-            <div>
-              <span class="left_text">allergy:</span>
-              <span class="right_text">{{patient.allergy}}</span>
-            </div>
-          </v-card-text>
-        </v-flex>
-        <v-card-actions style="width:100%">
-          <v-spacer></v-spacer>
-          <v-btn color="primary">
-            <v-icon>local_phone</v-icon>Contact
-          </v-btn>
-          <v-btn color="primary" @click="viewMedicalRecord(patient)">
-            <v-icon>remove_red_eye</v-icon>Medical Record
-          </v-btn>
-        </v-card-actions>
-      </v-layout>
-    </v-card>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
+
 import MedicalRecordList from "@/components/patientList/MedicalRecordList.vue";
+import PatientProfileCard from "@/components/patientList/PatientProfileCard.vue";
 
 export default {
   data: () => ({
     search: "",
-    dialogType:"",
-   
+    dialogType: ""
   }),
 
   computed: {
@@ -76,35 +40,52 @@ export default {
     //   return this.editedIndex === -1 ? "New Item" : "Edit Item";
     // }
     ...mapGetters({
-      getter:"getPatientListData"
+      getter: "getPatientListData"
     }),
 
-    patientList(){
-      return this.getter.patientList;
+    patientList() {
+      return this.getter.clinc.patientList;
+    },
+
+    patient() {
+      return this.getter.patient;
+    },
+
+    id() {
+      return this.$route.query.id;
     }
   },
 
   components: {
-    MedicalRecordList
+    MedicalRecordList,
+    PatientProfileCard
   },
 
-  //   watch: {
-  //     dialog(val) {
-  //       val || this.close();
-  //     }
-  //   },
+  created() {
+    this.actionQueryPatientFromPatientList(this.id);
+  },
+
+  watch: {
+    id: function(val) {
+      this.actionQueryPatientFromPatientList(this.id);
+    }
+  },
 
   methods: {
-    ...mapActions([
-      "actionCloseDialog",
-      "actionOpenDialog",
-      "actionViewMedicalListFromPatientList"
-    ]),
+    ...mapActions(["actionQueryPatientFromPatientList"]),
+    isClickPatient(id) {
+      if (id === undefined) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    isRecordEmpty() {
+      if (this.patient.medicalRecordList.length === 0) {
+        return true;
+      }
 
-    viewMedicalRecord(patient) {
-      this.dialogType = "medicalRecordList";
-      this.actionOpenDialog("fullscreen");
-      this.actionViewMedicalListFromPatientList(patient);
+      return false;
     }
   }
 };
