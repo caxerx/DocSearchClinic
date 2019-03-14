@@ -1,39 +1,44 @@
 <template>
-  <v-card class="vcard">
-    <container>
-      <div slot="content">
-        <h1 class="headline mb primary--text">Clinc Queue List</h1>
-        <br>
-        <v-layout row wrap>
-          <v-flex xs4>
-            <date-picker/>
-          </v-flex>
-        </v-layout>
-        <!-- table  -->
-        <data-table/>
-      </div>
-    </container>
-  </v-card>
+  <v-layout style="height: 90%">
+    <v-flex sm2 d-flex style="padding-left:2%">
+      <nevigation/>
+    </v-flex>
+    <v-flex d-flex sm10 style="padding-left:7%;padding-right:3%">
+      <v-card :style="{'height':computedHeight}">
+        <list/>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 
 <script>
-import DataTable from "@/components/queue/Table.vue";
-import DatePicker from "@/components/queue/DatePicker.vue";
+import List from "@/components/queue/List.vue";
+import Nevigation from "@/components/queue/Nevigation.vue";
 import Container from "@/components/Container.vue";
 
 export default {
   data: () => ({}),
 
   components: {
-    DataTable,
+    List,
     Container,
-    DatePicker
+    Nevigation
   },
 
-  computed: {},
+  computed: {
+    computedHeight() {
+      let windowHeight = window.innerHeight;
+      let maxHeight = windowHeight * 0.81 + "px";
+      return maxHeight;
+    }
+  },
 
-  watch: {},
+  watch: {
+    computedHeight: function(val) {
+      console.log(val);
+    }
+  },
 
   created() {},
 

@@ -1,14 +1,130 @@
 <template>
   <v-container>
-    
+    <v-layout row wrap>
+      <v-flex md6>
+        <v-card>
+          <v-toolbar flat>
+            <v-toolbar-title>Document</v-toolbar-title>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <editor mode="wysiwyg" :options="editorOptions" v-model="docContent" ref="tuiEditor"></editor>
+        </v-card>
+      </v-flex>
+      <v-divider vertical class="mx-2"></v-divider>
+      <v-flex md5>
+        <v-toolbar flat>
+          <v-toolbar-title>Preview</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="print">
+            <v-icon>print</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-divider></v-divider>
+        <v-sheet color="white" class="pa-3">
+          <div v-html="previewHtml" style="width:100%" id="printing-elm" class="wrap-text"></div>
+        </v-sheet>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
-export default {
-  components: {},
-  data: () => ({}),
+import { Editor } from "@toast-ui/vue-editor";
+import "tui-editor/dist/tui-editor.css";
+import "tui-editor/dist/tui-editor-contents.css";
+import "codemirror/lib/codemirror.css";
 
-  methods: {}
+import { Printd } from "printd";
+
+export default {
+  components: {
+    editor: Editor
+  },
+  created() {},
+  data: () => ({
+    previewHtml: "",
+    docContent: "",
+    editorOptions: {
+      minHeight: "200px",
+      language: "en_US",
+      useCommandShortcut: true,
+      useDefaultHTMLSanitizer: true,
+      usageStatistics: true,
+      hideModeSwitch: true,
+      toolbarItems: [
+        "heading",
+        "bold",
+        "italic",
+        "strike",
+        "divider",
+        "hr",
+        "quote",
+        "divider",
+        "ul",
+        "ol",
+        "task",
+        "indent",
+        "outdent",
+        "divider",
+        "table",
+        "image",
+        "link"
+      ]
+    }
+  }),
+  watch: {
+    docContent() {
+      this.preview();
+    }
+  },
+  methods: {
+    print() {
+      const d = new Printd();
+      d.print(document.getElementById("printing-elm"));
+      setTimeout(() => {
+        if (document.getElementById("header-footer")) {
+          document.getElementById("header-footer").checked = false;
+        }
+      }, 100);
+    },
+    preview() {
+      this.previewHtml = this.$store.state.printing.htmlTemplate;
+      let docContent = this.$refs.tuiEditor.invoke("getHtml");
+      while (this.previewHtml.search("{DoctorName}") > 0) {
+        this.previewHtml = this.previewHtml.replace(
+          "{DoctorName}",
+          "Michael Wang"
+        );
+      }
+
+      while (this.previewHtml.search("{DoctorTel}") > 0) {
+        this.previewHtml = this.previewHtml.replace(
+          "{DoctorTel}",
+          "+852 2338 2338"
+        );
+      }
+
+      if (this.previewHtml.includes("{DocContent}")) {
+        while (this.previewHtml.search("{}") > 0) {
+          this.previewHtml = this.previewHtml.replace(
+            "{DocContent}",
+            docContent
+          );
+        }
+      } else {
+        this.previewHtml += docContent;
+      }
+    }
+  }
 };
 </script>
+
+<style>
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.wrap-text {
+  word-wrap: break-word;
+}
+</style>

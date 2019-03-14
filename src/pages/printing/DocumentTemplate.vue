@@ -26,9 +26,9 @@
       <v-divider vertical class="mx-2"></v-divider>
       <v-flex md5>
         <span class="headline">Preview</span>
-          <v-sheet color="white" class="pa-3">
-            <div v-html="previewHtml" style="width:100%"></div>
-          </v-sheet>
+        <v-sheet color="white" class="pa-3">
+          <div v-html="previewHtml" style="width:100%" class="wrap-text"></div>
+        </v-sheet>
       </v-flex>
     </v-layout>
   </v-container>
@@ -43,6 +43,9 @@ import "codemirror/lib/codemirror.css";
 export default {
   components: {
     editor: Editor
+  },
+  created() {
+    this.docTemplate = this.$store.state.printing.rawTemplate;
   },
   data: () => ({
     previewHtml: "",
@@ -81,8 +84,11 @@ export default {
     }
   },
   methods: {
-    save(){
-      this.$store.printing.template = "123213"
+    saveTemplate() {
+      this.$store.commit("setTemplate", {
+        rawTemplate: this.docTemplate,
+        htmlTemplate: this.$refs.tuiEditor.invoke("getHtml")
+      });
     },
     preview() {
       this.previewHtml = this.$refs.tuiEditor.invoke("getHtml");
@@ -112,5 +118,9 @@ export default {
 img {
   max-width: 100%;
   max-height: 100%;
+}
+
+.wrap-text {
+  word-wrap: break-word;
 }
 </style>
