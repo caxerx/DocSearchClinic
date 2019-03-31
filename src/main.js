@@ -18,6 +18,7 @@ import Print from '@/plugins/print'
 
 
 import colors from 'vuetify/es5/util/colors'
+import { createProvider } from './vue-apollo'
 
 Vue.use(Vuetify, {
   theme: {
@@ -38,5 +39,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: (h) => h(Drawer),
+  apolloProvider: createProvider(),
+  render: (h) => h(Drawer)
 })
