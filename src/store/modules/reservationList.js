@@ -89,10 +89,7 @@ const actions = {
 }
 // mutations
 const mutations = {
-    ["editItemFromReservationList"](state, item) {
-        state.reservationListData.editedIndex = state.reservationListData.contents.indexOf(item);
-        state.reservationListData.editedItem = Object.assign({}, item);
-    },
+
 
 
 }

@@ -17,6 +17,7 @@ import Test from './pages/Test.vue'
 import Print from '@/plugins/print'
 
 
+
 import colors from 'vuetify/es5/util/colors'
 import { createProvider } from './vue-apollo'
 
@@ -30,6 +31,7 @@ Vue.use(Vuetify, {
 
 Vue.use(Print);
 Vue.use(require('vue-moment'));
+
 
 
 

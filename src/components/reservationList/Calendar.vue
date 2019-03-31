@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="reservations!=null">
     <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
     <v-toolbar flat absolute style="z-index:10">
       <v-btn icon @click="$refs.calendar.prev()">
@@ -58,22 +58,22 @@
           >
             <!-- the events at the bottom (timed) -->
             <template slot="dayBody" slot-scope="{ date, timeToY, minutesToPixels }">
-              <template v-for="patient in eventsMap[date]">
-                <v-menu :key="patient.name" full-width offset-x>
+              <template v-for="reservation in eventsMap[date]">
+                <v-menu :key="reservation.name" full-width offset-x>
                   <!-- timed events -->
                   <template v-slot:activator="{ on }">
                     <div
-                      v-if="patient.time"
-                      :key="patient.name"
-                      :style="{ top: timeToY((patient.time+30)) + 'px', height: minutesToPixels(patient.duration) + 'px' }"
+            
+                      :key="reservation.id"
+                      :style="{ top: timeToY((formatTime(reservation.startTime)+30)) + 'px', height: minutesToPixels(computedDuration(reservation.id,reservation.startTime,reservation.endTime)) + 'px' }"
                       class="my-event with-time"
                       v-on="on"
-                      v-html="patient.name"
+                      v-html="reservation.id"
                     ></div>
                   </template>
 
                   <!-- pop up menu -->
-                  <menu-card :icon="icon" :patient="patient"/>
+                  <!-- <menu-card :icon="icon" :patient="patient"/> -->
                 </v-menu>
               </template>
             </template>
@@ -149,15 +149,38 @@ import { mapGetters, mapActions, mapState } from "vuex";
 import DoctorList from "@/components/reservationList/DoctorList.vue";
 import Patient from "@/components/reservationList/Patient.vue";
 import MenuCard from "@/components/reservationList/MenuCard.vue";
+import gql from "graphql-tag";
 
+let moment = require("moment");
+
+const reservationsQuery = gql`
+  query {
+    reservations {
+      id
+      patient {
+        id
+        name
+      }
+      note
+      startTime
+      endTime
+    }
+  }
+`;
 export default {
   data: () => ({
     today: new Date().toISOString().substr(0, 10),
     start: new Date().toISOString().substr(0, 10),
     menu: false,
     calendarType: "week",
-    icon:"https://cdn.vuetifyjs.com/images/john.jpg",
+    icon: "https://cdn.vuetifyjs.com/images/john.jpg"
   }),
+
+  apollo: {
+    reservations: {
+      query: reservationsQuery
+    }
+  },
 
   components: {
     DoctorList,
@@ -172,17 +195,33 @@ export default {
     patientList() {
       return this.getter.patientList;
     },
+
     eventsMap() {
       const map = {};
-      this.patientList.forEach(e => (map[e.date] = map[e.date] || []).push(e));
+      this.reservations.forEach(e =>
+        (map[moment.utc(e.startTime).format("YYYY-MM-DD")] =
+          map[moment.utc(e.startTime).format("YYYY-MM-DD")] || []).push(e)
+      );
       return map;
     }
   },
-  mounted() {
-    this.$refs.calendar.scrollToTime("08:00");
-  },
-  methods: {
 
+  methods: {
+    formatTime(startTime) {
+      let mTime = moment.utc(startTime).format("HH:mm")
+      console.log(mTime)
+      return mTime;
+    },
+
+    computedDuration(id, startTime, endTime) {
+      let stime = moment.utc(startTime)
+      let etime = moment.utc(endTime)
+      let duration = etime.diff(stime,"minutes");
+      return duration;
+      // console.log("id " + id);
+      // console.log("duration",etime.diff(stime,"minutes"))
+      // console.log("stime " + stime.format("HH:mm:ss") + " etime" + etime.format("HH:mm:ss"));
+    }
   }
 };
 </script>
