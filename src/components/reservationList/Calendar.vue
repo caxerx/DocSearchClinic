@@ -94,7 +94,7 @@
             </v-card>
 
             <!-- patient -->
-            <div style="margin-top: 15%;height:71.5% ">
+            <div style="margin-top: 15%;height:73.6% ">
               <patient :reservations="reservations"/>
             </div>
           </div>
