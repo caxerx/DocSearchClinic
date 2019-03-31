@@ -1,5 +1,5 @@
 <template>
-  <v-card color="grey lighten-4" min-width="350px" flat>
+  <v-card color="grey lighten-4" max-width="350px" flat>
     <v-list>
       <v-list-tile avatar>
         <v-list-tile-avatar>
@@ -10,7 +10,12 @@
           <v-list-tile-title>
             <a :href="getPatientLink(patient.id)">{{patient.name}}</a>
           </v-list-tile-title>
-          <v-list-tile-sub-title>{{patient.details}}</v-list-tile-sub-title>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-list-tile-title  v-on="on">{{note}}</v-list-tile-title>
+            </template>
+            <span>{{note}}</span>
+          </v-tooltip>
         </v-list-tile-content>
       </v-list-tile>
       <br>
@@ -38,8 +43,8 @@
     <v-list>
       <v-list-tile>
         <v-list-tile-title>
-          <b>{{ formatAMPM(patient.time) }}</b>
-          for {{patient.duration}} mins
+          <b>{{startTime }}</b>
+          for {{duration}} mins
         </v-list-tile-title>
         <v-spacer></v-spacer>
         <v-list-tile-action>
@@ -62,23 +67,16 @@ export default {
   props: {
     // attribute name: Type
     patient: Object,
-    icon: String
+    icon: String,
+    startTime: String,
+    duration: Number,
+    note: String
   },
 
   computed: {},
 
   methods: {
     //temporarily time to ampm
-    formatAMPM(time) {
-      var hours = time.split(":")[0];
-      var minutes = time.split(":")[1];
-      var ampm = hours >= 12 ? "pm" : "am";
-      hours = hours % 12;
-      hours = hours ? hours : 12; // the hour '0' should be '12'
-      minutes = minutes < 10 && minutes != "00" ? "0" + minutes : minutes;
-      var strTime = hours + ":" + minutes + "  " + ampm;
-      return strTime;
-    },
     getPatientLink(id) {
       return "/patientList?id=" + id;
     }

@@ -63,17 +63,22 @@
                   <!-- timed events -->
                   <template v-slot:activator="{ on }">
                     <div
-            
                       :key="reservation.id"
                       :style="{ top: timeToY((formatTime(reservation.startTime)+30)) + 'px', height: minutesToPixels(computedDuration(reservation.id,reservation.startTime,reservation.endTime)) + 'px' }"
                       class="my-event with-time"
                       v-on="on"
-                      v-html="reservation.id"
+                      v-html="reservation.patient.name"
                     ></div>
                   </template>
 
                   <!-- pop up menu -->
-                  <!-- <menu-card :icon="icon" :patient="patient"/> -->
+                  <menu-card
+                    :icon="icon"
+                    :patient="reservation.patient"
+                    :startTime="formatAMPM(reservation.startTime)"
+                    :duration="computedDuration(reservation.id,reservation.startTime,reservation.endTime)"
+                    :note="reservation.note"
+                  />
                 </v-menu>
               </template>
             </template>
@@ -90,7 +95,7 @@
 
             <!-- patient -->
             <div style="margin-top: 15%;height:71.5% ">
-              <patient/>
+              <patient :reservations="reservations"/>
             </div>
           </div>
         </v-flex>
@@ -157,9 +162,15 @@ const reservationsQuery = gql`
   query {
     reservations {
       id
+      reserver {
+        id
+        name
+      }
       patient {
         id
         name
+        email
+        phoneNo
       }
       note
       startTime
@@ -208,15 +219,18 @@ export default {
 
   methods: {
     formatTime(startTime) {
-      let mTime = moment.utc(startTime).format("HH:mm")
-      console.log(mTime)
+      let mTime = moment.utc(startTime).format("HH:mm");
+      return mTime;
+    },
+    formatAMPM(startTime) {
+      let mTime = moment.utc(startTime).format("HH:mm A");
       return mTime;
     },
 
     computedDuration(id, startTime, endTime) {
-      let stime = moment.utc(startTime)
-      let etime = moment.utc(endTime)
-      let duration = etime.diff(stime,"minutes");
+      let stime = moment.utc(startTime);
+      let etime = moment.utc(endTime);
+      let duration = etime.diff(stime, "minutes");
       return duration;
       // console.log("id " + id);
       // console.log("duration",etime.diff(stime,"minutes"))
