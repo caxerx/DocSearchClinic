@@ -1,5 +1,5 @@
 <template>
-  <v-card color="grey lighten-4" max-width="350px" flat>
+  <v-card color="grey lighten-4" width="350px" flat>
     <v-list>
       <v-list-tile avatar>
         <v-list-tile-avatar>

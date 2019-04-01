@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     cancelShow() {
-      this.$emit("input", {});
+     this.$emit('input',false);
     }
   }
 };

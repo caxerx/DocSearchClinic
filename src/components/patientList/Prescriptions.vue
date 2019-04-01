@@ -139,7 +139,7 @@ export default {
     },
 
     cancelShow(){
-        this.$emit('input',{});
+        this.$emit('input',false);
     }
   }
 };

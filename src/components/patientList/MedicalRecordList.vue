@@ -1,7 +1,7 @@
 <template>
   <div class="custlayout">
-    <div v-for="(medicalRecord,index) in medicalRecordList" :key="index" style="margin-top:20px;">
-       <medical-record-card :medicalRecord="medicalRecord" :icon="icon" :patient="patient"/>
+    <div v-for="(consultation,index) in patient.consultations" :key="index" style="margin-top:20px;">
+       <medical-record-card :consultation="consultation" :icon="icon" :patient="patient"/>
        
     </div>
   </div>
@@ -20,28 +20,19 @@ export default {
       
     };
   },
+  props:{
+    patient:Object,
+  },
   components: {
     MedicalRecordCard
   },
 
   computed: {
-    ...mapGetters({
-      getPatientListData: "getPatientListData"
-    }),
-
-    medicalRecordList() {
-      return this.getPatientListData.patient.medicalRecordList;
-    },
-    
 
 
-    patient() {
-      return this.getPatientListData.patient;
-    }
   },
 
   methods: {
-    ...mapActions(["actionReset"]),
   
 
   }

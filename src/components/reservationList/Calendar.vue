@@ -35,7 +35,7 @@
         <v-btn flat value="month">Month</v-btn>
       </v-btn-toggle>
     </v-toolbar>
-    <v-divider></v-divider>
+
 
     <v-navigation-drawer
       class="indigo lighten-5"
@@ -43,7 +43,7 @@
       permanent
       style="width:100%;padding-top:64px;height:100%"
     >
-      <v-layout row fill-height>
+      <v-layout  fill-height>
         <!-- <v-flex sm2>
           <doctor-list/>
         </v-flex>-->
@@ -94,7 +94,7 @@
             </v-card>
 
             <!-- patient -->
-            <div style="margin-top: 15%;height:73.6% ">
+            <div style="margin-top: 15%;height:73.8% ">
               <patient :reservations="reservations"/>
             </div>
           </div>

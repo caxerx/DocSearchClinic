@@ -15,16 +15,18 @@
               <v-layout style="width:100%">
                 <v-flex sm1>
                   <v-list-tile-title>
-                    <div class="custAlign">{{ getDate(medicalRecord.date) | moment("DD")}}</div>
+                    <div class="custAlign">{{ consultation.startTime | moment("utc","DD")}}</div>
                   </v-list-tile-title>
-                  <v-list-tile-title style="overflow:unset">{{ getDate(medicalRecord.date) | moment("MMM'YY")}}</v-list-tile-title>
+                  <v-list-tile-title
+                    style="overflow:unset"
+                  >{{ consultation.startTime | moment("utc","MMM'YY")}}</v-list-tile-title>
                 </v-flex>
                 <div style="padding-left:10px"></div>
                 <v-divider vertical/>
                 <v-flex sm8 style="padding-left:15px">
                   <span>Appointment with&nbsp;</span>
                   <b class="black--text">{{patient.name}}</b>
-                  <v-list-tile-sub-title>{{formatAMPM(medicalRecord.time)}} for {{medicalRecord.duration}} mins</v-list-tile-sub-title>
+                  <v-list-tile-sub-title>{{ consultation.startTime | moment("utc","h:mm a")}} for {{computedDuration(consultation.startTime,consultation.endTime)}} mins</v-list-tile-sub-title>
                 </v-flex>
                 <v-flex sm1>
                   <v-btn icon small>
@@ -33,12 +35,13 @@
                 </v-flex>
                 <v-flex sm3>
                   <v-menu offset-y open-on-hover>
-                    <v-btn outline small slot="activator" color="orange">Add Record
+                    <v-btn outline small slot="activator" color="orange">
+                      Add Record
                       <v-icon>arrow_drop_down</v-icon>
                     </v-btn>
                     <v-list>
                       <div v-for="(item, index) in items" :key="index">
-                        <v-btn flat @click="showItem(item.name,medicalRecord.id)">{{item.title}}</v-btn>
+                        <v-btn flat @click="showItem(item.name,index)">{{item.title}}</v-btn>
                       </div>
                     </v-list>
                   </v-menu>
@@ -48,18 +51,16 @@
           </v-list-tile>
         </v-list>
         <v-divider/>
-        <div :id="medicalRecord.id" >
-          <v-list v-if="isShowPrescriptions(medicalRecord.id)">
-            <prescriptions v-model="showPrescriptions">
-            </prescriptions>
+        <div :id="consultation.id">
+          <v-list v-if="showPrescriptions">
+            <prescriptions v-model="showPrescriptions"></prescriptions>
           </v-list>
-          <v-list v-else-if="isShowClincalNotes(medicalRecord.id)">
-            <clincal-notes v-model="showClincalNotes">
-            </clincal-notes>
+          <v-list v-else-if="showClincalNotes">
+            <clincal-notes v-model="showClincalNotes" :note="consultation.note"></clincal-notes>
           </v-list>
-          <v-list v-else-if="isEmptyRecord(medicalRecord)">
+          <!-- <v-list v-else-if="isEmptyRecord(consultation)">
             <v-layout justify-center>No records added yet</v-layout>
-          </v-list>
+          </v-list>-->
         </div>
       </v-card>
     </v-flex>
@@ -71,6 +72,7 @@
 import { mapGetters, mapActions, mapState } from "vuex";
 import Prescriptions from "@/components/patientList/Prescriptions.vue";
 import ClincalNotes from "@/components/patientList/ClincalNotes.vue";
+let moment = require("moment");
 
 export default {
   data() {
@@ -80,12 +82,12 @@ export default {
         { name: "prescriptions", title: "Prescriptions" },
         { name: "clincalNotes", title: "CLincal Notes" }
       ],
-      showPrescriptions: {},
-      showClincalNotes: {}
+      showPrescriptions: false,
+      showClincalNotes: false
     };
   },
   props: {
-    medicalRecord: Object,
+    consultation: Object,
     icon: String,
     patient: Object
   },
@@ -98,22 +100,6 @@ export default {
   },
 
   methods: {
-    getDate(date) {
-      let d = new Date(date);
-      return d;
-    },
-
-    formatAMPM(time) {
-      var hours = time.split(":")[0];
-      var minutes = time.split(":")[1];
-      var ampm = hours >= 12 ? "pm" : "am";
-      hours = hours % 12;
-      hours = hours ? hours : 12; // the hour '0' should be '12'
-      minutes = minutes < 10 && minutes != "00" ? "0" + minutes : minutes;
-      var strTime = hours + ":" + minutes + "  " + ampm;
-      return strTime;
-    },
-
     isEmptyRecord(medicalRecord) {
       if (
         medicalRecord.prescriptions.length == 0 &&
@@ -140,32 +126,24 @@ export default {
       return false;
     },
     cancelShow(id) {
-      this.showPrescriptions = {};
-      this.showClincalNotes = {};
+      this.showPrescriptions = false;
+      this.showClincalNotes = false;
     },
 
     showItem(name, id) {
       if (name === "prescriptions") {
-        this.showPrescriptions = {
-          name: name,
-          id: id
-        };
-        this.showClincalNotes = {};
+        this.showPrescriptions = true;
+        this.showClincalNotes = false;
       } else if (name === "clincalNotes") {
-        this.showClincalNotes = {
-          name: name,
-          id: id
-        };
-        this.showPrescriptions = {};
+        this.showPrescriptions = false;
+        this.showClincalNotes = true;
       }
     },
-
-    cancelClincalNotes(val){
-        this.showClincalNotes = val;
-    },
-
-    cancelPrescriptions(val){
-        this.showPrescriptions = val;
+    computedDuration(startTime, endTime) {
+      let stime = moment.utc(startTime);
+      let etime = moment.utc(endTime);
+      let duration = etime.diff(stime, "minutes");
+      return duration;
     }
   }
 };

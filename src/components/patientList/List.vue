@@ -6,19 +6,19 @@
       justify-center
       fill-height
     >Select a patient to view details</v-layout>
-  <div  v-else-if="isRecordEmpty()" style="height:100%">
-     <patient-profile-card/>
-        <v-layout
-      align-center
-      justify-center
-      style="height:80%"
-    >No Records in this Patient</v-layout>
-  </div>
-
     <div v-else style="height:100%">
-      <patient-profile-card/>
-    
-      <medical-record-list/>
+      <div v-if="patient!=null" style="height:100%">
+        <div v-if="isRecordEmpty()" style="height:100%">
+          <patient-profile-card :patient="patient"/>
+          <v-layout align-center justify-center style="height:80%">No Records in this Patient</v-layout>
+        </div>
+
+        <div v-else style="height:100%">
+          <patient-profile-card :patient="patient"/>
+
+          <medical-record-list :patient="patient"/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -28,28 +28,55 @@ import { mapGetters, mapActions, mapState } from "vuex";
 
 import MedicalRecordList from "@/components/patientList/MedicalRecordList.vue";
 import PatientProfileCard from "@/components/patientList/PatientProfileCard.vue";
+import gql from "graphql-tag";
+
+const patientQuery = gql`
+  query($id: ID!) {
+    patient(id: $id) {
+      id
+      name
+      gender
+      dob
+      email
+      phoneNo
+      consultations {
+        id
+        consultant {
+          name
+        }
+        note
+        startTime
+        endTime
+      }
+    }
+  }
+`;
 
 export default {
   data: () => ({
     search: "",
-    dialogType: ""
+    dialogType: "",
+    skipQuery: true
   }),
+
+  apollo: {
+    patient: {
+      query: patientQuery,
+      variables() {
+        return {
+          id: this.id
+        };
+      },
+      skip() {
+        return this.skipQuery;
+      }
+    }
+  },
 
   computed: {
     // formTitle() {
     //   return this.editedIndex === -1 ? "New Item" : "Edit Item";
     // }
-    ...mapGetters({
-      getter: "getPatientListData"
-    }),
-
-    patientList() {
-      return this.getter.clinc.patientList;
-    },
-
-    patient() {
-      return this.getter.patient;
-    },
 
     id() {
       return this.$route.query.id;
@@ -77,15 +104,20 @@ export default {
       if (id === undefined) {
         return false;
       } else {
+        this.startQuery();
         return true;
       }
     },
     isRecordEmpty() {
-      if (this.patient.medicalRecordList.length === 0) {
+      if (this.patient.consultations.length < 1) {
         return true;
       }
 
       return false;
+    },
+    startQuery() {
+      this.$apollo.queries.patient.skip = false;
+      this.$apollo.queries.patient.refetch();
     }
   }
 };

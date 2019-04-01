@@ -4,7 +4,8 @@
       <v-tabs v-model="active" slider-color="white" style="height:10%">
         <v-tab v-for="type in types" :key="type" ripple>{{type}}</v-tab>
       </v-tabs>
-      <div style="height:90%;overflow-y:scroll">
+      
+      <v-navigation-drawer permanent style="height:90%;">
         <div v-if="active==0">
           <v-card v-for="(reservation,index) in reservations" :key="index">
             <div>
@@ -42,7 +43,7 @@
             <v-card-text>No Appointment</v-card-text>
           </v-card>
         </div>
-      </div>
+      </v-navigation-drawer>
     </v-card>
   </div>
 </template>
