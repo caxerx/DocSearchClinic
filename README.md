@@ -1,4 +1,4 @@
-# fyppp
+# DocSearchClinic
 
 ## Project setup
 ```
