@@ -3,19 +3,21 @@
     <v-navigation-drawer v-model="drawer" permanent app clipped>
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
-          <v-list-tile avatar @click="toggleDoctorList">
-            <v-list-tile-avatar>
-              <img src="https://randomuser.me/api/portraits/men/85.jpg">
-            </v-list-tile-avatar>
+          <div v-if="!$apollo.loading">
+            <v-list-tile avatar @click="toggleDoctorList">
+              <v-list-tile-avatar>
+                <img src="https://randomuser.me/api/portraits/men/85.jpg">
+              </v-list-tile-avatar>
 
-            <v-list-tile-content>
-              <v-list-tile-title>Dr. Wang Michael</v-list-tile-title>
-              <v-list-tile-sub-title>MD Clinic</v-list-tile-sub-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-icon>{{doctorList==0?'arrow_drop_up':'arrow_drop_down'}}</v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
+              <v-list-tile-content>
+                <v-list-tile-title>Dr. Wang Michael</v-list-tile-title>
+                <v-list-tile-sub-title>{{workplace.name}}</v-list-tile-sub-title>
+              </v-list-tile-content>
+              <v-list-tile-action>
+                <v-icon>{{doctorList==0?'arrow_drop_up':'arrow_drop_down'}}</v-icon>
+              </v-list-tile-action>
+            </v-list-tile>
+          </div>
         </v-list>
       </v-toolbar>
       <v-expansion-panel v-model="doctorList">
@@ -171,16 +173,35 @@
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import gql from "graphql-tag";
+const workplaceQuery = gql`
+  query($id: ID!) {
+    workplace(id: $id) {
+      name
+    }
+  }
+`;
 
 export default {
   data: () => ({
     drawer: null,
     doctorList: -1,
-    defaultId : 0,
+    defaultId: 0
   }),
 
   components: {
     Breadcrumb
+  },
+  apollo: {
+    workplace: {
+      query: workplaceQuery,
+
+      variables() {
+        return {
+          id: 1
+        };
+      }
+    }
   },
 
   computed: {
@@ -195,9 +216,7 @@ export default {
     ...mapActions(["actionLogout"]),
 
     linkTo(link) {
-
-        this.$router.push('/'+ link );
-      
+      this.$router.push("/" + link);
     },
 
     logout() {

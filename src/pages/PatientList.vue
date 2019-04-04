@@ -4,7 +4,7 @@
       <nevigation :patients="patients" :doctor="doctor"/>
     </v-flex>
     <v-flex d-flex sm10 style="padding-left:7%;padding-right:3%">
-      <v-card :style="{'height':computedHeight}">
+      <v-card >
         <list  />
       </v-card>
     </v-flex>
@@ -84,11 +84,11 @@ export default {
   },
 
   computed: {
-    computedHeight() {
-      let windowHeight = window.innerHeight;
-      let maxHeight = windowHeight * 0.81 + "px";
-      return maxHeight;
-    },
+    // computedHeight() {
+    //   let windowHeight = window.innerHeight;
+    //   let maxHeight = windowHeight * 0.81 + "px";
+    //   return maxHeight;
+    // },
 
     lastReservationDate(){
 

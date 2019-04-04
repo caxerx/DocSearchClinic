@@ -58,9 +58,9 @@
           <v-list v-else-if="showClincalNotes">
             <clincal-notes v-model="showClincalNotes" :note="consultation.note"></clincal-notes>
           </v-list>
-          <!-- <v-list v-else-if="isEmptyRecord(consultation)">
+          <v-list v-else-if="isEmptyRecord(consultation)">
             <v-layout justify-center>No records added yet</v-layout>
-          </v-list>-->
+          </v-list>
         </div>
       </v-card>
     </v-flex>
@@ -100,11 +100,8 @@ export default {
   },
 
   methods: {
-    isEmptyRecord(medicalRecord) {
-      if (
-        medicalRecord.prescriptions.length == 0 &&
-        medicalRecord.clincalNotes.length == 0
-      ) {
+    isEmptyRecord(c) {
+      if(c.note===null||c.note===""){
         return true;
       }
 
