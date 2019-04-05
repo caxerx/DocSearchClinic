@@ -10,7 +10,8 @@
               </v-list-tile-avatar>
 
               <v-list-tile-content>
-                <v-list-tile-title>Dr. Wang Michael</v-list-tile-title>
+                <!-- tempoary set user is doctor 1 -->
+                <v-list-tile-title>Dr. {{workplace.doctors[0].name}}</v-list-tile-title>
                 <v-list-tile-sub-title>{{workplace.name}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
@@ -23,22 +24,20 @@
       <v-expansion-panel v-model="doctorList">
         <v-expansion-panel-content>
           <v-list>
-            <v-list-tile @click="toggleDoctorList">
-              <v-list-tile-avatar>
-                <img src="https://randomuser.me/api/portraits/men/85.jpg">
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>Dr. Michael Wang</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile @click="toggleDoctorList">
-              <v-list-tile-avatar>
-                <img src="https://randomuser.me/api/portraits/men/84.jpg">
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>Dr. Dennis Au Yeung</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+            <div v-if="!$apollo.loading">
+              <v-list-tile
+                @click="toggleDoctorList"
+                v-for="(doctor,index) in workplace.doctors"
+                :key="index"
+              >
+                <v-list-tile-avatar>
+                  <img src="https://randomuser.me/api/portraits/men/85.jpg">
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{doctor.name}}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </div>
           </v-list>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -174,10 +173,19 @@
 import { mapGetters, mapActions, mapState } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import gql from "graphql-tag";
+
 const workplaceQuery = gql`
   query($id: ID!) {
     workplace(id: $id) {
+      id
       name
+      location
+      type
+
+      doctors {
+        id
+        name
+      }
     }
   }
 `;
@@ -198,7 +206,7 @@ export default {
 
       variables() {
         return {
-          id: 1
+          id: 3
         };
       }
     }
