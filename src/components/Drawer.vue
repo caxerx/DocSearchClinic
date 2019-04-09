@@ -11,8 +11,8 @@
 
               <v-list-tile-content>
                 <!-- tempoary set user is doctor 1 -->
-                <v-list-tile-title>Dr. {{workplace.doctors[0].name}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{workplace.name}}</v-list-tile-sub-title>
+                <v-list-tile-title>Dr. jashd</v-list-tile-title>
+                <v-list-tile-sub-title>asd</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-icon>{{doctorList==0?'arrow_drop_up':'arrow_drop_down'}}</v-icon>
