@@ -11,8 +11,8 @@
 
               <v-list-tile-content>
                 <!-- tempoary set user is doctor 1 -->
-                <v-list-tile-title>Dr. jashd</v-list-tile-title>
-                <v-list-tile-sub-title>asd</v-list-tile-sub-title>
+                <v-list-tile-title>Dr. {{getSelectDoctor.name}}</v-list-tile-title>
+                <v-list-tile-sub-title>{{workplace.name}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-icon>{{doctorList==0?'arrow_drop_up':'arrow_drop_down'}}</v-icon>
@@ -23,13 +23,9 @@
       </v-toolbar>
       <v-expansion-panel v-model="doctorList">
         <v-expansion-panel-content>
-          <v-list>
-            <div v-if="!$apollo.loading">
-              <v-list-tile
-                @click="toggleDoctorList"
-                v-for="(doctor,index) in workplace.doctors"
-                :key="index"
-              >
+          <v-list v-if="!$apollo.loading"> 
+            <div v-for="(doctor,index) in workplace.doctors" :key="index">
+              <v-list-tile @click="toggleDoctor(doctor)">
                 <v-list-tile-avatar>
                   <img src="https://randomuser.me/api/portraits/men/85.jpg">
                 </v-list-tile-avatar>
@@ -206,7 +202,7 @@ export default {
 
       variables() {
         return {
-          id: 4
+          id: 5
         };
       }
     }
@@ -214,12 +210,19 @@ export default {
 
   computed: {
     ...mapGetters({
-      isSuccess: "getIsSuccess"
+      isSuccess: "getIsSuccess",
+      getSelectDoctor: "getSelectDoctor"
     })
   },
   methods: {
+    ...mapActions(["actionSetSelectDoctor"]),
+
     toggleDoctorList() {
       this.doctorList = this.doctorList == 0 ? -1 : 0;
+      
+    },
+    toggleDoctor(doctor){
+      this.actionSetSelectDoctor(doctor);
     },
     ...mapActions(["actionLogout"]),
 

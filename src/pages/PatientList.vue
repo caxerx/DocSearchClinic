@@ -1,50 +1,26 @@
 <template>
-  <v-layout style="height: 90%" v-if="!$apollo.loading">
-    <v-flex sm2 d-flex style="padding-left:2%">
-      <nevigation :patients="patients" :doctor="doctor"/>
-    </v-flex>
-    <v-flex d-flex sm10 style="padding-left:7%;padding-right:3%">
-      <v-card >
-        <list  />
-      </v-card>
-    </v-flex>
-  </v-layout>
+  <div style="height:100%;width:100%">
+    <loading-dialog :dialog="dialog"/>
+    <v-layout style="height: 90%" v-if="!$apollo.loading">
+      <v-flex sm2 d-flex style="padding-left:2%">
+        <nevigation :consultations="doctor.reservations" :doctor="doctor"/>
+      </v-flex>
+      <v-flex d-flex sm10 style="padding-left:7%;padding-right:3%">
+        <v-card>
+          <list/>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </div>
 </template>
 
 
 <script>
 import List from "@/components/patientList/List.vue";
+import { mapGetters, mapActions, mapState } from "vuex";
+import LoadingDialog from "@/components/dialog/loadingDialog.vue";
 import Nevigation from "@/components/patientList/Nevigation.vue";
 import gql from "graphql-tag";
-
-const patientsQuery = gql`
-  query {
-    patients {
-      id
-      name
-      gender
-      email
-      phoneNo
-      dob
-      hkid
-      consultations {
-        id
-        consultant {
-          name
-          workplace {
-            name
-          }
-        }
-        note
-        startTime
-        endTime
-      }
-      reservations {
-        startTime
-      }
-    }
-  }
-`;
 
 const doctorQuery = gql`
   query($id: ID!) {
@@ -57,6 +33,33 @@ const doctorQuery = gql`
         location
         type
       }
+      # using consultants have problem, so tempo using reservations
+      reservations {
+        patient {
+          id
+          name
+          gender
+          email
+          phoneNo
+          dob
+          hkid
+          consultations {
+            id
+            consultant {
+              name
+              workplace {
+                name
+              }
+            }
+            note
+            startTime
+            endTime
+          }
+          reservations {
+            startTime
+          }
+        }
+      }
     }
   }
 `;
@@ -65,14 +68,11 @@ export default {
   data: () => ({}),
 
   apollo: {
-    patients: {
-      query: patientsQuery
-    },
     doctor: {
       query: doctorQuery,
       variables() {
         return {
-          id: 1
+          id: this.getSelectDoctor.id
         };
       }
     }
@@ -80,7 +80,8 @@ export default {
 
   components: {
     List,
-    Nevigation
+    Nevigation,
+    LoadingDialog
   },
 
   computed: {
@@ -89,10 +90,23 @@ export default {
     //   let maxHeight = windowHeight * 0.81 + "px";
     //   return maxHeight;
     // },
+    ...mapGetters({
+      getSelectDoctor: "getSelectDoctor"
+    }),
 
-    lastReservationDate(){
-
-    }
+    dialog: {
+      get() {
+        if (this.$apollo.queries.doctor.loading) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      set(val) {
+        this.dialog = val;
+      }
+    },
+    lastReservationDate() {}
   },
 
   watch: {

@@ -1,5 +1,7 @@
 <template>
-  <div v-if="reservations!=null">
+<div>
+  <loading-dialog :dialog="dialog"/>
+  <div v-if="doctor!=null">
     <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
     <v-toolbar flat absolute style="z-index:10">
       <v-btn icon @click="$refs.calendar.prev()">
@@ -36,14 +38,13 @@
       </v-btn-toggle>
     </v-toolbar>
 
-
     <v-navigation-drawer
       class="indigo lighten-5"
       absolute
       permanent
       style="width:100%;padding-top:64px;height:100%"
     >
-      <v-layout  fill-height>
+      <v-layout fill-height>
         <!-- <v-flex sm2>
           <doctor-list/>
         </v-flex>-->
@@ -95,13 +96,14 @@
 
             <!-- patient -->
             <div style="margin-top: 15%;height:73.8% ">
-              <patient :reservations="reservations"/>
+              <patient :reservations="doctor.reservations"/>
             </div>
           </div>
         </v-flex>
       </v-layout>
     </v-navigation-drawer>
   </div>
+</div>
 </template>
 
 
@@ -154,27 +156,32 @@ import { mapGetters, mapActions, mapState } from "vuex";
 import DoctorList from "@/components/reservationList/DoctorList.vue";
 import Patient from "@/components/reservationList/Patient.vue";
 import MenuCard from "@/components/reservationList/MenuCard.vue";
+import LoadingDialog from "@/components/dialog/loadingDialog.vue"
 import gql from "graphql-tag";
 
 let moment = require("moment");
 
 const reservationsQuery = gql`
-  query {
-    reservations {
+  query($id: ID!) {
+    doctor(id: $id) {
       id
-      reserver {
+      name
+      reservations {
         id
-        name
+        reserver {
+          id
+          name
+        }
+        patient {
+          id
+          name
+          email
+          phoneNo
+        }
+        note
+        startTime
+        endTime
       }
-      patient {
-        id
-        name
-        email
-        phoneNo
-      }
-      note
-      startTime
-      endTime
     }
   }
 `;
@@ -184,23 +191,30 @@ export default {
     start: new Date().toISOString().substr(0, 10),
     menu: false,
     calendarType: "week",
-    icon: "https://cdn.vuetifyjs.com/images/john.jpg"
+    icon: "https://cdn.vuetifyjs.com/images/john.jpg",
   }),
 
   apollo: {
-    reservations: {
-      query: reservationsQuery
+    doctor: {
+      query: reservationsQuery,
+      variables() {
+        return {
+          id: this.getSelectDoctor.id
+        };
+      }
     }
   },
 
   components: {
     DoctorList,
     Patient,
-    MenuCard
+    MenuCard,
+    LoadingDialog
   },
   computed: {
     ...mapGetters({
-      getter: "getReservationListData"
+      getter: "getReservationListData",
+      getSelectDoctor:"getSelectDoctor",
     }),
     // convert the list of events into a map of lists keyed by date
     patientList() {
@@ -209,11 +223,23 @@ export default {
 
     eventsMap() {
       const map = {};
-      this.reservations.forEach(e =>
+      this.doctor.reservations.forEach(e =>
         (map[moment.utc(e.startTime).format("YYYY-MM-DD")] =
           map[moment.utc(e.startTime).format("YYYY-MM-DD")] || []).push(e)
       );
       return map;
+    },
+    dialog:{
+      get(){
+        if(this.$apollo.loading){
+          return true;
+        }else{
+          return false;
+        }
+      },
+      set(val){
+        this.dialog = val;
+      }
     }
   },
 

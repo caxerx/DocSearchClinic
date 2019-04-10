@@ -1,7 +1,8 @@
 <template>
   <div style="height:100%">
+    <loading-dialog :dialog="dialog"/>
     <v-layout
-      v-if="!isClickPatient($route.query.id)"
+      v-if="!isClickPatient(patient.id)"
       align-center
       justify-center
       fill-height
@@ -28,83 +29,51 @@ import { mapGetters, mapActions, mapState } from "vuex";
 
 import MedicalRecordList from "@/components/patientList/MedicalRecordList.vue";
 import PatientProfileCard from "@/components/patientList/PatientProfileCard.vue";
-import gql from "graphql-tag";
-
-const patientQuery = gql`
-  query($id: ID!) {
-    patient(id: $id) {
-      id
-      name
-      gender
-      dob
-      email
-      phoneNo
-      consultations {
-        id
-        consultant {
-          name
-        }
-        note
-        startTime
-        endTime
-      }
-    }
-  }
-`;
+import LoadingDialog from "@/components/dialog/loadingDialog.vue";
 
 export default {
   data: () => ({
     search: "",
-    dialogType: "",
-    skipQuery: true
+    dialogType: ""
   }),
 
-  apollo: {
-    patient: {
-      query: patientQuery,
-      variables() {
-        return {
-          id: this.id
-        };
-      },
-      skip() {
-        return this.skipQuery;
-      }
-    }
-  },
+  apollo: {},
 
   computed: {
-    // formTitle() {
-    //   return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    // }
-
-    id() {
-      return this.$route.query.id;
+    ...mapGetters({
+      getPatientListData: "getPatientListData"
+    }),
+    patient() {
+      return this.getPatientListData.patient;
+    },
+    dialog: {
+      get() {
+        if (this.$apollo.loading) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      set(val) {
+        this.dialog = val;
+      }
     }
   },
 
   components: {
     MedicalRecordList,
-    PatientProfileCard
-  },
-
-  created() {
-    this.actionQueryPatientFromPatientList(this.id);
-  },
-
-  watch: {
-    id: function(val) {
-      this.actionQueryPatientFromPatientList(this.id);
-    }
+    PatientProfileCard,
+    LoadingDialog
   },
 
   methods: {
     ...mapActions(["actionQueryPatientFromPatientList"]),
     isClickPatient(id) {
-      if (id === undefined) {
+
+      if (id === -1) {
         return false;
       } else {
-        this.startQuery();
+        
         return true;
       }
     },
@@ -115,10 +84,6 @@ export default {
 
       return false;
     },
-    startQuery() {
-      this.$apollo.queries.patient.skip = false;
-      this.$apollo.queries.patient.refetch();
-    }
   }
 };
 </script>

@@ -3,62 +3,62 @@
     <h3 class="headline mb --text">Patients</h3>
     <div class="black--text">{{doctor.workplace.name}}</div>
     <v-tabs v-model="active" slider-color="orange" color="transparent">
-      <v-tab v-for="type in types" :key="type" ripple>{{type}}</v-tab>
+      <v-tab v-for="(type,index) in types" :key="index" ripple>{{type}}</v-tab>
     </v-tabs>
+    <div v-if="active==0">
 
-      <div v-if="active==0">
-        <v-list flat style="background-color:transparent;">
-          <div v-for="(patient,index) in patients" :key="index" avatar>
-            <div v-if="patients!=null&&isToday(patient.consultations)">
-              <v-list-tile @click="pushIdToURL(patient)">
-                <v-list-tile-avatar>
-                  <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
-                </v-list-tile-avatar>
+      <v-list flat style="background-color:transparent;">
+        <div v-for="(consultation,index) in consultations" :key="index" avatar>
+          <div v-if="consultations!=null&&isToday(consultation.patient.consultations)">
+            <v-list-tile @click="setPatient(consultation.patient)">
+              <v-list-tile-avatar>
+                <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
+              </v-list-tile-avatar>
 
-                <v-list-tile-content>
-                  <v-list-tile-title v-html="patient.name"></v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </div>
+              <v-list-tile-content>
+                <v-list-tile-title v-html="consultation.patient.name"></v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
           </div>
-        </v-list>
-      </div>
-      <div v-else-if="active==1">
-        <v-list flat style="background-color:transparent;">
-          <v-list-tile
-            v-for="(patient,index) in patients"
-            :key="index"
-            avatar
-            @click="pushIdToURL(patient)"
-          >
-            <v-list-tile-avatar>
-              <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
-            </v-list-tile-avatar>
+        </div>
+      </v-list>
+    </div>
+    <div v-else-if="active==1">
+      <v-list flat style="background-color:transparent;">
+        <v-list-tile
+          v-for="(consultation,index) in consultations"
+          :key="index"
+          avatar
+          @click="setPatient(consultation.patient)"
+        >
+          <v-list-tile-avatar>
+            <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
+          </v-list-tile-avatar>
 
-            <v-list-tile-content>
-              <v-list-tile-title v-html="patient.name"></v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-      </div>
-      <div v-else-if="active==2">
-        <v-list flat style="background-color:transparent;">
-          <v-list-tile
-            v-for="(patient,index) in patients"
-            :key="index"
-            avatar
-            @click="pushIdToURL(patient)"
-          >
-            <v-list-tile-avatar>
-              <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
-            </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title v-html="consultation.patient.name"></v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </div>
+    <div v-else-if="active==2">
+      <v-list flat style="background-color:transparent;">
+        <v-list-tile
+          v-for="(consultation,index) in consultations"
+          :key="index"
+          avatar
+          @click="setPatient(consultation.patient)"
+        >
+          <v-list-tile-avatar>
+            <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
+          </v-list-tile-avatar>
 
-            <v-list-tile-content>
-              <v-list-tile-title v-html="patient.name"></v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-      </div>
+          <v-list-tile-content>
+            <v-list-tile-title v-html="consultation.patient.name"></v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </div>
 
     <v-divider></v-divider>
   </div>
@@ -67,6 +67,9 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
+
+import gql from "graphql-tag";
+
 let moment = require("moment");
 
 export default {
@@ -78,15 +81,16 @@ export default {
       patientid: 0
     };
   },
+
   props: {
-    patients: Array,
+    consultations: Array,
     doctor: Object
   },
   components: {},
   computed: {},
 
   methods: {
-    ...mapActions(["actionReset"]),
+    ...mapActions(["actionSelectPatientForPatientList"]),
     isToday(obj) {
       if (obj.length < 1) {
         return false;
@@ -102,14 +106,19 @@ export default {
 
       return false;
     },
-    pushIdToURL(patient) {
-      this.$router.push({
-        name: "patientList",
-        query: {
-          id: patient.id
-        }
-      });
-    }
+    setPatient(patient){
+      this.actionSelectPatientForPatientList(patient);
+    },
+
+    computedNewArr(consultations){
+      
+      if(consultations.length<1){
+        return false
+      }
+      
+
+
+    },
   }
 };
 </script>

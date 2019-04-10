@@ -12,6 +12,7 @@ import reservationList from './modules/reservationList';
 import consultation from './modules/consultation';
 import patientList from './modules/patientList';
 import printing from './modules/printing';
+import selection from './modules/selection';
 
 
 Vue.use( Vuex );
@@ -29,7 +30,8 @@ export default new Vuex.Store({
     reservationList,
     consultation,
     patientList,
-    printing
+    printing,
+    selection
   },
 
   strict: true
