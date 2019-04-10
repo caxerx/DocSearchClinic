@@ -25,7 +25,6 @@ const actions = {
 const mutations = {
     ["setSelectDoctor"](state,doctor){
         state.selectDoctor = doctor;
-        console.log( state.selectDoctor)
     },
  
 }

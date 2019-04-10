@@ -3,7 +3,7 @@
     <loading-dialog :dialog="dialog"/>
     <v-layout style="height: 90%" v-if="!$apollo.loading">
       <v-flex sm2 d-flex style="padding-left:2%">
-        <nevigation :consultations="doctor.reservations" :doctor="doctor"/>
+        <nevigation :consultations="computedNewArr(doctor.reservations)" :doctor="doctor"/>
       </v-flex>
       <v-flex d-flex sm10 style="padding-left:7%;padding-right:3%">
         <v-card>
@@ -21,6 +21,7 @@ import { mapGetters, mapActions, mapState } from "vuex";
 import LoadingDialog from "@/components/dialog/loadingDialog.vue";
 import Nevigation from "@/components/patientList/Nevigation.vue";
 import gql from "graphql-tag";
+let moment = require("moment");
 
 const doctorQuery = gql`
   query($id: ID!) {
@@ -35,6 +36,7 @@ const doctorQuery = gql`
       }
       # using consultants have problem, so tempo using reservations
       reservations {
+        startTime
         patient {
           id
           name
@@ -93,7 +95,6 @@ export default {
     ...mapGetters({
       getSelectDoctor: "getSelectDoctor"
     }),
-
     dialog: {
       get() {
         if (this.$apollo.queries.doctor.loading) {
@@ -117,6 +118,19 @@ export default {
 
   created() {},
 
-  methods: {}
+  methods: {
+    computedNewArr(consultations) {
+      let newArr = consultations.slice();
+
+      newArr.reverse(function(a, b) {
+        let atime = new Date(a.startTime);
+        let btime = new Date(b.startTime);
+        return atime - btime;
+      });
+
+      
+      return newArr;
+    }
+  }
 };
 </script>

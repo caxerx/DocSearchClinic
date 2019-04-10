@@ -6,11 +6,10 @@
       <v-tab v-for="(type,index) in types" :key="index" ripple>{{type}}</v-tab>
     </v-tabs>
     <div v-if="active==0">
-
       <v-list flat style="background-color:transparent;">
-        <div v-for="(consultation,index) in consultations" :key="index" avatar>
-          <div v-if="consultations!=null&&isToday(consultation.patient.consultations)">
-            <v-list-tile @click="setPatient(consultation.patient)">
+        <span v-for="(consultation,index) in consultations" :key="index">
+          <span v-if="consultations!=null&&isToday(consultation.startTime)">
+            <v-list-tile @click="setPatient(consultation.patient)" avatar>
               <v-list-tile-avatar>
                 <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
               </v-list-tile-avatar>
@@ -19,14 +18,14 @@
                 <v-list-tile-title v-html="consultation.patient.name"></v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-          </div>
-        </div>
+          </span>
+        </span>
       </v-list>
     </div>
     <div v-else-if="active==1">
       <v-list flat style="background-color:transparent;">
         <v-list-tile
-          v-for="(consultation,index) in consultations"
+          v-for="(consultation,index) in checkRepeatIdAndReturnNewArr(consultations)"
           :key="index"
           avatar
           @click="setPatient(consultation.patient)"
@@ -44,7 +43,7 @@
     <div v-else-if="active==2">
       <v-list flat style="background-color:transparent;">
         <v-list-tile
-          v-for="(consultation,index) in consultations"
+          v-for="(consultation,index) in checkRepeatIdAndReturnNewArr(consultations)"
           :key="index"
           avatar
           @click="setPatient(consultation.patient)"
@@ -91,34 +90,29 @@ export default {
 
   methods: {
     ...mapActions(["actionSelectPatientForPatientList"]),
-    isToday(obj) {
-      if (obj.length < 1) {
-        return false;
+    isToday(startTime) {
+      let date = moment.utc(startTime).format("YYYY-MM-DD");
+      if (date === new Date().toISOString().substr(0, 10)) {
+        return true;
       }
-
-      for (let i = 0; i < obj.length; i++) {
-        let startTime = obj[i].startTime;
-        let date = moment.utc(startTime).format("YYYY-MM-DD");
-        if (date == "2019-03-01") {
-          return true;
-        }
-      }
-
+      // console.log(date + ", " + new Date().toISOString().substr(0, 10));
       return false;
     },
-    setPatient(patient){
+    setPatient(patient) {
       this.actionSelectPatientForPatientList(patient);
     },
+    checkRepeatIdAndReturnNewArr(consultations) {
+      let seen = new Set();
+      //check no repeat user in last coonsultation
+      let lastPatientInConsultations = consultations.filter(function(currentObject) {
+        if(seen.size !== seen.add(currentObject.patient.id).size){
+          return currentObject
+        }
+      });
 
-    computedNewArr(consultations){
-      
-      if(consultations.length<1){
-        return false
-      }
-      
 
-
-    },
+      return lastPatientInConsultations;
+    }
   }
 };
 </script>

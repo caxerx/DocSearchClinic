@@ -43,8 +43,13 @@ export default {
     ...mapGetters({
       getPatientListData: "getPatientListData"
     }),
-    patient() {
-      return this.getPatientListData.patient;
+    patient: {
+      get() {
+        return this.getPatientListData.patient;
+      },
+      set(val) {
+        this.patient = val;
+      }
     },
     dialog: {
       get() {
@@ -57,9 +62,12 @@ export default {
       set(val) {
         this.dialog = val;
       }
-    }
-  },
+    },
 
+  },
+  created: function() {
+    this.actionResetPatientForPatientList();
+  },
   components: {
     MedicalRecordList,
     PatientProfileCard,
@@ -67,13 +75,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(["actionQueryPatientFromPatientList"]),
+    ...mapActions([
+      "actionQueryPatientFromPatientList",
+      "actionResetPatientForPatientList"
+    ]),
     isClickPatient(id) {
-
       if (id === -1) {
         return false;
       } else {
-        
         return true;
       }
     },
@@ -83,7 +92,7 @@ export default {
       }
 
       return false;
-    },
+    }
   }
 };
 </script>

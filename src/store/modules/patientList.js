@@ -7,10 +7,7 @@ const state = {
             id: -1
         },
 
-
-
-
-
+        
     },
 }
 
@@ -27,6 +24,9 @@ const actions = {
     actionSelectPatientForPatientList({ commit }, patient) {
         commit("selectPatientForPatientList", patient)
     },
+    actionResetPatientForPatientList({ commit }) {
+        commit("resetPatientForPatientList")
+    },
 
 
 
@@ -35,6 +35,11 @@ const actions = {
 const mutations = {
     ["selectPatientForPatientList"](state, patient) {
         state.patientListData.patient = patient;
+    },
+    ["resetPatientForPatientList"](state){
+        state.patientListData.patient ={
+            id:-1,
+        }
     }
 }
 
