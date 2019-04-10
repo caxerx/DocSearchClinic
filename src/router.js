@@ -7,14 +7,12 @@ import About from './pages/About.vue'
 import ReservationList from './pages/ReservationList'
 import Consultation from './pages/Consultation.vue'
 import FeedBack from './pages/FeedBack'
-import OnlineQueueList from './pages/queue/OnlineQueueList'
 import ClincQueueList from './pages/queue/ClincQueueList'
 import SickLeave from './pages/printing/SickLeave'
 import ReferralLetter from './pages/printing/ReferralLetter'
 import ViewDoctorInfo from './pages/DoctorInfo/ViewDoctorInfo'
 import PatientList from './pages/PatientList'
 import Test from './pages/Test'
-import App from './App.vue'
 import DocumentPrint from './pages/printing/DocumentPrint'
 import DocumentTemplate from './pages/printing/DocumentTemplate'
 import CalendarSetting from './pages/Setting/CalendarSetting.vue'
@@ -79,17 +77,7 @@ export default new Router({
       name: 'reservationList',
       component: ReservationList,
       meta: {
-        breadcrumb: [{
-          text: 'Home',
-          href: '/',
-          disabled: false,
-        },
-        {
-          text: 'reservationList',
-          disabled: true,
-          href:'/reservationList'
-          
-        }]
+        breadcrumb: []
       }
     },
     {
