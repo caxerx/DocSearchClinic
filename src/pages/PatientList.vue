@@ -3,7 +3,7 @@
     <loading-dialog :dialog="dialog"/>
     <v-layout style="height: 90%" v-if="!$apollo.loading">
       <v-flex sm2 d-flex style="padding-left:2%">
-        <nevigation :consultations="computedNewArr(doctor.reservations)" :doctor="doctor"/>
+        <nevigation :consultations="computedNewArr(doctor.consultations)" :doctor="doctor"/>
       </v-flex>
       <v-flex d-flex sm10 style="padding-left:7%;padding-right:3%">
         <v-card>
@@ -34,8 +34,7 @@ const doctorQuery = gql`
         location
         type
       }
-      # using consultants have problem, so tempo using reservations
-      reservations {
+      consultations {
         startTime
         patient {
           id
@@ -122,10 +121,10 @@ export default {
     computedNewArr(consultations) {
       let newArr = consultations.slice();
 
-      newArr.reverse(function(a, b) {
+      newArr.sort(function(a, b) {
         let atime = new Date(a.startTime);
         let btime = new Date(b.startTime);
-        return atime - btime;
+        return btime - atime;
       });
 
       

@@ -13,7 +13,7 @@
                 {{patient.name}}
                 <span class="grey--text text--lighten-1">({{patient.id}})</span>
               </v-list-tile-title>
-              <v-list-tile-sub-title>{{patient.sex}} ． {{patient.dob}}</v-list-tile-sub-title>
+              <v-list-tile-sub-title>{{patient.gender}} ． {{patient.dob|moment("utc","YYYY-MM-DD")}}</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -46,18 +46,16 @@ export default {
       search: ""
     };
   },
+  props:{
+    patient:Object,
+  },
   components: {},
   computed: {
-    ...mapGetters({
-      getter: "getPatientListData"
-    }),
-    patient() {
-      return this.getter.patient;
-    }
+
   },
 
   methods: {
-    ...mapActions(["actionReset"])
+  
   }
 };
 </script>

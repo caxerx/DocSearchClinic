@@ -1,16 +1,24 @@
 <template>
-  <div style="height:100%">
+  <div style="height:100%" v-if="patient!=null">
     <v-layout
-      v-if="!isClickPatient($route.query.id)"
+      v-if="!isClickPatient(patient.id)"
       align-center
       justify-center
       fill-height
     >Select a patient to view details</v-layout>
-
     <div v-else style="height:100%">
-      <patient-profile-card/>
+      <div v-if="patient!=null" style="height:100%">
+        <div v-if="isRecordEmpty()" style="height:100%">
+          <patient-profile-card :patient="patient"/>
+          <v-layout align-center justify-center style="height:80%">No Records in this Patient</v-layout>
+        </div>
 
-      <medical-record-list/>
+        <div v-else style="height:100%">
+          <patient-profile-card :patient="patient"/>
+
+          <medical-record-list :patient="patient"/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -32,19 +40,17 @@ export default {
     //   return this.editedIndex === -1 ? "New Item" : "Edit Item";
     // }
     ...mapGetters({
-      getter: "getPatientListData"
+      getQueueData: "getQueueData"
     }),
 
-    patientList() {
-      return this.getter.clinc.patientList;
-    },
-
-    patient() {
-      return this.getter.patient;
-    },
-
-    id() {
-      return this.$route.query.id;
+    patient: {
+      get() {
+        console.log( this.getQueueData.patient)
+        return this.getQueueData.patient;
+      },
+      set(val) {
+       this.actionSetPatientFromQueue(val);
+      }
     }
   },
 
@@ -53,27 +59,16 @@ export default {
     PatientProfileCard
   },
 
-  created() {
-    this.actionQueryPatientFromPatientList(this.id);
-  },
-
-  watch: {
-    id: function(val) {
-      this.actionQueryPatientFromPatientList(this.id);
-    }
-  },
-
   methods: {
-    ...mapActions(["actionQueryPatientFromPatientList"]),
     isClickPatient(id) {
-      if (id === undefined) {
+      if (id === -1) {
         return false;
       } else {
         return true;
       }
     },
     isRecordEmpty() {
-      if (this.patient.medicalRecordList.length === 0) {
+      if (this.patient.consultations.length < 1) {
         return true;
       }
 

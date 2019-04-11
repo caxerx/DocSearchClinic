@@ -1,6 +1,5 @@
 <template>
   <div style="height:100%">
-    <loading-dialog :dialog="dialog"/>
     <v-layout
       v-if="!isClickPatient(patient.id)"
       align-center
@@ -48,22 +47,9 @@ export default {
         return this.getPatientListData.patient;
       },
       set(val) {
-        this.patient = val;
+        this.actionSelectPatientForPatientList(val)
       }
     },
-    dialog: {
-      get() {
-        if (this.$apollo.loading) {
-          return true;
-        } else {
-          return false;
-        }
-      },
-      set(val) {
-        this.dialog = val;
-      }
-    },
-
   },
   created: function() {
     this.actionResetPatientForPatientList();
@@ -76,7 +62,6 @@ export default {
 
   methods: {
     ...mapActions([
-      "actionQueryPatientFromPatientList",
       "actionResetPatientForPatientList"
     ]),
     isClickPatient(id) {

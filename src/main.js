@@ -43,5 +43,5 @@ new Vue({
   router,
   store,
   apolloProvider: createProvider(),
-  render: (h) => h(Drawer)
+  render: (h) => h(App)
 })

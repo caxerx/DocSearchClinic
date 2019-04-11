@@ -18,15 +18,9 @@
     <v-divider></v-divider>
     <div class="px-4 py-2">Check-in History</div>
     <v-divider></v-divider>
-    <v-layout
-      v-if="medicalRecordList.length == 0"
-      align-center
-      justify-center
-      style="height:75%"
-    >No Records in this Patient</v-layout>
-    <div v-else>
-      <div v-for="(medicalRecord,index) in medicalRecordList" :key="index" class="mt-2">
-        <medical-record-card :medicalRecord="medicalRecord" :icon="icon" :patient="patient"/>
+    <div>
+      <div v-for="(consultation,index) in patient.consultations" :key="index" class="mt-2">
+        <medical-record-card :consultation="consultation" :icon="icon" :patient="patient"/>
       </div>
     </div>
   </div>
@@ -47,19 +41,11 @@ export default {
   components: {
     MedicalRecordCard
   },
-
+  props: {
+    patient: Object
+  },
   computed: {
-    ...mapGetters({
-      getPatientListData: "getPatientListData"
-    }),
-
-    medicalRecordList() {
-      return this.getPatientListData.patient.medicalRecordList;
-    },
-
-    patient() {
-      return this.getPatientListData.patient;
-    }
+    ...mapGetters({})
   },
 
   methods: {

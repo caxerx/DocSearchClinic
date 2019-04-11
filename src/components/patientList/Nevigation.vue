@@ -8,7 +8,7 @@
     <div v-if="active==0">
       <v-list flat style="background-color:transparent;">
         <span v-for="(consultation,index) in consultations" :key="index">
-          <span v-if="consultations!=null&&isToday(consultation.startTime)">
+          <span v-if="isToday(consultation.startTime)">
             <v-list-tile @click="setPatient(consultation.patient)" avatar>
               <v-list-tile-avatar>
                 <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">

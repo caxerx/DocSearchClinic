@@ -1,5 +1,5 @@
 <template>
-  <v-card color="grey lighten-4" width="350px" flat>
+  <v-card color="grey lighten-4" width="350px"  flat>
     <v-list>
       <v-list-tile avatar>
         <v-list-tile-avatar>
@@ -12,7 +12,7 @@
           </v-list-tile-title>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <v-list-tile-title  v-on="on">{{note}}</v-list-tile-title>
+              <v-list-tile-title v-on="on">{{note}}</v-list-tile-title>
             </template>
             <span>{{note}}</span>
           </v-tooltip>
@@ -33,7 +33,7 @@
         <v-list-tile-sub-title>
           <v-icon>phone</v-icon>
           {{patient.phoneNo}}
-          <br>
+          <br/>
           <v-icon>email</v-icon>
           {{patient.email}}
         </v-list-tile-sub-title>

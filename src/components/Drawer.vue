@@ -1,5 +1,5 @@
 <template>
-  <v-app class="indigo lighten-5">
+  <div style="width:100%;height:100%" class="indigo lighten-5">
     <v-navigation-drawer v-model="drawer" permanent app clipped>
       <v-toolbar flat class="transparent">
         <v-list class="pa-0">
@@ -23,7 +23,7 @@
       </v-toolbar>
       <v-expansion-panel v-model="doctorList">
         <v-expansion-panel-content>
-          <v-list v-if="!$apollo.loading"> 
+          <v-list v-if="!$apollo.loading">
             <div v-for="(doctor,index) in workplace.doctors" :key="index">
               <v-list-tile @click="toggleDoctor(doctor)">
                 <v-list-tile-avatar>
@@ -157,12 +157,12 @@
         <v-icon @click="logout">exit_to_app</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-content>
+    <div style="width:100%;height:100%">
       <!-- breadcrumb -->
       <breadcrumb/>
       <router-view/>
-    </v-content>
-  </v-app>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -181,6 +181,32 @@ const workplaceQuery = gql`
       doctors {
         id
         name
+      }
+      currentQueue {
+        id
+           patient {
+          id
+          name
+          gender
+          email
+          phoneNo
+          dob
+          hkid
+          consultations {
+            id
+            consultant {
+              name
+              workplace {
+                name
+              }
+            }
+            note
+            startTime
+            endTime
+          }
+        }
+        startTime
+        endTime
       }
     }
   }
@@ -202,8 +228,12 @@ export default {
 
       variables() {
         return {
-          id: 5
+          id: this.getWorkPlace.id
         };
+      },
+      update(data) {
+        this.actionSetQueueRecordsFromQueue(data.workplace.currentQueue);
+        return data.workplace;
       }
     }
   },
@@ -211,17 +241,17 @@ export default {
   computed: {
     ...mapGetters({
       isSuccess: "getIsSuccess",
-      getSelectDoctor: "getSelectDoctor"
+      getSelectDoctor: "getSelectDoctor",
+      getWorkPlace: "getWorkPlace"
     })
   },
   methods: {
-    ...mapActions(["actionSetSelectDoctor"]),
+    ...mapActions(["actionSetSelectDoctor", "actionSetQueueRecordsFromQueue"]),
 
     toggleDoctorList() {
       this.doctorList = this.doctorList == 0 ? -1 : 0;
-      
     },
-    toggleDoctor(doctor){
+    toggleDoctor(doctor) {
       this.actionSetSelectDoctor(doctor);
     },
     ...mapActions(["actionLogout"]),
