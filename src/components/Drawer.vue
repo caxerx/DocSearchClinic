@@ -76,15 +76,6 @@
           </v-list-tile>
         </v-list-group>
 
-        <v-list-tile @click="linkTo('consultation')">
-          <v-list-tile-action>
-            <v-icon>mode_comment</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Online Consultation</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-
         <v-list-tile @click="linkTo('patientList')">
           <v-list-tile-action>
             <v-icon>bookmarks</v-icon>
@@ -184,7 +175,7 @@ const workplaceQuery = gql`
       }
       currentQueue {
         id
-           patient {
+        patient {
           id
           name
           gender
@@ -192,17 +183,11 @@ const workplaceQuery = gql`
           phoneNo
           dob
           hkid
-          consultations {
+          queueRecords {
             id
-            consultant {
-              name
-              workplace {
-                name
-              }
-            }
-            note
             startTime
             endTime
+            status
           }
         }
         startTime

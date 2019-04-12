@@ -16,7 +16,7 @@
         <div v-else style="height:100%">
           <patient-profile-card :patient="patient"/>
 
-          <medical-record-list :patient="patient"/>
+          <queue-record-list :patient="patient"/>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
 
-import MedicalRecordList from "@/components/queue/MedicalRecordList.vue";
+import QueueRecordList from "@/components/queue/QueueRecordList.vue";
 import PatientProfileCard from "@/components/queue/PatientProfileCard.vue";
 
 export default {
@@ -55,7 +55,7 @@ export default {
   },
 
   components: {
-    MedicalRecordList,
+    QueueRecordList,
     PatientProfileCard
   },
 
@@ -68,7 +68,7 @@ export default {
       }
     },
     isRecordEmpty() {
-      if (this.patient.consultations.length < 1) {
+      if (this.patient.queueRecords.length < 1) {
         return true;
       }
 

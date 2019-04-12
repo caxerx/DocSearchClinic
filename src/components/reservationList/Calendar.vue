@@ -49,7 +49,6 @@
           <doctor-list/>
           </v-flex>-->
           <v-flex sm9>
-
             <v-calendar
               ref="calendar"
               :now="today"
@@ -176,8 +175,26 @@ const reservationsQuery = gql`
         patient {
           id
           name
+          gender
           email
           phoneNo
+          dob
+          hkid
+          consultations {
+            id
+            consultant {
+              name
+              workplace {
+                name
+              }
+            }
+            note
+            startTime
+            endTime
+          }
+          reservations {
+            startTime
+          }
         }
         note
         startTime
@@ -193,10 +210,9 @@ export default {
     start: new Date().toISOString().substr(0, 10),
     menu: false,
     calendarType: "week",
-    icon: "https://cdn.vuetifyjs.com/images/john.jpg",
-
+    icon: "https://cdn.vuetifyjs.com/images/john.jpg"
   }),
-  
+
   apollo: {
     doctor: {
       query: reservationsQuery,
@@ -204,7 +220,7 @@ export default {
         return {
           id: this.doctorId
         };
-      },
+      }
     }
   },
 
@@ -223,8 +239,8 @@ export default {
     patientList() {
       return this.getter.patientList;
     },
-    doctorId(){
-      return this.getSelectDoctor.id
+    doctorId() {
+      return this.getSelectDoctor.id;
     },
     eventsMap() {
       //Cannot read property 'removeChild' of null

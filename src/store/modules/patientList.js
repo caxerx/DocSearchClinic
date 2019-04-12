@@ -5,9 +5,7 @@ const state = {
     patientListData: {
         patient: {
             id: -1
-        },
-
-        
+        },  
     },
 }
 

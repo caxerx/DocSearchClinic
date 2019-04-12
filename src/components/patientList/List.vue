@@ -44,6 +44,7 @@ export default {
     }),
     patient: {
       get() {
+        console.log( this.getPatientListData.patient)
         return this.getPatientListData.patient;
       },
       set(val) {
@@ -51,7 +52,7 @@ export default {
       }
     },
   },
-  created: function() {
+  destroyed: function() {
     this.actionResetPatientForPatientList();
   },
   components: {

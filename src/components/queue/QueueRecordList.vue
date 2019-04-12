@@ -19,8 +19,8 @@
     <div class="px-4 py-2">Check-in History</div>
     <v-divider></v-divider>
     <div>
-      <div v-for="(consultation,index) in patient.consultations" :key="index" class="mt-2">
-        <medical-record-card :consultation="consultation" :icon="icon" :patient="patient"/>
+      <div v-for="(queueRecord,index) in computedNewArr(patient.queueRecords)" :key="index" class="mt-2">
+        <queue-record-card :queueRecord="queueRecord" :icon="icon" :patient="patient"/>
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
-import MedicalRecordCard from "@/components/queue/MedicalRecordCard.vue";
+import QueueRecordCard from "@/components/queue/QueueRecordCard.vue";
 
 export default {
   data() {
@@ -39,7 +39,7 @@ export default {
     };
   },
   components: {
-    MedicalRecordCard
+    QueueRecordCard
   },
   props: {
     patient: Object
@@ -49,7 +49,18 @@ export default {
   },
 
   methods: {
-    ...mapActions(["actionReset"])
+    ...mapActions(["actionReset"]),
+    computedNewArr(arr) {
+      let newArr = arr.slice();
+
+      newArr.sort(function(a, b) {
+        let atime = new Date(a.startTime);
+        let btime = new Date(b.startTime);
+        return btime - atime;
+      });
+
+      return newArr;
+    }
   }
 };
 </script>

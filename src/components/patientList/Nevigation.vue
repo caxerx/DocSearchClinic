@@ -7,15 +7,15 @@
     </v-tabs>
     <div v-if="active==0">
       <v-list flat style="background-color:transparent;">
-        <span v-for="(consultation,index) in consultations" :key="index">
-          <span v-if="isToday(consultation.startTime)">
-            <v-list-tile @click="setPatient(consultation.patient)" avatar>
+        <span v-for="(reservation,index) in reservations" :key="index">
+          <span v-if="isToday(reservation.startTime)">
+            <v-list-tile @click="setPatient(reservation.patient)" avatar>
               <v-list-tile-avatar>
                 <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
               </v-list-tile-avatar>
 
               <v-list-tile-content>
-                <v-list-tile-title v-html="consultation.patient.name"></v-list-tile-title>
+                <v-list-tile-title v-html="reservation.patient.name"></v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </span>
@@ -25,17 +25,17 @@
     <div v-else-if="active==1">
       <v-list flat style="background-color:transparent;">
         <v-list-tile
-          v-for="(consultation,index) in checkRepeatIdAndReturnNewArr(consultations)"
+          v-for="(reservation,index) in checkRepeatIdAndReturnNewArr(reservations)"
           :key="index"
           avatar
-          @click="setPatient(consultation.patient)"
+          @click="setPatient(reservation.patient)"
         >
           <v-list-tile-avatar>
             <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
           </v-list-tile-avatar>
 
           <v-list-tile-content>
-            <v-list-tile-title v-html="consultation.patient.name"></v-list-tile-title>
+            <v-list-tile-title v-html="reservation.patient.name"></v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -43,17 +43,17 @@
     <div v-else-if="active==2">
       <v-list flat style="background-color:transparent;">
         <v-list-tile
-          v-for="(consultation,index) in checkRepeatIdAndReturnNewArr(consultations)"
+          v-for="(reservation,index) in checkRepeatIdAndReturnNewArr(reservations)"
           :key="index"
           avatar
-          @click="setPatient(consultation.patient)"
+          @click="setPatient(reservation.patient)"
         >
           <v-list-tile-avatar>
             <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
           </v-list-tile-avatar>
 
           <v-list-tile-content>
-            <v-list-tile-title v-html="consultation.patient.name"></v-list-tile-title>
+            <v-list-tile-title v-html="reservation.patient.name"></v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -82,7 +82,7 @@ export default {
   },
 
   props: {
-    consultations: Array,
+    reservations: Array,
     doctor: Object
   },
   components: {},
@@ -101,17 +101,17 @@ export default {
     setPatient(patient) {
       this.actionSelectPatientForPatientList(patient);
     },
-    checkRepeatIdAndReturnNewArr(consultations) {
+    checkRepeatIdAndReturnNewArr(reservations) {
       let seen = new Set();
-      //check no repeat user in last coonsultation
-      let lastPatientInConsultations = consultations.filter(function(currentObject) {
+      //check no repeat user in last reservations
+      let lastPatientInReservations = reservations.filter(function(currentObject) {
         if(seen.size !== seen.add(currentObject.patient.id).size){
           return currentObject
         }
       });
 
 
-      return lastPatientInConsultations;
+      return lastPatientInReservations ;
     }
   }
 };

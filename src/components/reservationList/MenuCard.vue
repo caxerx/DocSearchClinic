@@ -8,7 +8,7 @@
 
         <v-list-tile-content>
           <v-list-tile-title>
-            <a :href="getPatientLink(patient.id)">{{patient.name}}</a>
+            <a @click="setPatient(patient)">{{patient.name}}</a>
           </v-list-tile-title>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions, mapState } from "vuex";
+
 export default {
   props: {
     // attribute name: Type
@@ -73,9 +75,17 @@ export default {
     note: String
   },
 
-  computed: {},
+  computed: {
+    
+  },
 
   methods: {
+    ...mapActions(["actionSelectPatientForPatientList"]),
+
+    setPatient(patient){
+      this.actionSelectPatientForPatientList(patient);
+      this.$router.push("/patientList")
+    },
     //temporarily time to ampm
     getPatientLink(id) {
       return "/patientList?id=" + id;

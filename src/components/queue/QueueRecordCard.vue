@@ -1,7 +1,7 @@
 <template>
-  <v-layout row>
+  <v-layout row align-center>
     <v-flex sm1>
-      <v-layout justify-center style="padding-top:15px">
+      <v-layout justify-center >
         <v-avatar>
           <img :src="icon">
         </v-avatar>
@@ -9,24 +9,33 @@
     </v-flex>
     <v-flex sm11>
       <v-card style="margin-right:15px">
-        <v-list>
+        <v-list three-line>
           <v-list-tile>
-            <v-list-tile-content>
               <v-layout style="width:100%">
                 <v-flex sm1>
                   <v-list-tile-title>
-                    <div class="custAlign">{{ consultation.startTime | moment("utc","DD")}}</div>
+                    <div class="custAlign">{{ queueRecord.startTime | moment("utc","DD")}}</div>
                   </v-list-tile-title>
                   <v-list-tile-title
                     style="overflow:unset"
-                  >{{ consultation.startTime | moment("utc","MMM'YY")}}</v-list-tile-title>
+                  >{{ queueRecord.startTime | moment("utc","MMM'YY")}}</v-list-tile-title>
                 </v-flex>
                 <div style="padding-left:10px"></div>
                 <v-divider vertical/>
                 <v-flex sm8 style="padding-left:15px">
-                  <span>Appointment with&nbsp;</span>
-                  <b class="black--text">{{patient.name}}</b>
-                  <v-list-tile-sub-title>{{ consultation.startTime | moment("utc","h:mm a")}} for {{computedDuration(consultation.startTime,consultation.endTime)}} mins</v-list-tile-sub-title>
+                  <v-list-tile-title>
+                    <span>Appointment with&nbsp;</span>
+                    <b class="black--text">{{patient.name}}</b>
+                  </v-list-tile-title>
+                  
+                  <v-list-tile-sub-title> 
+                    {{ queueRecord.startTime | moment("utc","h:mm a")}}  {{computedDuration(queueRecord.startTime,queueRecord.endTime)}}<br/>
+                    <p v-if="queueRecord.status==='finished'" class="success--text">{{queueRecord.status}}</p> 
+                    <p v-if="queueRecord.status==='cancelled'" class="error--text">{{queueRecord.status}}</p> 
+                     <p v-if="queueRecord.status==='queueing'" class="info--text">{{queueRecord.status}}</p> 
+
+                  </v-list-tile-sub-title>
+                  
                 </v-flex>
                 <v-flex sm1>
                   <v-btn icon small>
@@ -47,18 +56,17 @@
                   </v-menu>
                 </v-flex>
               </v-layout>
-            </v-list-tile-content>
           </v-list-tile>
         </v-list>
         <v-divider/>
-        <div :id="consultation.id">
+        <div :id="queueRecord.id">
           <v-list v-if="showPrescriptions">
             <prescriptions v-model="showPrescriptions"></prescriptions>
           </v-list>
           <v-list v-else-if="showClincalNotes">
-            <clincal-notes v-model="showClincalNotes" :note="consultation.note"></clincal-notes>
+            <clincal-notes v-model="showClincalNotes" :note="queueRecord.note"></clincal-notes>
           </v-list>
-          <v-list v-else-if="isEmptyRecord(consultation)">
+          <v-list v-else-if="isEmptyRecord(queueRecord)">
             <v-layout justify-center>No records added yet</v-layout>
           </v-list>
         </div>
@@ -87,7 +95,7 @@ export default {
     };
   },
   props: {
-    consultation: Object,
+    queueRecord: Object,
     icon: String,
     patient: Object
   },
@@ -101,7 +109,7 @@ export default {
 
   methods: {
     isEmptyRecord(c) {
-      if(c.note===null||c.note===""){
+      if (c.note === null || c.note === "") {
         return true;
       }
 
@@ -137,10 +145,13 @@ export default {
       }
     },
     computedDuration(startTime, endTime) {
+      if(endTime === null){
+        return "";
+      }
       let stime = moment.utc(startTime);
       let etime = moment.utc(endTime);
       let duration = etime.diff(stime, "minutes");
-      return duration;
+      return "for "+duration+" mins";
     }
   }
 };
