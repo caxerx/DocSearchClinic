@@ -53,7 +53,7 @@
               v-if="reservation.status==='pending'||reservation.status==='waiting'"
               icon
               left
-              @click=""
+              @click="showEditDialog()"
             >
               <v-icon color="success">edit</v-icon>
             </v-btn>
@@ -105,7 +105,8 @@ export default {
     ...mapActions([
       "actionSetCancelDialogFromReservationList",
       "actionSetDetailFromReservationList",
-      "actionSelectPatientForPatientList"
+      "actionSelectPatientForPatientList",
+      "actionSetEditDialogFromReservationList"
     ]),
 
     setPatient(patient) {
@@ -119,7 +120,7 @@ export default {
 
     showCancelDialog() {
       let rDetail = {
-        rid: this.reservation.id,
+        reservation: this.reservation,
         patient: this.patient,
         icon: this.icon,
         date: this.date,
@@ -130,6 +131,19 @@ export default {
       console.log(rDetail);
       this.actionSetDetailFromReservationList(rDetail);
       this.actionSetCancelDialogFromReservationList(true);
+    },
+    showEditDialog(){
+      let rDetail = {
+        reservation: this.reservation,
+        patient: this.patient,
+        icon: this.icon,
+        date: this.date,
+        startTime: this.startTime,
+        duration: this.duration,
+        note: this.note
+      };
+        this.actionSetDetailFromReservationList(rDetail);
+      this.actionSetEditDialogFromReservationList(true);
     }
   }
 };

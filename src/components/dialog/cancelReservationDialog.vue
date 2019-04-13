@@ -14,12 +14,6 @@
               <v-list-tile-sub-title>{{detail.date}} , {{detail.startTime}} for {{detail.duration}} mins</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
-          <!-- <v-list-tile v-for="(a,index) in patient.allergies" :key="index">
-          <v-list-tile-content>
-            <v-list-tile-title>{{a.name}}</v-list-tile-title>
-            <v-list-tile-sub-title>{{a.description}}</v-list-tile-sub-title>
-          </v-list-tile-content>
-          </v-list-tile>-->
         </v-list>
 
         <v-divider></v-divider>
@@ -29,7 +23,7 @@
           <v-btn
             color="primary"
             flat
-            @click="cancelReservation(detail.rid)"
+            @click="cancelReservation(detail.reservation.id)"
             :disabled="loadingDialog"
             :loading="loadingDialog"
           >Sure</v-btn>
@@ -61,7 +55,6 @@ export default {
     }),
 
     dialog() {
-      console.log(this.getReservationListData.cancelDialog);
       return this.getReservationListData.cancelDialog;
     },
     detail() {
@@ -72,6 +65,7 @@ export default {
   methods: {
     ...mapActions([
       "actionSetCancelDialogFromReservationList",
+      "actionSetIsCancelFromReservationList",
       "actionSetIsCancelFromReservationList"
     ]),
     cancelDialog() {

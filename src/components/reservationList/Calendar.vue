@@ -2,6 +2,7 @@
   <div>
     <loading-dialog :dialog="dialog"/>
     <cancel-reservation-dialog/>
+    <edit-reservation-dialog/>
     <div v-if="!$apollo.loading">
       <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
       <v-toolbar flat absolute style="z-index:10">
@@ -157,7 +158,8 @@
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
 import DoctorList from "@/components/reservationList/DoctorList.vue";
-import CancelReservationDialog from "@/components/dialog/cancelReservationDialog"
+import CancelReservationDialog from "@/components/dialog/cancelReservationDialog";
+import EditReservationDialog from "@/components/dialog/editReservationDialog";
 import Patient from "@/components/reservationList/Patient.vue";
 import MenuCard from "@/components/reservationList/MenuCard.vue";
 import LoadingDialog from "@/components/dialog/loadingDialog.vue";
@@ -208,6 +210,7 @@ const reservationsQuery = gql`
         startTime
         endTime
         status
+        type
       }
     }
   }
@@ -235,15 +238,21 @@ export default {
     console.log(this.$apollo.queries);
     this.$apollo.queries.doctor.refetch();
   },
-  watch:{
-    isCancel:function(val){
-      if(val){
+  watch: {
+    isCancel: function(val) {
+      if (val) {
         this.$apollo.queries.doctor.refetch();
         this.actionSetIsCancelFromReservationList(false);
       }
     },
-    getRefreshNow:function(val){
-      if(val){
+    isEdit: function(val) {
+      if (val) {
+        this.$apollo.queries.doctor.refetch();
+        this.actionSetIsEditFromReservationList(false);
+      }
+    },
+    getRefreshNow: function(val) {
+      if (val) {
         this.$apollo.queries.doctor.refetch();
         this.actionSetRefreshNow(false);
       }
@@ -254,14 +263,14 @@ export default {
     Patient,
     MenuCard,
     LoadingDialog,
-    CancelReservationDialog
+    CancelReservationDialog,
+    EditReservationDialog
   },
   computed: {
     ...mapGetters({
       getter: "getReservationListData",
       getSelectDoctor: "getSelectDoctor",
-      getRefreshNow:"getRefreshNow",
-      
+      getRefreshNow: "getRefreshNow"
     }),
     // convert the list of events into a map of lists keyed by date
     patientList() {
@@ -270,8 +279,11 @@ export default {
     doctorId() {
       return this.getSelectDoctor.id;
     },
-    isCancel(){
+    isCancel() {
       return this.getter.isCancel;
+    },
+    isEdit() {
+      return this.getter.isEdit;
     },
     eventsMap() {
       //Cannot read property 'removeChild' of null
@@ -298,7 +310,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(["actionSetIsCancelFromReservationList","actionSetRefreshNow"]),
+    ...mapActions([
+      "actionSetIsCancelFromReservationList",
+      "actionSetRefreshNow",
+      "actionSetIsEditFromReservationList"
+    ]),
     formatTime(startTime) {
       let mTime = moment.utc(startTime).format("HH:mm");
       return mTime;

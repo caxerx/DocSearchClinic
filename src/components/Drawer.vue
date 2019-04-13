@@ -114,6 +114,14 @@
               <v-list-tile-title>Calendar Setting</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
+            <v-list-tile @click="linkTo('doctorProfileSetting')">
+            <v-list-tile-action>
+              <v-icon>build</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Doctor Profile Setting</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
         </v-list-group>
 
         <v-list-tile @click="linkTo('feedBack')">

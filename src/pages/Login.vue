@@ -88,6 +88,7 @@ const staffLoginQuery = gql`
 const workplaceQuery = gql`
   query($id:ID!){
     workplace(id:$id){
+      id
       name
       doctors{
         id

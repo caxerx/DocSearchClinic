@@ -16,6 +16,7 @@ import Test from './pages/Test'
 import DocumentPrint from './pages/printing/DocumentPrint'
 import DocumentTemplate from './pages/printing/DocumentTemplate'
 import CalendarSetting from './pages/Setting/CalendarSetting.vue'
+import DoctorProfileSetting from './pages/Setting/DoctorProfileSetting.vue'
 
 Vue.use(Router)
 
@@ -266,6 +267,24 @@ export default new Router({
           text: 'calendarSetting',
           disabled: true,
           href:'/calendarSetting'
+          
+        }]
+      }
+    },
+    {
+      path: '/doctorProfileSetting',
+      name: 'doctorProfileSetting',
+      component: DoctorProfileSetting,
+      meta: {
+        breadcrumb: [{
+          text: 'Home',
+          href: '/',
+          disabled: false,
+        },
+        {
+          text: 'doctorProfileSetting',
+          disabled: true,
+          href:'/doctorProfileSetting'
           
         }]
       }
