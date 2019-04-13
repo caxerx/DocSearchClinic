@@ -79,6 +79,7 @@
                       :startTime="formatAMPM(reservation.startTime)"
                       :duration="computedDuration(reservation.id,reservation.startTime,reservation.endTime)"
                       :note="reservation.note"
+                      :date="formatDate(reservation.startTime)"
                     />
                   </v-menu>
                 </template>
@@ -223,7 +224,10 @@ export default {
       }
     }
   },
-
+  created:function(){
+    console.log(this.$apollo.queries)
+    this.$apollo.queries.doctor.refetch()
+  },
   components: {
     DoctorList,
     Patient,
@@ -270,6 +274,10 @@ export default {
     formatTime(startTime) {
       let mTime = moment.utc(startTime).format("HH:mm");
       return mTime;
+    },
+    formatDate(startTime){
+      let date = moment.utc(startTime).format("YYYY-MM-DD");
+      return date;
     },
     formatAMPM(startTime) {
       let mTime = moment.utc(startTime).format("HH:mm A");

@@ -3,11 +3,11 @@
 
 const state = {
     selectDoctor: {
-        id:6,
-        name:"Herman",
+        id:"",
+        name:"",
     },
     workplace:{
-        id:5
+
     }
 }
 
@@ -23,8 +23,8 @@ const actions = {
     actionSetSelectDoctor({commit},doctor){
         commit("setSelectDoctor",doctor)
     },
-    actionSetWorkPlace({commit},workplace){
-        commit("setWorkplace",workplace)
+    actionSetWorkPlaceForDrawer({commit},workplace){
+        commit("setWorkplaceForDrawer",workplace)
     }
     
 }
@@ -33,7 +33,7 @@ const mutations = {
     ["setSelectDoctor"](state,doctor){
         state.selectDoctor = doctor;
     },
-    ["setWorkplace"](state,workplace){
+    ["setWorkplaceForDrawer"](state,workplace){
         state.workplace = workplace;
         console.log(state.workplace);
     }

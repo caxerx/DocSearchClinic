@@ -4,16 +4,19 @@
       <v-flex xs12 sm8 md4>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
-            <v-toolbar-title>Login form</v-toolbar-title>
+            <v-toolbar-title v-if="isDoctor">Doctor Login</v-toolbar-title>
+            <v-toolbar-title v-if="!isDoctor">Staff Login</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-btn flat icon @click="isDoctor = !isDoctor">
+              <v-icon>repeat</v-icon>
+            </v-btn>
           </v-toolbar>
           <v-card-text>
-            just click login btn, cannot not input
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
                 prepend-icon="person"
                 name="name"
-                label="name"
+                :label="computedHints"
                 type="text"
                 :rules="nameRules"
                 v-model="name"
@@ -33,7 +36,7 @@
           <v-card-actions>
             <v-spacer style="color:red">{{errMsg}}</v-spacer>
 
-            <v-btn color="primary" @click="check">Login</v-btn>
+            <v-btn color="primary" @click="check" :disabled="dialog" :loading="dialog">Login</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -47,6 +50,76 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapActions, mapState } from "vuex";
+import gql from "graphql-tag";
+
+const workplaceQuery = gql`
+  query($id: ID!) {
+    workplace(id: $id) {
+      id
+      name
+      location
+      type
+
+      doctors {
+        id
+        name
+      }
+      currentQueue {
+        id
+        patient {
+          id
+          name
+          gender
+          email
+          phoneNo
+          dob
+          hkid
+          queueRecords {
+            id
+            startTime
+            endTime
+            status
+          }
+        }
+        startTime
+        endTime
+      }
+    }
+  }
+`;
+
+const doctorLoginQuery = gql`
+  query($username: String!, $password: String!) {
+    doctorLogin(username: $username, password: $password) {
+      success
+      message
+      doctor {
+        id
+        name
+        workplace {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+const staffLoginQuery = gql`
+  query($username: String!, $password: String!) {
+    staffLogin(username: $username, password: $password) {
+      success
+      message
+      staff {
+        id
+        name
+      }
+      # workplace {
+      #   id
+      #   name
+      # }
+    }
+  }
+`;
 
 export default {
   data: () => ({
@@ -56,40 +129,117 @@ export default {
     pwd: "",
     pwdRules: [v => !!v || "Password is required"],
     errMsg: "",
+    isDoctor: true
   }),
 
-  created: function() {
-    if (
-      this.$cookies.get("clincUserId") !== null &&
-      this.$cookies.get("clincUserId") !== ""
-    ) {
-      console.log(this.$cookies.get("clincUserId"));
-      this.login();
+  created: function() {},
+  computed: {
+    ...mapGetters({
+      getSelectDoctor: "getSelectDoctor",
+      getLogin: "getLogin"
+    }),
+    computedHints() {
+      if (this.isDoctor) {
+        return "Doctor name";
+      } else {
+        return "Staff name";
+      }
+    },
+
+    dialog: {
+      get() {
+        if (this.$apollo.loading) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      set(val) {
+        this.dialog = val;
+      }
     }
   },
+  apollo: {
+    workplace: {
+      query: workplaceQuery,
 
+      variables() {
+        return {
+          id: this.getLogin.workplace.id
+        };
+      },
+      skip() {
+        return true;
+      },
+      update(data) {
+        this.$apollo.queries.workplace.skip = true;
+        this.actionSetWorkPlaceForDrawer(data.workplace);
+        this.actionSetLoginSuccess(true);
+        this.actionSetQueueRecordsFromQueue(data.workplace.currentQueue);
+        return data.workplace;
+      }
+    },
+
+    doctorLogin: {
+      query: doctorLoginQuery,
+      variables() {
+        return {
+          username: this.name,
+          password: this.pwd
+        };
+      },
+      skip() {
+        return true;
+      },
+      update(data) {
+        this.$apollo.queries.doctorLogin.skip = true;
+        if (data.doctorLogin.success) {
+          this.actionSetLogin(data.doctorLogin.doctor);
+          this.actionSetSelectDoctor(data.doctorLogin.doctor)
+          this.$apollo.queries.workplace.skip = false;
+        } else {
+          this.errMsg = data.doctorLogin.message;
+        }
+        return data.doctorLogin;
+      }
+    },
+    staffLogin: {
+      query: staffLoginQuery,
+      variables() {
+        return {
+          username: this.name,
+          pwd: this.pwd
+        };
+      },
+      skip() {
+        return true;
+      },
+      update(data) {
+        this.$apollo.queries.staffLogin.skip = true;
+        this.errMsg = data.staffLogin.message;
+        return data.staffLogin;
+      }
+    }
+  },
   methods: {
     ...mapActions([
-      "actionLogin",
-      "actionLoginFail",
+      "actionSetLogin",
+      "actionSetQueueRecordsFromQueue",
+      "actionSetWorkPlaceForDrawer",
+      "actionSetLoginSuccess",
+      "actionSetSelectDoctor"
     ]),
 
     check() {
-      // if (this.$refs.form.validate()) {
+      this.errMsg = "";
+      this.$router.push("/")
+      if (this.isDoctor) {
+        this.$apollo.queries.doctorLogin.skip = false;
+      }
 
-      // }
-      this.login();
-    },
-    login() {
-      this.setCookie(4);
-     
-      this.actionLogin(true);
-      
-    },
-    setCookie(id) {
-      this.$cookies.set("clincUserId", id, {
-        expires: "1d"
-      });
+      if (!this.isDoctor) {
+        this.$apollo.queries.staffLogin.skip = false;
+      }
     }
   }
 };

@@ -10,12 +10,12 @@
           <v-list-tile-title>
             <a @click="setPatient(patient)">{{patient.name}}</a>
           </v-list-tile-title>
-          <v-tooltip bottom>
+          <!-- <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-list-tile-title v-on="on">{{note}}</v-list-tile-title>
-            </template>
-            <span>{{note}}</span>
-          </v-tooltip>
+            </template> -->
+            <span>{{date}}</span>
+          <!-- </v-tooltip> -->
         </v-list-tile-content>
       </v-list-tile>
       <br>
@@ -70,6 +70,7 @@ export default {
     // attribute name: Type
     patient: Object,
     icon: String,
+    date:String,
     startTime: String,
     duration: Number,
     note: String

@@ -1,49 +1,49 @@
 
 
 const state = {
-  isSuccess: false
+  isLoginSuccess:false,
+  login:null,
+  
 }
 
 
 const getters = {
-  getIsSuccess: state => state.isSuccess
+  getLogin: state => state.login,
+  getLoginIsSuccess: state =>state.isLoginSuccess
 }
 
 
 const actions = {
-
-  actionLogin({ commit }, loginSuccess) {
-    console.log("state " + loginSuccess + " commit " + commit);
-    if (loginSuccess) {
-      commit("success");
-    } else {
-      commit("fail");
-    }
+  actionSetLogin({commit},val){
+    commit("setLogin",val);
   },
-  actionLogout({ commit }){
+
+  actionLogout({commit}){
     commit("logout");
   },
+  actionSetLoginSuccess({commit},val){
+    commit("setLoginSuccess",val);
+
+  }
 
 }
 // mutations
 const mutations = {
-  ["success"](state) {
-    state.isSuccess = true;
-    console.log("state ", state.isSuccess);
 
-  },
-  ["fail"](state) {
-
-    state.isSuccess = false;
-    console.log("state ", state.isSuccess);
-
-  },
   ["logout"](state) {
-
-    state.isSuccess = false;
-    console.log("state ", state.isSuccess);
+    state.isLoginSuccess = false;
+    state.login = null;
 
   },
+  ["setLogin"](state,val){
+    state.login = val;
+    
+  },
+
+  ["setLoginSuccess"](state,val){
+    state.isLoginSuccess = val;
+    console.log(state.isLoginSuccess)
+  }
 }
 
 export default {

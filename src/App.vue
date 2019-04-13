@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <!-- <v-content v-if="!isSuccess">
+    <v-content v-if="!getLoginIsSuccess">
       <login/>
-    </v-content>-->
-    <v-content>
+    </v-content>
+    <v-content v-else>
       <drawer/>
     </v-content>
   </v-app>
@@ -19,7 +19,14 @@ import gql from "graphql-tag";
 export default {
   components: {
     Drawer,
+    Login
   },
+  computed:{
+    ...mapGetters({
+      getLoginIsSuccess:"getLoginIsSuccess"
+    }),
+
+  }
 
 };
 </script>

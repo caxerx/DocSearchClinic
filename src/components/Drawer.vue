@@ -11,8 +11,8 @@
 
               <v-list-tile-content>
                 <!-- tempoary set user is doctor 1 -->
-                <v-list-tile-title>Dr. {{getSelectDoctor.name}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{workplace.name}}</v-list-tile-sub-title>
+                <v-list-tile-title>Dr. {{getLogin.name}}</v-list-tile-title>
+                <v-list-tile-sub-title style="width:150px">{{workplace.name}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-icon>{{doctorList==0?'arrow_drop_up':'arrow_drop_down'}}</v-icon>
@@ -39,14 +39,6 @@
       </v-expansion-panel>
       <v-divider></v-divider>
       <v-list dense>
-        <v-list-tile @click="linkTo('about')">
-          <v-list-tile-action>
-            <v-icon>contact_mail</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>About</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
 
         <v-list-group no-action prepend-icon="date_range">
           <v-list-tile slot="activator">
@@ -159,43 +151,6 @@
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import gql from "graphql-tag";
-
-const workplaceQuery = gql`
-  query($id: ID!) {
-    workplace(id: $id) {
-      id
-      name
-      location
-      type
-
-      doctors {
-        id
-        name
-      }
-      currentQueue {
-        id
-        patient {
-          id
-          name
-          gender
-          email
-          phoneNo
-          dob
-          hkid
-          queueRecords {
-            id
-            startTime
-            endTime
-            status
-          }
-        }
-        startTime
-        endTime
-      }
-    }
-  }
-`;
 
 export default {
   data: () => ({
@@ -207,28 +162,18 @@ export default {
   components: {
     Breadcrumb
   },
-  apollo: {
-    workplace: {
-      query: workplaceQuery,
-
-      variables() {
-        return {
-          id: this.getWorkPlace.id
-        };
-      },
-      update(data) {
-        this.actionSetQueueRecordsFromQueue(data.workplace.currentQueue);
-        return data.workplace;
-      }
-    }
-  },
 
   computed: {
     ...mapGetters({
       isSuccess: "getIsSuccess",
       getSelectDoctor: "getSelectDoctor",
-      getWorkPlace: "getWorkPlace"
-    })
+      getWorkPlace: "getWorkPlace",
+      getLogin:"getLogin"
+    }),
+
+    workplace(){
+      return this.getWorkPlace;
+    },
   },
   methods: {
     ...mapActions(["actionSetSelectDoctor", "actionSetQueueRecordsFromQueue"]),
@@ -247,7 +192,7 @@ export default {
 
     logout() {
       this.$router.push("/");
-      this.actionLogout();
+      this.$router.go(0);
     }
   }
 };
