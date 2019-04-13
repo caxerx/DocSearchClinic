@@ -25,7 +25,7 @@
                 </v-container>
               </template>
               <menu-card
-                :rid="reservation.id"
+                :reservation="reservation"
                 :date="formatDate(reservation.startTime)"
                 :icon="icon"
                 :patient="reservation.patient"
@@ -61,7 +61,7 @@
                 </v-container>
               </template>
               <menu-card
-               :rid="reservation.id"
+               :reservation="reservation"
                 :date="formatDate(reservation.startTime)"
                 :icon="icon"
                 :patient="reservation.patient"
@@ -95,7 +95,7 @@
                 </v-container>
               </template>
               <menu-card
-               :rid="reservation.id"
+               :reservation="reservation"
                 :date="formatDate(reservation.startTime)"
                 :icon="icon"
                 :patient="reservation.patient"
@@ -129,7 +129,7 @@
                 </v-container>
               </template>
               <menu-card
-               :rid="reservation.id"
+               :reservation="reservation"
                 :date="formatDate(reservation.startTime)"
                 :icon="icon"
                 :patient="reservation.patient"
@@ -163,7 +163,7 @@
                 </v-container>
               </template>
               <menu-card
-               :rid="reservation.id"
+               :reservation="reservation"
                 :date="formatDate(reservation.startTime)"
                 :icon="icon"
                 :patient="reservation.patient"

@@ -26,7 +26,13 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" flat @click="cancelReservation(detail.rid)">Sure</v-btn>
+          <v-btn
+            color="primary"
+            flat
+            @click="cancelReservation(detail.rid)"
+            :disabled="loadingDialog"
+            :loading="loadingDialog"
+          >Sure</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -38,19 +44,17 @@ import { mapGetters, mapActions, mapState } from "vuex";
 import gql from "graphql-tag";
 
 const removeReservationMutation = gql`
-  mutation( $id:ID! ) {
-    removeReservation(id:$id)
+  mutation($id: ID!) {
+    removeReservation(id: $id)
   }
 `;
 export default {
   data() {
     return {
-      loadingDialog:false
+      loadingDialog: false
     };
   },
-  components:{
-    
-  },
+  components: {},
   computed: {
     ...mapGetters({
       getReservationListData: "getReservationListData"
@@ -66,25 +70,28 @@ export default {
   },
   props: {},
   methods: {
-    ...mapActions(["actionSetCancelDialogFromReservationList","actionSetIsCancelFromReservationList"]),
+    ...mapActions([
+      "actionSetCancelDialogFromReservationList",
+      "actionSetIsCancelFromReservationList"
+    ]),
     cancelDialog() {
       this.actionSetCancelDialogFromReservationList(false);
     },
     cancelReservation(rid) {
-      this.loadingDialog = true
+      this.loadingDialog = true;
       this.$apollo
         .mutate({
           // Query
           mutation: removeReservationMutation,
           // Parameters
           variables: {
-            id:rid
+            id: rid
           }
         })
         .then(data => {
           // Result
-          this.loadingDialog = false
-          this.actionSetIsCancelFromReservationList(true)
+          this.loadingDialog = false;
+          this.actionSetIsCancelFromReservationList(true);
           this.cancelDialog();
         })
         .catch(error => {

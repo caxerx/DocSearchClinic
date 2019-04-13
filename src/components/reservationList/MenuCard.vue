@@ -49,12 +49,28 @@
           </v-list-tile-title>
           <v-spacer></v-spacer>
           <v-list-tile-action>
-            <v-btn icon left>
+            <v-btn
+              v-if="reservation.status==='pending'||reservation.status==='waiting'"
+              icon
+              left
+              @click=""
+            >
               <v-icon color="success">edit</v-icon>
+            </v-btn>
+            <v-btn v-else disabled icon left @click="showCancelDialog()">
+              <v-icon color="error">edit</v-icon>
             </v-btn>
           </v-list-tile-action>
           <v-list-tile-action>
-            <v-btn icon left @click="showCancelDialog()">
+            <v-btn
+              v-if="reservation.status==='pending'||reservation.status==='waiting'"
+              icon
+              left
+              @click="showCancelDialog()"
+            >
+              <v-icon color="error">cancel</v-icon>
+            </v-btn>
+            <v-btn v-else disabled icon left @click="showCancelDialog()">
               <v-icon color="error">cancel</v-icon>
             </v-btn>
           </v-list-tile-action>
@@ -69,13 +85,11 @@ import { mapGetters, mapActions, mapState } from "vuex";
 import CancelReservationDialog from "@/components/dialog/cancelReservationDialog.vue";
 export default {
   data() {
-    return {
-      
-    };
+    return {};
   },
   props: {
     // attribute name: Type
-    rid:String,
+    reservation: Object,
     patient: Object,
     icon: String,
     date: String,
@@ -88,7 +102,11 @@ export default {
     CancelReservationDialog
   },
   methods: {
-    ...mapActions(["actionSetCancelDialogFromReservationList","actionSetDetailFromReservationList"]),
+    ...mapActions([
+      "actionSetCancelDialogFromReservationList",
+      "actionSetDetailFromReservationList",
+      "actionSelectPatientForPatientList"
+    ]),
 
     setPatient(patient) {
       this.actionSelectPatientForPatientList(patient);
@@ -98,18 +116,18 @@ export default {
     getPatientLink(id) {
       return "/patientList?id=" + id;
     },
-    
+
     showCancelDialog() {
       let rDetail = {
-        "rid":this.rid,
-        "patient":this.patient,
-        "icon": this.icon,
-        "date":this.date,
-        "startTime":this.startTime,
-        "duration":this.duration,
-        "note":this.note,
-      }
-      console.log(rDetail)
+        rid: this.reservation.id,
+        patient: this.patient,
+        icon: this.icon,
+        date: this.date,
+        startTime: this.startTime,
+        duration: this.duration,
+        note: this.note
+      };
+      console.log(rDetail);
       this.actionSetDetailFromReservationList(rDetail);
       this.actionSetCancelDialogFromReservationList(true);
     }

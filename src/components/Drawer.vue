@@ -37,6 +37,7 @@
           </v-list>
         </v-expansion-panel-content>
       </v-expansion-panel>
+      
       <v-divider></v-divider>
       <v-list dense>
         <v-list-group no-action prepend-icon="date_range">

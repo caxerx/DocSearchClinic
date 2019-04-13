@@ -75,7 +75,7 @@
 
                     <!-- pop up menu -->
                     <menu-card
-                      :rid="reservation.id"
+                      :reservation="reservation"
                       :icon="icon"
                       :patient="reservation.patient"
                       :startTime="formatAMPM(reservation.startTime)"

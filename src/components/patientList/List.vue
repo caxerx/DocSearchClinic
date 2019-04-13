@@ -63,7 +63,8 @@ export default {
 
   methods: {
     ...mapActions([
-      "actionResetPatientForPatientList"
+      "actionResetPatientForPatientList",
+      "actionSelectPatientForPatientList"
     ]),
     isClickPatient(id) {
       if (id === -1) {
