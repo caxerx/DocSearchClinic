@@ -196,6 +196,10 @@ const reservationsQuery = gql`
           reservations {
             startTime
           }
+          allergies {
+            name
+            description
+          }
         }
         note
         startTime
@@ -224,9 +228,9 @@ export default {
       }
     }
   },
-  created:function(){
-    console.log(this.$apollo.queries)
-    this.$apollo.queries.doctor.refetch()
+  created: function() {
+    console.log(this.$apollo.queries);
+    this.$apollo.queries.doctor.refetch();
   },
   components: {
     DoctorList,
@@ -275,7 +279,7 @@ export default {
       let mTime = moment.utc(startTime).format("HH:mm");
       return mTime;
     },
-    formatDate(startTime){
+    formatDate(startTime) {
       let date = moment.utc(startTime).format("YYYY-MM-DD");
       return date;
     },

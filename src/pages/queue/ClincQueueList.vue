@@ -1,15 +1,14 @@
 <template>
   <div style="height:100%;width:100%">
     <loading-dialog :dialog="dialog"/>
-    <v-layout style="height: 90%">
+    <v-layout style="height: 90%" v-if="!$apollo.loading">
       <v-flex sm2 d-flex style="padding-left:2%">
-        <nevigation :queueRecords="computedNewArr(getQueueData.queueRecords)"/>
+        <nevigation :queueRecords="computedNewArr(doctor.currentQueue)"/>
       </v-flex>
-    <v-flex d-flex sm10 style="padding-left:7%;padding-right:3%">
-      
-      <v-card >
-        <list/>
-      </v-card>
+      <v-flex d-flex sm10 style="padding-left:7%;padding-right:3%">
+        <v-card>
+          <list/>
+        </v-card>
       </v-flex>
     </v-layout>
   </div>
@@ -23,19 +22,62 @@ import LoadingDialog from "@/components/dialog/loadingDialog";
 import gql from "graphql-tag";
 import { mapGetters, mapActions, mapState } from "vuex";
 
+const doctorQuery = gql`
+  query($id: ID!) {
+    doctor(id: $id) {
+      id
+      name
+
+      currentQueue {
+        id
+        patient {
+          id
+          name
+          gender
+          email
+          phoneNo
+          dob
+          hkid
+          queueRecords {
+            id
+            startTime
+            endTime
+            status
+          }
+        }
+        startTime
+        endTime
+      }
+    }
+  }
+`;
 
 export default {
   data: () => ({}),
-
+  mounted:function(){
+    this.$apollo.queries.doctor.refetch();
+  },
   components: {
     List,
     Nevigation,
     LoadingDialog
   },
-
+  apollo: {
+    doctor: {
+      query: doctorQuery,
+      variables() {
+        return {
+          id: this.getSelectDoctor.id
+        };
+      },
+      update(data) {
+        return data.doctor;
+      }
+    },
+  },
   computed: {
     ...mapGetters({
-      getQueueData: "getQueueData"
+      getSelectDoctor:"getSelectDoctor"
     }),
 
     dialog: {

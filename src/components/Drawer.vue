@@ -12,7 +12,7 @@
               <v-list-tile-content>
                 <!-- tempoary set user is doctor 1 -->
                 <v-list-tile-title>Dr. {{getLogin.name}}</v-list-tile-title>
-                <v-list-tile-sub-title style="width:150px">{{workplace.name}}</v-list-tile-sub-title>
+                <v-list-tile-sub-title style="width:150px">{{getLogin.workplace.name}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-icon>{{doctorList==0?'arrow_drop_up':'arrow_drop_down'}}</v-icon>
@@ -24,7 +24,7 @@
       <v-expansion-panel v-model="doctorList">
         <v-expansion-panel-content>
           <v-list v-if="!$apollo.loading">
-            <div v-for="(doctor,index) in workplace.doctors" :key="index">
+            <div v-for="(doctor,index) in getWorkPlace.doctors" :key="index">
               <v-list-tile @click="toggleDoctor(doctor)">
                 <v-list-tile-avatar>
                   <img src="https://randomuser.me/api/portraits/men/85.jpg">
@@ -170,10 +170,6 @@ export default {
       getWorkPlace: "getWorkPlace",
       getLogin:"getLogin"
     }),
-
-    workplace(){
-      return this.getWorkPlace;
-    },
   },
   methods: {
     ...mapActions(["actionSetSelectDoctor", "actionSetQueueRecordsFromQueue"]),
@@ -193,7 +189,7 @@ export default {
     logout() {
       this.$router.push("/");
       this.$router.go(0);
-    }
+    },
   }
 };
 </script>

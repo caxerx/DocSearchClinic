@@ -4,7 +4,6 @@
       <v-tabs v-model="active" slider-color="white" style="height:10%">
         <v-tab v-for="(type,index) in types" :key="index" ripple>{{type}}</v-tab>
       </v-tabs>
-
       <v-navigation-drawer permanent style="height:90%;">
         <div v-if="active==0">
           <v-card v-for="(reservation,index) in isToday(reservations)" :key="index">
@@ -181,6 +180,7 @@
 
 <script>
 import MenuCard from "@/components/reservationList/MenuCard.vue";
+import CancelReservationDialog from "@/components/dialog/cancelReservationDialog"
 let moment = require("moment");
 
 export default {
@@ -200,7 +200,8 @@ export default {
     reservations: Array
   },
   components: {
-    MenuCard
+    MenuCard,
+    CancelReservationDialog
   },
   watch: {},
   computed: {},

@@ -98,7 +98,12 @@ export default {
   computed: {
     ...mapGetters({})
   },
-
+  watch:{
+    patient:function(val){
+      this.showPrescriptions = false;
+      this.showClincalNotes = false;
+    }
+  },
   methods: {
     isEmptyRecord(c) {
       if(c.note===null||c.note===""){
@@ -141,7 +146,7 @@ export default {
       let etime = moment.utc(endTime);
       let duration = etime.diff(stime, "minutes");
       return duration;
-    }
+    },
   }
 };
 </script>

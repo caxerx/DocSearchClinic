@@ -56,6 +56,10 @@ const doctorQuery = gql`
             startTime
             endTime
           }
+          allergies {
+            name
+            description
+          }
         }
       }
     }
@@ -64,7 +68,9 @@ const doctorQuery = gql`
 
 export default {
   data: () => ({}),
-
+  mounted: function() {
+    this.$apollo.queries.doctor.refresh();
+  },
   apollo: {
     doctor: {
       query: doctorQuery,
@@ -73,8 +79,7 @@ export default {
           id: this.getSelectDoctor.id
         };
       },
-      update(data){
-        console.log(data.doctor)
+      update(data) {
         return data.doctor;
       }
     }
@@ -85,7 +90,6 @@ export default {
     Nevigation,
     LoadingDialog
   },
-
   computed: {
     // computedHeight() {
     //   let windowHeight = window.innerHeight;

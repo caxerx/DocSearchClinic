@@ -1,5 +1,6 @@
 <template>
   <div>
+    <view-patient-dialog :dialog="dialog" :patient="patient" v-model="dialog"/>
     <v-layout align-center row fill-height>
       <v-flex sm4>
         <v-list>
@@ -18,9 +19,9 @@
           </v-list-tile>
         </v-list>
       </v-flex>
-      <v-flex sm4>
+      <v-flex sm5>
         <v-list>
-          <v-list-tile avatar>
+          <v-list-tile>
             <v-list-tile-sub-title>
               <v-icon small>phone</v-icon>
               {{patient.phoneNo}}
@@ -32,7 +33,22 @@
         </v-list>
       </v-flex>
       <v-spacer/>
-      <v-btn outline color="primary">Edit Profile</v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon color="info" @click="viewPatient()">remove_red_eye</v-icon>
+          </v-btn>
+        </template>
+        <span>View Allergies</span>
+      </v-tooltip>
+         <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon color="success" @click="">edit</v-icon>
+          </v-btn>
+        </template>
+        <span>Edit Profile</span>
+      </v-tooltip>
     </v-layout>
     <v-divider light></v-divider>
   </div>
@@ -40,22 +56,26 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
+import ViewPatientDialog from "@/components/dialog/viewPatientDialog.vue";
 export default {
   data() {
     return {
-      search: ""
+      search: "",
+      dialog: false
     };
   },
-  props:{
-    patient:Object,
+  props: {
+    patient: Object
   },
-  components: {},
-  computed: {
-
+  components: {
+    ViewPatientDialog
   },
+  computed: {},
 
   methods: {
-  
+    viewPatient() {
+      this.dialog = true;
+    }
   }
 };
 </script>

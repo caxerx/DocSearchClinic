@@ -21,6 +21,7 @@ const getters = {
 const actions = {
     actionSelectPatientForPatientList({ commit }, patient) {
         commit("selectPatientForPatientList", patient)
+        console.log(patient);
     },
     actionResetPatientForPatientList({ commit }) {
         commit("resetPatientForPatientList")

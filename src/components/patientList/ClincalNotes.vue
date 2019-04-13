@@ -6,7 +6,7 @@
 
     <v-card flat>
       <v-card-text>
-        <v-textarea name="input-7-1" label="Descriptions" outline background-color="grey"></v-textarea>
+        <v-textarea name="input-7-1" label="Descriptions" outline background-color="grey" :value="note"></v-textarea>
       </v-card-text>
       <v-card-actions>
         <v-spacer/>
@@ -21,6 +21,9 @@
 export default {
   data() {
     return {};
+  },
+  props:{
+    note: String
   },
   methods: {
     cancelShow() {

@@ -52,42 +52,6 @@ import axios from "axios";
 import { mapGetters, mapActions, mapState } from "vuex";
 import gql from "graphql-tag";
 
-const workplaceQuery = gql`
-  query($id: ID!) {
-    workplace(id: $id) {
-      id
-      name
-      location
-      type
-
-      doctors {
-        id
-        name
-      }
-      currentQueue {
-        id
-        patient {
-          id
-          name
-          gender
-          email
-          phoneNo
-          dob
-          hkid
-          queueRecords {
-            id
-            startTime
-            endTime
-            status
-          }
-        }
-        startTime
-        endTime
-      }
-    }
-  }
-`;
-
 const doctorLoginQuery = gql`
   query($username: String!, $password: String!) {
     doctorLogin(username: $username, password: $password) {
@@ -121,6 +85,17 @@ const staffLoginQuery = gql`
   }
 `;
 
+const workplaceQuery = gql`
+  query($id:ID!){
+    workplace(id:$id){
+      name
+      doctors{
+        id
+        name
+      }
+    }
+  }
+`
 export default {
   data: () => ({
     valid: true,
@@ -175,7 +150,6 @@ export default {
         this.$apollo.queries.workplace.skip = true;
         this.actionSetWorkPlaceForDrawer(data.workplace);
         this.actionSetLoginSuccess(true);
-        this.actionSetQueueRecordsFromQueue(data.workplace.currentQueue);
         return data.workplace;
       }
     },
