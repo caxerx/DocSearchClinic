@@ -19,12 +19,13 @@
                     <v-flex sm9 offset-sm1>
                       <div>{{reservation.patient.name}}</div>
                       <div class="grey--text">{{reservation.note}}</div>
-                      <div class="grey--text">Dr. {{reservation.reserver.name}}</div>
+                      <div class="grey--text">Dr. {{reservation.doctor.name}}</div>
                     </v-flex>
                   </v-layout>
                 </v-container>
               </template>
               <menu-card
+                :rid="reservation.id"
                 :date="formatDate(reservation.startTime)"
                 :icon="icon"
                 :patient="reservation.patient"
@@ -54,12 +55,13 @@
                     <v-flex sm9 offset-sm1>
                       <div>{{reservation.patient.name}}</div>
                       <div class="grey--text">{{reservation.note}}</div>
-                      <div class="grey--text">Dr. {{reservation.reserver.name}}</div>
+                      <div class="grey--text">Dr. {{reservation.doctor.name}}</div>
                     </v-flex>
                   </v-layout>
                 </v-container>
               </template>
               <menu-card
+               :rid="reservation.id"
                 :date="formatDate(reservation.startTime)"
                 :icon="icon"
                 :patient="reservation.patient"
@@ -87,12 +89,13 @@
                     <v-flex sm9 offset-sm1>
                       <div>{{reservation.patient.name}}</div>
                       <div class="grey--text">{{reservation.note}}</div>
-                      <div class="grey--text">Dr. {{reservation.reserver.name}}</div>
+                      <div class="grey--text">Dr. {{reservation.doctor.name}}</div>
                     </v-flex>
                   </v-layout>
                 </v-container>
               </template>
               <menu-card
+               :rid="reservation.id"
                 :date="formatDate(reservation.startTime)"
                 :icon="icon"
                 :patient="reservation.patient"
@@ -120,12 +123,13 @@
                     <v-flex sm9 offset-sm1>
                       <div>{{reservation.patient.name}}</div>
                       <div class="grey--text">{{reservation.note}}</div>
-                      <div class="grey--text">Dr. {{reservation.reserver.name}}</div>
+                      <div class="grey--text">Dr. {{reservation.doctor.name}}</div>
                     </v-flex>
                   </v-layout>
                 </v-container>
               </template>
               <menu-card
+               :rid="reservation.id"
                 :date="formatDate(reservation.startTime)"
                 :icon="icon"
                 :patient="reservation.patient"
@@ -153,12 +157,13 @@
                     <v-flex sm9 offset-sm1>
                       <div>{{reservation.patient.name}}</div>
                       <div class="grey--text">{{reservation.note}}</div>
-                      <div class="grey--text">Dr. {{reservation.reserver.name}}</div>
+                      <div class="grey--text">Dr. {{reservation.doctor.name}}</div>
                     </v-flex>
                   </v-layout>
                 </v-container>
               </template>
               <menu-card
+               :rid="reservation.id"
                 :date="formatDate(reservation.startTime)"
                 :icon="icon"
                 :patient="reservation.patient"
@@ -180,7 +185,6 @@
 
 <script>
 import MenuCard from "@/components/reservationList/MenuCard.vue";
-import CancelReservationDialog from "@/components/dialog/cancelReservationDialog"
 let moment = require("moment");
 
 export default {
@@ -201,7 +205,6 @@ export default {
   },
   components: {
     MenuCard,
-    CancelReservationDialog
   },
   watch: {},
   computed: {},

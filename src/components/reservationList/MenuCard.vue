@@ -70,11 +70,12 @@ import CancelReservationDialog from "@/components/dialog/cancelReservationDialog
 export default {
   data() {
     return {
-      cancelDialog: false
+      
     };
   },
   props: {
     // attribute name: Type
+    rid:String,
     patient: Object,
     icon: String,
     date: String,
@@ -87,7 +88,7 @@ export default {
     CancelReservationDialog
   },
   methods: {
-    ...mapActions(["actionSelectPatientForPatientList"]),
+    ...mapActions(["actionSetCancelDialogFromReservationList","actionSetDetailFromReservationList"]),
 
     setPatient(patient) {
       this.actionSelectPatientForPatientList(patient);
@@ -97,10 +98,20 @@ export default {
     getPatientLink(id) {
       return "/patientList?id=" + id;
     },
-
+    
     showCancelDialog() {
-      this.cancelDialog = true;
-      console.log(this.cancelDialog);
+      let rDetail = {
+        "rid":this.rid,
+        "patient":this.patient,
+        "icon": this.icon,
+        "date":this.date,
+        "startTime":this.startTime,
+        "duration":this.duration,
+        "note":this.note,
+      }
+      console.log(rDetail)
+      this.actionSetDetailFromReservationList(rDetail);
+      this.actionSetCancelDialogFromReservationList(true);
     }
   }
 };

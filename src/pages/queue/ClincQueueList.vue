@@ -54,9 +54,7 @@ const doctorQuery = gql`
 
 export default {
   data: () => ({}),
-  mounted:function(){
-    this.$apollo.queries.doctor.refetch();
-  },
+
   components: {
     List,
     Nevigation,
@@ -73,11 +71,12 @@ export default {
       update(data) {
         return data.doctor;
       }
-    },
+    }
   },
   computed: {
     ...mapGetters({
-      getSelectDoctor:"getSelectDoctor"
+      getSelectDoctor: "getSelectDoctor",
+      getRefreshNow:'getRefreshNow'
     }),
 
     dialog: {
@@ -93,10 +92,17 @@ export default {
       }
     }
   },
-
-  created() {},
+  watch: {
+    getRefreshNow: function(val) {
+      if (val) {
+        this.$apollo.queries.doctor.refetch();
+        this.actionSetRefreshNow(false);
+      }
+    }
+  },
 
   methods: {
+    ...mapActions(["actionSetRefreshNow"]),
     computedNewArr(arr) {
       let newArr = arr.slice();
 

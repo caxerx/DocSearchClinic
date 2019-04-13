@@ -68,9 +68,7 @@ const doctorQuery = gql`
 
 export default {
   data: () => ({}),
-  mounted: function() {
-    this.$apollo.queries.doctor.refresh();
-  },
+
   apollo: {
     doctor: {
       query: doctorQuery,
@@ -97,7 +95,8 @@ export default {
     //   return maxHeight;
     // },
     ...mapGetters({
-      getSelectDoctor: "getSelectDoctor"
+      getSelectDoctor: "getSelectDoctor",
+      getRefreshNow:"getRefreshNow"
     }),
     dialog: {
       get() {
@@ -115,14 +114,18 @@ export default {
   },
 
   watch: {
-    computedHeight: function(val) {
-      console.log(val);
+    getRefreshNow: function(val) {
+      if (val) {
+        this.$apollo.queries.doctor.refetch();
+        this.actionSetRefreshNow(false);
+      }
     }
   },
 
   created() {},
 
   methods: {
+    ...mapActions(["actionSetRefreshNow"]),
     computedNewArr(arr) {
       let newArr = arr.slice();
 

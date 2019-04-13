@@ -8,13 +8,15 @@ const state = {
     },
     workplace:{
 
-    }
+    },
+    refreshNow:false,
 }
 
 
 const getters = {
     getSelectDoctor: state => state.selectDoctor,
     getWorkPlace:state =>state.workplace,
+    getRefreshNow:state=>state.refreshNow,
 
 }
 
@@ -25,6 +27,9 @@ const actions = {
     },
     actionSetWorkPlaceForDrawer({commit},workplace){
         commit("setWorkplaceForDrawer",workplace)
+    },
+    actionSetRefreshNow({commit},val){
+        commit("setRefreshNow",val);
     }
     
 }
@@ -36,6 +41,9 @@ const mutations = {
     ["setWorkplaceForDrawer"](state,workplace){
         state.workplace = workplace;
         console.log(state.workplace);
+    },
+    ["setRefreshNow"](state,val){
+        state.refreshNow = val;
     }
  
 }

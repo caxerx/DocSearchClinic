@@ -39,7 +39,6 @@
       </v-expansion-panel>
       <v-divider></v-divider>
       <v-list dense>
-
         <v-list-group no-action prepend-icon="date_range">
           <v-list-tile slot="activator">
             <v-list-tile-title>Reservation</v-list-tile-title>
@@ -130,6 +129,9 @@
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Clinc System</v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-btn icon @click="refreshNow()">
+        <v-icon>refresh</v-icon>
+      </v-btn>
       <v-btn icon>
         <v-icon>notifications</v-icon>
       </v-btn>
@@ -168,11 +170,15 @@ export default {
       isSuccess: "getIsSuccess",
       getSelectDoctor: "getSelectDoctor",
       getWorkPlace: "getWorkPlace",
-      getLogin:"getLogin"
-    }),
+      getLogin: "getLogin"
+    })
   },
   methods: {
-    ...mapActions(["actionSetSelectDoctor", "actionSetQueueRecordsFromQueue"]),
+    ...mapActions([
+      "actionSetSelectDoctor",
+      "actionSetQueueRecordsFromQueue",
+      "actionSetRefreshNow"
+    ]),
 
     toggleDoctorList() {
       this.doctorList = this.doctorList == 0 ? -1 : 0;
@@ -190,6 +196,9 @@ export default {
       this.$router.push("/");
       this.$router.go(0);
     },
+    refreshNow() {
+      this.actionSetRefreshNow(true);
+    }
   }
 };
 </script>
