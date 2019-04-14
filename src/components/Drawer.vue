@@ -11,7 +11,7 @@
 
               <v-list-tile-content>
                 <!-- tempoary set user is doctor 1 -->
-                <v-list-tile-title>Dr. {{getLogin.name}}</v-list-tile-title>
+                <v-list-tile-title>Dr. {{getSelectDoctor.name}}</v-list-tile-title>
                 <v-list-tile-sub-title style="width:150px">{{getLogin.workplace.name}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
