@@ -121,6 +121,7 @@ export default {
         .format("HH:mm");
       this.status = this.detail.reservation.status;
       this.type = this.detail.reservation.type;
+      console.log("rid ,"+this.detail.reservation.id)
     },
 
     editReservation() {
@@ -129,17 +130,13 @@ export default {
       let end = moment.utc(this.date + " " + this.endTime).format();
       console.log(this.detail.patient.id);
       let reservationInput = {
-        reserverId: this.detail.reservation.doctor.id,
-        patientId: this.detail.patient.id,
-        doctorId: this.detail.reservation.doctor.id,
-        workplaceId: this.getWorkPlace.id,
         note: this.note,
         startTime: start,
         endTime: end,
         status: this.status,
         type: this.type
       };
-      console.log("rid ,"+this.detail.reservation.id)
+      
       this.$apollo
         .mutate({
           // Query

@@ -7,15 +7,15 @@
     </v-tabs>
     <div v-if="active==0">
       <v-list flat style="background-color:transparent;">
-        <span v-for="(reservation,index) in reservations" :key="index">
-          <span v-if="isToday(reservation.startTime)">
-            <v-list-tile @click="setPatient(reservation.patient)" avatar>
+        <span v-for="(patient,index) in patients" :key="index">
+          <span v-if="isToday(patient.consultations)">
+            <v-list-tile @click="setPatient(patient)" avatar>
               <v-list-tile-avatar>
                 <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
               </v-list-tile-avatar>
 
               <v-list-tile-content>
-                <v-list-tile-title v-html="reservation.patient.name"></v-list-tile-title>
+                <v-list-tile-title v-html="patient.name"></v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </span>
@@ -25,17 +25,17 @@
     <div v-else-if="active==1">
       <v-list flat style="background-color:transparent;">
         <v-list-tile
-          v-for="(reservation,index) in checkRepeatIdAndReturnNewArr(reservations)"
+          v-for="(patient,index) in patients"
           :key="index"
           avatar
-          @click="setPatient(reservation.patient)"
+          @click="setPatient(patient)"
         >
           <v-list-tile-avatar>
             <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
           </v-list-tile-avatar>
 
           <v-list-tile-content>
-            <v-list-tile-title v-html="reservation.patient.name"></v-list-tile-title>
+            <v-list-tile-title v-html="patient.name"></v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -43,17 +43,17 @@
     <div v-else-if="active==2">
       <v-list flat style="background-color:transparent;">
         <v-list-tile
-          v-for="(reservation,index) in checkRepeatIdAndReturnNewArr(reservations)"
+          v-for="(patient,index) in patients"
           :key="index"
           avatar
-          @click="setPatient(reservation.patient)"
+          @click="setPatient(patient)"
         >
           <v-list-tile-avatar>
             <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
           </v-list-tile-avatar>
 
           <v-list-tile-content>
-            <v-list-tile-title v-html="reservation.patient.name"></v-list-tile-title>
+            <v-list-tile-title v-html="patient.name"></v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -82,7 +82,7 @@ export default {
   },
 
   props: {
-    reservations: Array,
+    patients: Array,
     doctor: Object
   },
   components: {},
@@ -90,29 +90,33 @@ export default {
 
   methods: {
     ...mapActions(["actionSelectPatientForPatientList"]),
-    isToday(startTime) {
-      let date = moment.utc(startTime).format("YYYY-MM-DD");
-      if (date === new Date().toISOString().substr(0, 10)) {
-        return true;
-      }
+    isToday(consultations) {
+      
+
+      let todayFind = consultations.find(function(item){
+        let date = moment.utc(item.startTime).format("YYYY-MM-DD");
+        console.log(date)
+        return date === new Date().toISOString().substr(0, 10)
+      })
+
       // console.log(date + ", " + new Date().toISOString().substr(0, 10));
-      return false;
+      return todayFind;
     },
     setPatient(patient) {
       this.actionSelectPatientForPatientList(patient);
     },
-    checkRepeatIdAndReturnNewArr(reservations) {
-      let seen = new Set();
-      //check no repeat user in last reservations
-      let lastPatientInReservations = reservations.filter(function(currentObject) {
-        if(seen.size !== seen.add(currentObject.patient.id).size){
-          return currentObject
-        }
-      });
+    // checkRepeatIdAndReturnNewArr(reservations) {
+    //   let seen = new Set();
+    //   //check no repeat user in last reservations
+    //   let lastPatientInReservations = reservations.filter(function(currentObject) {
+    //     if(seen.size !== seen.add(currentObject.patient.id).size){
+    //       return currentObject
+    //     }
+    //   });
 
 
-      return lastPatientInReservations ;
-    }
+    //   return lastPatientInReservations ;
+    // }
   }
 };
 </script>
