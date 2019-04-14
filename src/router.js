@@ -21,7 +21,6 @@ import DoctorProfileSetting from './pages/Setting/DoctorProfileSetting.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
   base: __dirname,
   routes: [
     {
