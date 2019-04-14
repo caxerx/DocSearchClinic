@@ -185,7 +185,6 @@ export default {
   methods: {
     ...mapActions([
       "actionSetSelectDoctor",
-      "actionSetQueueRecordsFromQueue",
       "actionSetRefreshNow"
     ]),
 

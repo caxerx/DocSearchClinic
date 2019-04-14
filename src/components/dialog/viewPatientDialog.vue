@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>Allergies</v-card-title>
 
-      <v-list>
+      <v-list three-line>
          
           <v-list-tile v-for="(a,index) in patient.allergies" :key="index">
               <v-list-tile-content>

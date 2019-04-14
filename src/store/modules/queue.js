@@ -3,7 +3,6 @@
 
 const state = {
     queueData: {
-        queueRecords:[],
         patientQueue:{
             queue:{},
             patient:{
@@ -26,11 +25,11 @@ const getters = {
 
 const actions = {
 
-    actionSetQueueRecordsFromQueue({commit},item){
-        commit("setQueueRecordsFromQueue",item)
-    },
     actionSetPatientFromQueue({commit},item){
         commit("setPatientFromQueue",item)
+    },
+    actionResetSelectPatientFromQueue({commit}){
+        commit("resetSelectPatientFromQueue");
     }
 
 
@@ -43,7 +42,17 @@ const mutations = {
     },
     ["setPatientFromQueue"](state,item){
         state.queueData.patientQueue = item
+    },
+    ["resetSelectPatientFromQueue"](state){
+        state.queueData.patientQueue = {
+            queue:{},
+            patient:{
+                id:-1
+            }
+        }
+        
     }
+
 
 
 }

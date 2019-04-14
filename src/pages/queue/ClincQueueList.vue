@@ -74,10 +74,13 @@ export default {
       }
     }
   },
+  destroyed: function() {
+    this.actionResetSelectPatientFromQueue();
+  },
   computed: {
     ...mapGetters({
       getSelectDoctor: "getSelectDoctor",
-      getRefreshNow:'getRefreshNow'
+      getRefreshNow: "getRefreshNow"
     }),
 
     dialog: {
@@ -103,7 +106,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["actionSetRefreshNow"]),
+    ...mapActions(["actionSetRefreshNow","actionResetSelectPatientFromQueue"]),
     computedNewArr(arr) {
       let newArr = arr.slice();
 
