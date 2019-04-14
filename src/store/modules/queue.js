@@ -4,9 +4,13 @@
 const state = {
     queueData: {
         queueRecords:[],
-        patient:{
-            id:-1
-        }
+        patientQueue:{
+            queue:{},
+            patient:{
+                id:-1
+            }
+        },
+        
 
     },
 
@@ -38,7 +42,7 @@ const mutations = {
         state.queueData.queueRecords = item
     },
     ["setPatientFromQueue"](state,item){
-        state.queueData.patient = item
+        state.queueData.patientQueue = item
     }
 
 

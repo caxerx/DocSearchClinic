@@ -3,7 +3,7 @@
     <loading-dialog :dialog="dialog"/>
     <v-layout style="height: 90%" v-if="!$apollo.loading">
       <v-flex sm2 d-flex style="padding-left:2%">
-        <nevigation :queueRecords="computedNewArr(doctor.currentQueue)"/>
+        <nevigation :currentQueue="computedNewArr(doctor.currentQueue)"/>
       </v-flex>
       <v-flex d-flex sm10 style="padding-left:7%;padding-right:3%">
         <v-card>
@@ -47,6 +47,7 @@ const doctorQuery = gql`
         }
         startTime
         endTime
+        type
       }
     }
   }

@@ -33,7 +33,15 @@
         </v-list>
       </v-flex>
       <v-spacer/>
-      <v-tooltip bottom>
+      <v-tooltip bottom v-if="patient.allergies.length<1">
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon color="grey" @click="viewPatient()">remove_red_eye</v-icon>
+          </v-btn>
+        </template>
+        <span>No Allergies</span>
+      </v-tooltip>
+      <v-tooltip bottom v-else>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon color="info" @click="viewPatient()">remove_red_eye</v-icon>
@@ -41,10 +49,10 @@
         </template>
         <span>View Allergies</span>
       </v-tooltip>
-         <v-tooltip bottom>
+      <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
-            <v-icon color="success" @click="">edit</v-icon>
+            <v-icon color="success" @click>edit</v-icon>
           </v-btn>
         </template>
         <span>Edit Profile</span>

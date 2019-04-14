@@ -1,22 +1,22 @@
 <template>
-  <div style="height:100%" v-if="patient!=null">
+  <div style="height:100%" v-if="patientQueue!=null">
     <v-layout
-      v-if="!isClickPatient(patient.id)"
+      v-if="!isClickPatient(patientQueue.patient.id)"
       align-center
       justify-center
       fill-height
     >Select a patient to view details</v-layout>
     <div v-else style="height:100%">
-      <div v-if="patient!=null" style="height:100%">
+      <div v-if="patientQueue!=null" style="height:100%">
         <div v-if="isRecordEmpty()" style="height:100%">
-          <patient-profile-card :patient="patient"/>
+          <patient-profile-card :patient="patientQueue.patient"/>
           <v-layout align-center justify-center style="height:80%">No Records in this Patient</v-layout>
         </div>
 
         <div v-else style="height:100%">
-          <patient-profile-card :patient="patient"/>
+          <patient-profile-card :patient="patientQueue.patient"/>
 
-          <queue-record-list :patient="patient"/>
+          <queue-record-list :patientQueue="patientQueue"/>
         </div>
       </div>
     </div>
@@ -43,10 +43,9 @@ export default {
       getQueueData: "getQueueData"
     }),
 
-    patient: {
+    patientQueue: {
       get() {
-        console.log( this.getQueueData.patient)
-        return this.getQueueData.patient;
+        return this.getQueueData.patientQueue;
       },
       set(val) {
        this.actionSetPatientFromQueue(val);
@@ -61,6 +60,7 @@ export default {
 
   methods: {
     isClickPatient(id) {
+      console.log(id);
       if (id === -1) {
         return false;
       } else {
@@ -68,9 +68,9 @@ export default {
       }
     },
     isRecordEmpty() {
-      if (this.patient.queueRecords.length < 1) {
-        return true;
-      }
+      // if (this.patientQueue.patient.queueRecords.length < 1) {
+      //   return true;
+      // }
 
       return false;
     }
