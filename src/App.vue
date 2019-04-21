@@ -1,32 +1,26 @@
 <template>
   <v-app>
-    <v-content v-if="!getLoginIsSuccess">
-      <login/>
-    </v-content>
-    <v-content v-else>
-      <drawer/>
-    </v-content>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import Login from "@/pages/Login.vue";
-import Drawer from "@/components/Drawer";
-
-import { mapGetters, mapActions, mapState } from "vuex";
-import gql from "graphql-tag";
+import { mapState } from "vuex";
 
 export default {
-  components: {
-    Drawer,
-    Login
+  name: "App",
+  data() {
+    return {};
   },
-  computed:{
-    ...mapGetters({
-      getLoginIsSuccess:"getLoginIsSuccess"
-    }),
-
+  computed: mapState(["userId"]),
+  watch: {
+    userId(nv, ov) {
+      if (nv == -1) {
+        this.$router.replace("/login");
+      } else {
+        this.$router.replace("/");
+      }
+    }
   }
-
 };
 </script>
