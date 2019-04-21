@@ -9,22 +9,26 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: () => import('./page/AppBase.vue'),
+      meta: { title: "Home" },
       children: [
         {
           path: '/queue',
           name: 'Queue',
           component: () => import('./page/Queue.vue'),
+          meta: { title: "Queue" },
         }, {
           path: '/patient',
           name: 'Patient',
           component: () => import('./page/Patient.vue'),
+          meta: { title: "Patient" },
         }
       ]
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import(/* webpackChunkName: "login" */ './page/Login.vue')
+      component: () => import(/* webpackChunkName: "login" */ './page/Login.vue'),
+      meta: { title: "Login" },
     }
   ]
 })
