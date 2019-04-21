@@ -1,7 +1,10 @@
 <template>
-  <div
-    style="position:fixed; top:0; left:0; height: 100vh; width: 100vw; padding-top: 64px; padding-left: 300px; "
-  >
+  <full-screen-container v-if="!patientsList">
+    <v-layout align-center justify-center fill-height>
+      <v-progress-circular width="5" size="50" color="primary" indeterminate></v-progress-circular>
+    </v-layout>
+  </full-screen-container>
+  <full-screen-container v-else>
     <div style="height:100%; width:100%" class="pa-4">
       <v-layout fill-height>
         <v-flex xs3>
@@ -22,7 +25,7 @@
                     avatar
                     v-for="patient in patients"
                     :key="patient.id"
-                    @click="selectedPatient=patient"
+                    @click="selectPatient(patient.id)"
                   >
                     <v-list-tile-avatar>
                       <v-icon v-if="patient.avatar==''" size="40">account_circle</v-icon>
@@ -40,7 +43,7 @@
         </v-flex>
         <v-flex class="pl-4">
           <v-card class="fill-height">
-            <v-layout align-center justify-center fill-height v-if="!(selectedPatient.id>0)">
+            <v-layout align-center justify-center fill-height v-if="!(selectedPatient>0)">
               <div>Select a patient to view details</div>
             </v-layout>
             <v-layout
@@ -181,20 +184,25 @@
         </v-flex>
       </v-layout>
     </div>
-  </div>
+  </full-screen-container>
 </template>
 <script>
+import FullScreenContainer from "@/component/FullScreenContainer.vue";
 import gql from "graphql-tag";
 import moment from "moment";
 export default {
+  components: {
+    "full-screen-container": FullScreenContainer
+  },
+  props: ["patientId"],
   data() {
     return {
       keyword: "",
       patientTab: 0,
       patientDetailTab: 0,
-      selectedPatient: { id: -1 },
+      selectedPatient: -1,
       patientType: ["Today", "Recent", "All"],
-      patientsList: [[], [], []],
+      patientsList: null,
       filteredPatientsList: [[], [], []],
       patientDetails: {},
       selectedMedicalRecord: { id: -1 },
@@ -212,8 +220,13 @@ export default {
       ]
     };
   },
-  created() {},
+  mounted() {
+    this.selectedPatient = this.patientId;
+  },
   methods: {
+    selectPatient(patient) {
+      this.$router.push("/patient/" + patient);
+    },
     getGenderName(gender) {
       if (gender == "M" || gender == "m") {
         return "Male";
@@ -279,6 +292,9 @@ export default {
     }
   },
   watch: {
+    patientId(val) {
+      this.selectedPatient = val;
+    },
     selectedPatient() {
       this.$apollo.queries.patientDetails.refetch();
       this.patientDetailTab = 0;
@@ -360,11 +376,11 @@ export default {
       `,
       variables() {
         return {
-          patientId: this.selectedPatient.id
+          patientId: this.selectedPatient
         };
       },
       skip() {
-        return !(this.selectedPatient.id > 0);
+        return !(this.selectedPatient > 0);
       },
       update: data => data.patient
     }

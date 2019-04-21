@@ -14,13 +14,27 @@ export default new Router({
         {
           path: '/queue',
           name: 'Queue',
-          component: () => import('./page/Queue.vue'),
+          component: () => import(/* webpackChunkName: "queue" */'./page/Queue.vue'),
           meta: { title: "Queue" },
-        }, {
+        },
+        {
           path: '/patient',
           name: 'Patient',
-          component: () => import('./page/Patient.vue'),
+          component: () => import(/* webpackChunkName: "patient" */'./page/Patient.vue'),
           meta: { title: "Patient" },
+        },
+        {
+          path: '/patient/:patientId',
+          name: 'Patient Profile',
+          meta: { title: "Patient" },
+          component: () => import(/* webpackChunkName: "patient" */'./page/Patient.vue'),
+          props: true
+        },
+        {
+          path: '/reservation',
+          name: 'Reservation',
+          component: () => import(/* webpackChunkName: "patient" */'./page/Reservation.vue'),
+          meta: { title: "Reservation" },
         }
       ]
     },

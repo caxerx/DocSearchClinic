@@ -1,7 +1,5 @@
 <template>
-  <div
-    style="position:fixed; top:0; left:0; height: 100vh; width: 100vw; padding-top: 64px; padding-left: 300px; "
-  >
+  <full-screen-container>
     <div style="height:100%; width:100%" class="pa-4">
       <v-layout fill-height>
         <v-flex xs3>
@@ -39,24 +37,23 @@
         </v-flex>
       </v-layout>
     </div>
-  </div>
+  </full-screen-container>
 </template>
 <script>
+import FullScreenContainer from "@/component/FullScreenContainer.vue";
 export default {
+  components: {
+    "full-screen-container": FullScreenContainer
+  },
   data() {
     return {
       patientTab: 0,
       selectedPatient: null,
       patientType: ["All", "Clinic", "Online"],
-      patientsList: [
-        [],
-        [],
-        []
-      ]
+      patientsList: [[], [], []]
     };
   },
-  created() {
-  }
+  created() {}
 };
 </script>
 
