@@ -341,7 +341,7 @@ export default {
         let reservations = [[], []];
         reservations[0] = d.filter(r => r.status == "pending");
         reservations[1] = d
-          .filter(r => r.status == "approved")
+          .filter(r => r.status == "approved" || r.status == "waiting")
           .sort((t1, t2) => {
             return moment(t1.startTime).diff(moment(t2.startTime));
           });

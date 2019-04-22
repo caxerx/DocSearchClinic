@@ -114,12 +114,15 @@
                       <v-list class="pa-0" style="width:100%">
                         <v-list-tile>
                           <v-list-tile-content>
-                            <v-list-tile-title>{{getConsultationTypeName(consultation.type)}} Consultation</v-list-tile-title>
+                            <v-list-tile-title>{{getConsultationTypeName(consultation.type)}} Consultation with Dr. {{consultation.consultant.name}}</v-list-tile-title>
                             <v-list-tile-sub-title>{{getDurationDisplay(consultation.startTime,consultation.endTime)}}</v-list-tile-sub-title>
                           </v-list-tile-content>
 
                           <v-list-tile-action>
-                            <v-icon @click="a=1">edit</v-icon>
+                            <v-icon
+                              @click="a=1"
+                              v-if="consultation.consultant.id==$store.state.selectedDoctor"
+                            >edit</v-icon>
                           </v-list-tile-action>
                           <v-list-tile-action>
                             <v-icon @click="showMedicalRecord(consultation)">chevron_right</v-icon>
@@ -369,6 +372,10 @@ export default {
                 id
                 name
                 description
+              }
+              consultant {
+                id
+                name
               }
             }
           }

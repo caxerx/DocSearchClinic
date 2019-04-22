@@ -5,7 +5,38 @@
         <v-flex xs3>
           <v-layout column fill-height>
             <v-flex>
-              <h3 class="headline mb --text">Queue</h3>
+              <h3 class="headline mb --text">
+                Queue
+                <v-dialog v-model="checkInDialog" width="400">
+                  <template v-slot:activator="{ on }">
+                    <v-btn outline color="primary" v-on="on">Check in</v-btn>
+                  </template>
+
+                  <v-card>
+                    <v-card-title class="headline">Check-in</v-card-title>
+                    <v-container>
+                      <v-layout justify-center align-center column>
+                        <v-flex>
+                          <v-form ref="checkinform" @submit.prevent="checkIn()">
+                            <v-text-field
+                              outline
+                              label="Focus and scan"
+                              color="primary"
+                              v-model="checkinString"
+                            ></v-text-field>
+                          </v-form>
+                        </v-flex>
+                        <v-flex>
+                          <qrcode-stream
+                            @decode="onDecode"
+                            style="height: 250px; width: 250px; background-color:black"
+                          ></qrcode-stream>
+                        </v-flex>
+                      </v-layout>
+                    </v-container>
+                  </v-card>
+                </v-dialog>
+              </h3>
               <v-tabs v-model="patientTab" slider-color="orange" color="transparent">
                 <v-tab v-for="pType in patientType" :key="pType" ripple>{{pType}}</v-tab>
               </v-tabs>
@@ -41,17 +72,32 @@
 </template>
 <script>
 import FullScreenContainer from "@/component/FullScreenContainer.vue";
+import { QrcodeStream } from "vue-qrcode-reader";
+
 export default {
   components: {
-    "full-screen-container": FullScreenContainer
+    "full-screen-container": FullScreenContainer,
+    "qrcode-stream": QrcodeStream
   },
   data() {
     return {
+      checkInDialog: false,
+      checkinString: "",
       patientTab: 0,
       selectedPatient: null,
       patientType: ["All", "Clinic", "Online"],
       patientsList: [[], [], []]
     };
+  },
+  methods: {
+    onDecode(str) {
+      this.checkinString = str;
+      this.checkIn();
+    },
+    checkIn() {
+      this.checkInDialog = false;
+      this.checkinString = "";
+    }
   },
   created() {}
 };
