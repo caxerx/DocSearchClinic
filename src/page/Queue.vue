@@ -30,6 +30,7 @@
                           <qrcode-stream
                             @decode="onDecode"
                             style="height: 250px; width: 250px; background-color:black"
+                            v-if="checkInDialog"
                           ></qrcode-stream>
                         </v-flex>
                       </v-layout>
