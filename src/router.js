@@ -33,15 +33,22 @@ export default new Router({
         {
           path: '/reservation',
           name: 'Reservation',
-          component: () => import(/* webpackChunkName: "patient" */'./page/Reservation.vue'),
+          component: () => import(/* webpackChunkName: "reservation" */'./page/Reservation.vue'),
           meta: { title: "Reservation" },
+        },
+        {
+          path: '/consultation/:consultationId',
+          name: 'Consultation',
+          component: () => import(/* webpackChunkName: "consultation" */'./page/Consultation.vue'),
+          meta: { title: "Consultation" },
+          props: true
         }
       ]
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import(/* webpackChunkName: "login" */ './page/Login.vue'),
+      component: () => import('./page/Login.vue'),
       meta: { title: "Login" },
     }
   ]

@@ -1,6 +1,6 @@
 <template>
   <div
-    style="position:fixed; top:0; left:0; height: 100vh; width: 100vw; padding-top: 64px; padding-left: 300px; "
+    style="position:fixed; top:0; left:0; height: 100vh; width: 100vw; padding-top: 64px; padding-left: 300px; overflow: hidden;"
   >
     <slot></slot>
   </div>

@@ -79,7 +79,8 @@ export default {
         userId: localStorageId,
         role: localStorage.getItem("rold"),
         selectedDoctor: localStorage.getItem("selectedDoctor"),
-        workplace: localStorage.getItem("workplace")
+        workplace: localStorage.getItem("workplace"),
+        avatar: localStorage.getItem("avatar")
       });
       this.$router.replace("/");
     }
@@ -117,7 +118,8 @@ export default {
           let staffId = this.staffLogin.staff.id;
           localStorage.setItem("userId", staffId);
           localStorage.setItem("role", "S");
-          localStorage.setItem("workplace", this.staffLogin.workplace.id);
+          localStorage.setItem("avatar", this.staffLogin.staff.avatar);
+          localStorage.setItem("workplace", this.staffLogin.staff.workplace.id);
           localStorage.setItem(
             "selectedDoctor",
             this.staffLogin.workplace.doctors[0].id
@@ -126,13 +128,15 @@ export default {
             userId: staffId || -1,
             role: "S",
             workplace: this.staffLogin.workplace.id || -1,
-            selectedDoctor: this.staffLogin.workplace.doctors[0].id || -1
+            selectedDoctor: this.staffLogin.staff.workplace.doctors[0].id || -1,
+            avatar: this.staffLogin.staff.avatar
           });
         } else {
           let doctorId = this.doctorLogin.doctor.id;
           localStorage.setItem("userId", doctorId);
           localStorage.setItem("role", "D");
           localStorage.setItem("selectedDoctor", doctorId);
+          localStorage.setItem("avatar", this.doctorLogin.doctor.avatar);
           localStorage.setItem(
             "workplace",
             this.doctorLogin.doctor.workplace.id
@@ -141,7 +145,8 @@ export default {
             userId: doctorId || -1,
             role: "D",
             selectedDoctor: doctorId || -1,
-            workplace: this.doctorLogin.doctor.workplace.id || -1
+            workplace: this.doctorLogin.doctor.workplace.id || -1,
+            avatar: this.doctorLogin.doctor.avatar
           });
         }
         return -1;
@@ -157,6 +162,7 @@ export default {
             doctor {
               id
               name
+              avatar
               workplace {
                 id
               }
@@ -185,6 +191,7 @@ export default {
             staff {
               id
               name
+              avatar
               workplace {
                 id
                 doctors {

@@ -8,6 +8,11 @@ import { createProvider } from './plugins/vue-apollo'
 Vue.config.productionTip = false
 
 router.beforeEach((to, _, next) => {
+  if (to.name == "Consultation") {
+    store.commit("hideDrawer")
+  } else {
+    store.commit("showDrawer")
+  }
   document.title = to.meta.title + " | DocSearch Clinic System";
   next();
 });

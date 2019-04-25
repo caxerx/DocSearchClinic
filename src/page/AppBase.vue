@@ -6,7 +6,7 @@
       </v-toolbar-side-icon>
       <v-toolbar-title>DocSearch Clinic System</v-toolbar-title>
     </v-toolbar>
-    <v-navigation-drawer app clipped permanent touchless>
+    <v-navigation-drawer app clipped permanent touchless v-if="!$store.state.removeMainDrawer">
       <v-list>
         <v-list-tile avatar>
           <v-list-tile-avatar>
@@ -32,7 +32,7 @@
             <v-list-tile v-for="i in doctorList" :key="i.id" @click="switchDoctor(i.id)">
               <v-list-tile-avatar>
                 <v-icon v-if="i.avatar==''" size="40">account_circle</v-icon>
-                <v-img :src="i.avatar" v-else/>
+                <v-img :src="getAvatar(i.avatar)" v-else/>
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title>Dr. {{i.name}}</v-list-tile-title>
@@ -117,13 +117,21 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list-group>
-
         <v-list-tile @click="linkTo('feedback')">
           <v-list-tile-action>
             <v-icon>comment</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Feedback</v-list-tile-title>
+            <v-list-tile-title>Received Feedback</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
+        <v-list-tile @click="linkTo('consultation')">
+          <v-list-tile-action>
+            <v-icon>account_circle</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>TestConsultation</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -154,6 +162,9 @@ export default {
     },
     linkTo(link) {
       this.$router.push("/" + link);
+    },
+    getAvatar(i) {
+      return this.$store.state.avatarBase + i;
     }
   },
   data() {

@@ -86,7 +86,7 @@
                     <v-menu offset-x open-on-hover>
                       <template v-slot:activator="{ on }">
                         <v-icon v-if="r.patient.avatar==''" size="40" v-on="on">account_circle</v-icon>
-                        <v-img :src="r.patient.avatar" v-else v-on="on"/>
+                        <v-img :src="getAvatar(r.patient.avatar)" v-else v-on="on"/>
                       </template>
 
                       <v-card>
@@ -94,7 +94,7 @@
                           <v-list-tile avatar>
                             <v-list-tile-avatar>
                               <v-icon v-if="r.patient.avatar==''" size="40">account_circle</v-icon>
-                              <v-img :src="r.patient.avatar" v-else/>
+                              <v-img :src="getAvatar(r.patient.avatar)" v-else/>
                             </v-list-tile-avatar>
                             <v-list-tile-content>
                               <v-list-tile-title>{{r.patient.name}}</v-list-tile-title>
@@ -132,7 +132,7 @@
                     <v-menu offset-x open-on-hover>
                       <template v-slot:activator="{ on }">
                         <v-icon v-if="r.patient.avatar==''" size="40" v-on="on">account_circle</v-icon>
-                        <v-img :src="r.patient.avatar" v-else v-on="on"/>
+                        <v-img :src="getAvatar(r.patient.avatar)" v-else v-on="on"/>
                       </template>
 
                       <v-card>
@@ -140,7 +140,7 @@
                           <v-list-tile avatar>
                             <v-list-tile-avatar>
                               <v-icon v-if="r.patient.avatar==''" size="40">account_circle</v-icon>
-                              <v-img :src="r.patient.avatar" v-else/>
+                              <v-img :src="getAvatar(r.patient.avatar)" v-else/>
                             </v-list-tile-avatar>
                             <v-list-tile-content>
                               <v-list-tile-title>{{r.patient.name}}</v-list-tile-title>
@@ -208,7 +208,7 @@ export default {
       reservations: null,
       timePickerMenu: false,
       timePicked: "",
-      windowHeight: window.innerHeight
+      windowHeight: window.innerHeight,
     };
   },
   created() {
@@ -295,6 +295,9 @@ export default {
           reservationInput: rinput
         }
       });
+    },
+    getAvatar(i) {
+      return this.$store.state.avatarBase + i;
     }
   },
   apollo: {
