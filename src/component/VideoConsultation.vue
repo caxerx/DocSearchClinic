@@ -64,8 +64,9 @@
 <script>
 import gql from "graphql-tag";
 import Video from "twilio-video";
+import moment from "moment";
 export default {
-  props: { patientId: String, consultationId: Number },
+  props: { patientId: String, consultationId: String },
   mounted() {
     this.setPreview();
     this.getTokenAndConnect();
@@ -83,7 +84,7 @@ export default {
       emotion: "SAD AF",
       messages: [],
       messageText: "",
-      previewTracks:null
+      previewTracks: null
     };
   },
   methods: {
