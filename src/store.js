@@ -11,9 +11,14 @@ export default new Vuex.Store({
     selectedDoctor: -1,
     avatar: "",
     avatarBase: "https://dsapi.1lo.li/assets/avatars/",
-    removeMainDrawer: false
+    removeMainDrawer: false,
+    lastRoute: null,
+    drawerSize: 300
   },
   mutations: {
+    saveRoute(state, route) {
+      state.lastRoute = route;
+    },
     loggedInAs(state, payload) {
       state.userId = payload.userId;
       state.role = payload.role;
@@ -26,6 +31,9 @@ export default new Vuex.Store({
     },
     showDrawer(state) {
       state.removeMainDrawer = false
+    },
+    setDrawerSize(state, size) {
+      state.drawerSize = size;
     }
   },
   actions: {

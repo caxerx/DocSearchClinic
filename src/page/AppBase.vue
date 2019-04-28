@@ -1,12 +1,22 @@
 <template>
   <div>
     <v-toolbar app color="primary" dark clipped-left permanent prominent>
+      <v-btn icon @click="navigationShow=!navigationShow">
+        <v-icon>{{navigationShow?"arrow_right":"arrow_left"}}</v-icon>
+      </v-btn>
       <v-toolbar-side-icon>
         <v-img src="logo_s.png"></v-img>
       </v-toolbar-side-icon>
       <v-toolbar-title>DocSearch Clinic System</v-toolbar-title>
     </v-toolbar>
-    <v-navigation-drawer app clipped permanent touchless v-if="!$store.state.removeMainDrawer">
+    <v-navigation-drawer
+      app
+      clipped
+      permanent
+      touchless
+      v-if="!$store.state.removeMainDrawer"
+      :mini-variant="navigationShow"
+    >
       <v-list>
         <v-list-tile avatar>
           <v-list-tile-avatar>
@@ -147,6 +157,7 @@ import gql from "graphql-tag";
 export default {
   mounted() {
     if (this.$store.state.userId == -1) {
+      this.$store.commit("saveRoute", this.$route);
       this.$router.replace("/login");
       return;
     }
@@ -167,8 +178,14 @@ export default {
       return this.$store.state.avatarBase + i;
     }
   },
+  watch: {
+    navigationShow(val) {
+      this.$store.commit("setDrawerSize", val ? 80 : 300);
+    }
+  },
   data() {
     return {
+      navigationShow: false,
       showDoctorList: -1,
       selectedDoctor: {
         avatar: "",

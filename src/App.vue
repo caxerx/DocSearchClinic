@@ -4,10 +4,9 @@
   </v-app>
 </template>
 <script>
-
-import 'tui-editor/dist/tui-editor.css';
-import 'tui-editor/dist/tui-editor-contents.css';
-import 'codemirror/lib/codemirror.css';
+import "tui-editor/dist/tui-editor.css";
+import "tui-editor/dist/tui-editor-contents.css";
+import "codemirror/lib/codemirror.css";
 import { mapState } from "vuex";
 
 export default {
@@ -21,7 +20,11 @@ export default {
       if (nv == -1) {
         this.$router.replace("/login");
       } else {
-        this.$router.replace("/");
+        if (this.$store.state.lastRoute) {
+          this.$router.replace(this.$store.state.lastRoute);
+        } else {
+          this.$router.replace("/");
+        }
       }
     }
   }

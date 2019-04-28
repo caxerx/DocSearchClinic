@@ -63,10 +63,10 @@ export default {
     return {
       keyword: "",
       patientTab: 0,
-      selectedPatient: -1,
+      selectedPatient: "-1",
       patientType: ["Today", "Recent", "All"],
       patientsList: null,
-      filteredPatientsList: [[], [], []],
+      filteredPatientsList: [[], [], []]
     };
   },
   mounted() {

@@ -82,7 +82,11 @@ export default {
         workplace: localStorage.getItem("workplace"),
         avatar: localStorage.getItem("avatar")
       });
-      this.$router.replace("/");
+      if (this.$store.state.lastRoute) {
+        this.$router.replace(this.$store.state.lastRoute);
+      } else {
+        this.$router.replace("/");
+      }
     }
   },
   data: () => ({

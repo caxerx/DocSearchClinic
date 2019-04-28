@@ -88,12 +88,12 @@
           </div>
         </div>
         <div v-if="patientDetailTab==1">
-            <v-toolbar flat style="background-color:transparent">
-                <v-btn icon>
-                    <v-icon>add</v-icon>
-                </v-btn>
-            </v-toolbar>
-            <v-divider></v-divider>
+          <v-toolbar flat style="background-color:transparent" v-if="allergyEditable">
+            <v-btn icon>
+              <v-icon>add</v-icon>
+            </v-btn>
+          </v-toolbar>
+          <v-divider></v-divider>
           <v-list style="width:100%" class="pt-0 mt-0" two-line>
             <div v-for="allergy in patientDetails.allergies" :key="allergy.id">
               <v-list-tile>

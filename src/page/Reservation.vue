@@ -42,19 +42,61 @@
               <v-calendar ref="calendar" v-model="timePicked" :type="type" color="primary">
                 <template v-slot:dayBody="{ date, timeToY, minutesToPixels }">
                   <template v-for="reservation in  getReservationByDate(date)">
-                    <div
-                      :key="reservation.id"
-                      :style="{ top: timeToY(getReservationTime(reservation.startTime)) + 'px', height: minutesToPixels(getReservationDuration(reservation.startTime,reservation.endTime))+'px' }"
-                      class="my-event with-time primary"
-                      v-if="reservation.type='online'"
-                    >{{reservation.patient.name}}</div>
+                    <v-menu :key="reservation.id" offset-y nudge-down="15px" max-width="500">
+                      <div
+                        slot="activator"
+                        :key="reservation.id"
+                        :style="{ top: timeToY(getReservationTime(reservation.startTime)) + 'px', height: minutesToPixels(getReservationDuration(reservation.startTime,reservation.endTime))+'px' }"
+                        class="my-event with-time primary"
+                        v-if="reservation.type=='online'"
+                      >{{reservation.patient.name}}</div>
 
-                    <div
-                      :key="reservation.id"
-                      :style="{ top: timeToY(getReservationTime(reservation.startTime)) + 'px', height: minutesToPixels(getReservationDuration(reservation.startTime,reservation.endTime))+'px' }"
-                      class="my-event with-time success"
-                      v-else
-                    >{{reservation.patient.name}}</div>
+                      <div
+                        slot="activator"
+                        :key="reservation.id"
+                        :style="{ top: timeToY(getReservationTime(reservation.startTime)) + 'px', height: minutesToPixels(getReservationDuration(reservation.startTime,reservation.endTime))+'px' }"
+                        class="my-event with-time success"
+                        v-else
+                      >{{reservation.patient.name}}</div>
+
+                      <v-card>
+                        <v-toolbar class="ma-0">
+                          <v-toolbar-title>Reservation Detail</v-toolbar-title>
+                        </v-toolbar>
+                        <v-list class="ma-0 pb-0">
+                          <v-subheader>Patient</v-subheader>
+                          <v-divider></v-divider>
+                          <v-list-tile avatar @click="viewProfile(reservation.patient.id)">
+                            <v-list-tile-avatar>
+                              <v-icon v-if="reservation.patient.avatar==''" size="40">account_circle</v-icon>
+                              <v-img :src="getAvatar(reservation.patient.avatar)" v-else/>
+                            </v-list-tile-avatar>
+                            <v-list-tile-content>
+                              <v-list-tile-title>{{reservation.patient.name}}</v-list-tile-title>
+                              <v-list-tile-sub-title>{{getGenderName(reservation.patient.gender)}}．{{getPatientDobDisplay(reservation.patient.dob)}}</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                          <v-divider></v-divider>
+                          <v-subheader>Reservation</v-subheader>
+                        </v-list>
+                        <v-divider></v-divider>
+
+                        <v-list class="ma-0">
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-title>{{getConsultationTypeDisplay(reservation.type)}}</v-list-tile-title>
+                              <v-list-tile-sub-title>{{getTimeDisplay(reservation.startTime)}}</v-list-tile-sub-title>
+                              <v-list-tile-sub-title>{{reservation.note}}</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-list>
+                        <v-divider></v-divider>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn @click="checkIn(reservation)" class="primary" flat>Check-in</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-menu>
                   </template>
                 </template>
               </v-calendar>
@@ -88,10 +130,14 @@
                         <v-icon v-if="r.patient.avatar==''" size="40" v-on="on">account_circle</v-icon>
                         <v-img :src="getAvatar(r.patient.avatar)" v-else v-on="on"/>
                       </template>
-
                       <v-card>
-                        <v-list>
-                          <v-list-tile avatar>
+                        <v-toolbar class="ma-0">
+                          <v-toolbar-title>Reservation Detail</v-toolbar-title>
+                        </v-toolbar>
+                        <v-list class="ma-0 pb-0">
+                          <v-subheader>Patient</v-subheader>
+                          <v-divider></v-divider>
+                          <v-list-tile avatar @click="viewProfile(r.patient.id)">
                             <v-list-tile-avatar>
                               <v-icon v-if="r.patient.avatar==''" size="40">account_circle</v-icon>
                               <v-img :src="getAvatar(r.patient.avatar)" v-else/>
@@ -100,16 +146,26 @@
                               <v-list-tile-title>{{r.patient.name}}</v-list-tile-title>
                               <v-list-tile-sub-title>{{getGenderName(r.patient.gender)}}．{{getPatientDobDisplay(r.patient.dob)}}</v-list-tile-sub-title>
                             </v-list-tile-content>
+                          </v-list-tile>
+                          <v-divider></v-divider>
+                          <v-subheader>Reservation</v-subheader>
+                        </v-list>
+                        <v-divider></v-divider>
 
-                            <v-list-tile-action-text>
-                              <v-btn
-                                outline
-                                color="primary"
-                                @click="viewProfile(r.patient.id)"
-                              >Profile</v-btn>
-                            </v-list-tile-action-text>
+                        <v-list class="ma-0">
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-title>{{getConsultationTypeDisplay(r.type)}}</v-list-tile-title>
+                              <v-list-tile-sub-title>{{getTimeDisplay(r.startTime)}}</v-list-tile-sub-title>
+                              <v-list-tile-sub-title>{{r.note}}</v-list-tile-sub-title>
+                            </v-list-tile-content>
                           </v-list-tile>
                         </v-list>
+                        <v-divider></v-divider>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn @click="checkIn(r)" class="primary" flat>Check-in</v-btn>
+                        </v-card-actions>
                       </v-card>
                     </v-menu>
                   </v-list-tile-avatar>
@@ -208,7 +264,7 @@ export default {
       reservations: null,
       timePickerMenu: false,
       timePicked: "",
-      windowHeight: window.innerHeight,
+      windowHeight: window.innerHeight
     };
   },
   created() {
@@ -220,6 +276,32 @@ export default {
     });
   },
   methods: {
+    async checkIn(reservation) {
+      try {
+        await this.$apollo.mutate({
+          mutation: gql`
+            mutation enqueue($data: QueueRecordInput!) {
+              enqueue(data: $data) {
+                id
+              }
+            }
+          `,
+          variables: {
+            data: {
+              doctorId: this.$store.state.selectedDoctor,
+              patientId: reservation.patient.id,
+              workplaceId: this.$store.state.workplace,
+              reservationId: reservation.id,
+              type: reservation.type
+            }
+          }
+        });
+      } catch {
+        console.log("addToQueueFailed");
+      }
+      await this.changeReservationStatus(reservation, "waiting");
+      await this.$apollo.queries.reservations.refetch();
+    },
     viewProfile(id) {
       this.$router.push("/patient/" + id);
     },
@@ -344,7 +426,7 @@ export default {
         let reservations = [[], []];
         reservations[0] = d.filter(r => r.status == "pending");
         reservations[1] = d
-          .filter(r => r.status == "approved" || r.status == "waiting")
+          .filter(r => r.status == "approved")
           .sort((t1, t2) => {
             return moment(t1.startTime).diff(moment(t2.startTime));
           });
