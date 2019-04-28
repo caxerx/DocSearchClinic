@@ -60,7 +60,14 @@
         :consultationId="consultationId"
       ></video-consultation>
     </v-layout>
-    <v-navigation-drawer app touchless style="padding-top:64px" permanent :width="drawerSize">
+    <v-navigation-drawer
+      app
+      touchless
+      style="padding-top:64px"
+      permanent
+      :width="drawerSize"
+      v-if="showDrawer"
+    >
       <patient-detail-card :patientId="patientId" inConsultation allergyEditable></patient-detail-card>
     </v-navigation-drawer>
   </full-screen-container>
@@ -76,10 +83,13 @@ import gql from "graphql-tag";
 import { setTimeout } from "timers";
 export default {
   props: ["consultationId"],
-  mounted() {},
+  mounted() {
+    this.videoConsultation = this.isVideo;
+    this.$store.commit("setConsultation", true);
+  },
   data() {
     return {
-      videoConsultation: true,
+      videoConsultation: false,
       patientId: "1",
       editorOptions: {
         mode: "wysiwyg"
@@ -106,9 +116,36 @@ export default {
       ]
     };
   },
+  methods: {
+    endConsultation() {
+      this.$router.replace("/");
+    }
+  },
   computed: {
     drawerSize() {
+      if (!this.showDrawer) {
+        return 0;
+      }
       return this.videoConsultation ? 500 : 1000;
+    },
+    showDrawer() {
+      return this.$store.state.drawerSize == 300;
+    },
+    isVideo() {
+      return this.$route.query.isVideo;
+    },
+    inConsultation() {
+      return this.$store.state.inConsultation;
+    }
+  },
+  watch: {
+    isVideo(val) {
+      this.videoConsultation = !!val;
+    },
+    inConsultation(val) {
+      if (!val) {
+        this.endConsultation();
+      }
     }
   },
   components: {

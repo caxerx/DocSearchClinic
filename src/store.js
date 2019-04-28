@@ -13,9 +13,13 @@ export default new Vuex.Store({
     avatarBase: "https://dsapi.1lo.li/assets/avatars/",
     removeMainDrawer: false,
     lastRoute: null,
-    drawerSize: 300
+    drawerSize: 300,
+    inConsultation: false
   },
   mutations: {
+    setConsultation(state, consultation) {
+      state.inConsultation = consultation
+    },
     saveRoute(state, route) {
       state.lastRoute = route;
     },

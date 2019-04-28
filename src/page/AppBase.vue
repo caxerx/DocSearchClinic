@@ -8,6 +8,10 @@
         <v-img src="logo_s.png"></v-img>
       </v-toolbar-side-icon>
       <v-toolbar-title>DocSearch Clinic System</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-btn flat @click="endConsultation" v-if="$store.state.inConsultation">Finish Consultation</v-btn>
+      </v-toolbar-items>
     </v-toolbar>
     <v-navigation-drawer
       app
@@ -176,6 +180,9 @@ export default {
     },
     getAvatar(i) {
       return this.$store.state.avatarBase + i;
+    },
+    endConsultation() {
+      this.$store.commit("setConsultation", false);
     }
   },
   watch: {

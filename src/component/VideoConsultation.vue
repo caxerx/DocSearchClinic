@@ -68,6 +68,9 @@ import moment from "moment";
 export default {
   props: { patientId: String, consultationId: String },
   mounted() {
+    if (this.$store.state.userId == -1) {
+      return;
+    }
     this.setPreview();
     this.getTokenAndConnect();
   },
