@@ -3,6 +3,7 @@
     <div style="height:100%; width:100%; overflow-y: scroll" class="pa-4">
       <h3 class="headline mb --text">Profile Setting</h3>
       <v-layout v-if="doctor" row>
+        <!-- Doctor information -->
         <v-flex xs8 pr-3>
           <v-container grid-list-xs>
             <v-layout row wrap>
@@ -77,7 +78,19 @@
           </v-container>
         </v-flex>
         <v-divider vertical></v-divider>
-        <v-flex xs4 class="pa-4"></v-flex>
+        <!-- Avatar -->
+        <v-flex xs4 pl-5 py-3 pr-3>
+          <v-layout column>
+            <v-img v-if="doctor.avatar" aspect-ratio="1" :src="doctor.avatar"></v-img>
+            <v-img
+              class="mb-4"
+              v-else
+              aspect-ratio="1"
+              :src="require('@/asset/avatar-placeholder.png')"
+            ></v-img>
+            <v-btn color="primary">Change avatar</v-btn>
+          </v-layout>
+        </v-flex>
       </v-layout>
       <v-layout v-else>Loading...</v-layout>
     </div>
@@ -148,6 +161,10 @@ export default {
       `,
       variables() {
         return { doctorId: this.$store.state.userId };
+      },
+      update({ doctor }) {
+        doctor.dob = doctor.dob.substr(0, 10);
+        return doctor;
       }
     }
   },
