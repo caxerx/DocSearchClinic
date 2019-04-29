@@ -135,7 +135,25 @@ export default {
       // TODO: Change password
     };
   },
-  methods: {},
+  methods: {
+    saveProfile() {
+      this.$apollo.mutate({
+        mutation: gql`
+          mutation saveProfile($id: ID!, $data: DoctorInput!) {
+            editDoctor(id: $id, data: $data) {
+              id
+            }
+          }
+        `,
+        variables() {
+          return {
+            id: 0,
+            data: {}
+          };
+        }
+      });
+    }
+  },
   apollo: {
     doctor: {
       query: gql`
