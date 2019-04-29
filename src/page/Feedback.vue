@@ -21,7 +21,9 @@
               <v-divider></v-divider>
               <v-card-text>
                 <div>{{ props.item.comment }}</div>
-                <div class="mt-3 grey--text body-2 text-xs-right">Posted at {{ getPostTime(props.item.postTime) }}</div>
+                <div
+                  class="mt-3 grey--text body-2 text-xs-right"
+                >Posted at {{ getPostTime(props.item.postTime) }}</div>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -32,12 +34,15 @@
 </template>
 <script>
 import FullScreenContainer from "@/component/FullScreenContainer.vue";
+import { VLayout } from "vuetify";
 import gql from "graphql-tag";
 import moment from "moment";
 
 export default {
   components: {
-    "full-screen-container": FullScreenContainer
+    "full-screen-container": FullScreenContainer,
+    /* eslint-disable-next-line */
+    "v-layout": VLayout
   },
   data() {
     return {
