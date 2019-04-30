@@ -153,7 +153,7 @@
             v-model="confirmPassword"
             :rules="[checkPassword]"
           ></v-text-field>
-          <v-btn :disabled="!passwordMatch" color="primary">Change password</v-btn>
+          <v-btn :disabled="!passwordMatch" color="primary" @click="setPassword">Change password</v-btn>
         </v-layout>
       </v-card>
     </v-dialog>
@@ -252,6 +252,7 @@ export default {
         });
     },
     changePassword() {
+      this.oldPassword = this.newPassword = this.confirmPassword = "";
       this.passwordDialog = true;
     },
     checkPassword() {
@@ -260,6 +261,45 @@ export default {
       } else {
         return "New password and confirm password does not match";
       }
+    },
+    setPassword() {
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation setPassword(
+              $oldPassword: String!
+              $newPassword: String!
+              $id: ID!
+            ) {
+              changePassword(
+                oldPassword: $oldPassword
+                newPassword: $newPassword
+                userType: doctor
+                id: $id
+              ) {
+                success
+                message
+              }
+            }
+          `,
+          variables: {
+            oldPassword: this.oldPassword,
+            newPassword: this.newPassword,
+            id: this.$store.state.userId
+          }
+        })
+        .then(({ data: { changePassword: { message } } }) => {
+          this.snackbar = true;
+          this.snackbarMessage = message;
+        })
+        .catch(err => {
+          console.dir(err);
+          this.snackbar = true;
+          this.snackbarMessage = "Error changing password";
+        })
+        .finally(() => {
+          this.passwordDialog = false;
+        });
     },
     saveProfile() {
       this.$apollo.mutate({
