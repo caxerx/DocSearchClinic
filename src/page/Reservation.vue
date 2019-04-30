@@ -432,7 +432,8 @@ export default {
           });
         return reservations;
       },
-      fetchPolicy: "no-cache"
+      fetchPolicy: "no-cache",
+      pollInterval: 1000
     }
   },
   components: {

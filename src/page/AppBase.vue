@@ -25,7 +25,7 @@
         <v-list-tile avatar>
           <v-list-tile-avatar>
             <v-icon v-if="selectedDoctor.avatar==''" size="40">account_circle</v-icon>
-            <v-img :src="selectedDoctor.avatar" v-else/>
+            <v-img :src="getAvatar(selectedDoctor.avatar)" v-else/>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
