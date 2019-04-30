@@ -105,7 +105,7 @@
               class="mb-4"
               v-if="doctor.avatar"
               aspect-ratio="1"
-              :src="`${store.state.avatarBase}${doctor.avatar}`"
+              :src="getAvatar(doctor.avatar)"
             ></v-img>
             <v-img
               class="mb-4"
@@ -220,6 +220,9 @@ export default {
     }
   },
   methods: {
+    getAvatar(avatar) {
+      return `https://dsapi.s1o.li/assets/avatars/${avatar}`;
+    },
     changeAvatar() {
       this.avatarDialog = true;
     },
@@ -353,7 +356,7 @@ export default {
             }
           }
         })
-        .then(data => {
+        .then(() => {
           this.snackbar = true;
           this.snackbarMessage = "Profile saved successfully";
         })
