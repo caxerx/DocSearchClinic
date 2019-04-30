@@ -9,8 +9,11 @@
   },
   "dependencies": {
     "@toast-ui/vue-editor": "^1.1.1",
+<<<<<<< HEAD
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.5.1",
+=======
+>>>>>>> 2120bc5200006bcff760efa440ac2a0c314e4e6a
     "apollo-upload-client": "^10.0.0",
     "core-js": "^2.6.5",
     "graphql": "^14.2.1",

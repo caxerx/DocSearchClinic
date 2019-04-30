@@ -228,6 +228,8 @@ export default {
             }
           }
         });
+        await this.changeReservationStatus(reservation, "waiting", null);
+        return;
       } catch (e) {
         console.log("addToQueueFailed", e);
       }
@@ -344,6 +346,7 @@ export default {
           doctorId: this.$store.state.selectedDoctor
         };
       },
+      pollInterval: 1000,
       update(data) {
         data.doctor.currentQueue = data.doctor.currentQueue.filter(
           r => r.status == "queueing"

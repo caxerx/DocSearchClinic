@@ -102,11 +102,12 @@ export default {
     filterRecent(patients) {
       return patients.filter(p =>
         p.consultations.some(
-          p => moment().diff(moment(p.startTime), "day") <= 7
+          p => moment().diff(moment(p.startTime), "month") <= 1
         )
       );
     },
     filterToday(patients) {
+      console.log(patients)
       return patients.filter(p =>
         p.consultations.some(
           p => moment().diff(moment(p.startTime), "day") <= 1
