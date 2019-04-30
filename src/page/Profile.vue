@@ -27,11 +27,31 @@
                   label="Email"
                 ></v-text-field>
               </v-flex>
-              <v-flex xs6 pr-3>
+              <v-flex xs12 md6 pr-3>
                 <v-text-field prepend-icon="phone" v-model="doctor.phoneNo" label="Phone number"></v-text-field>
               </v-flex>
-              <v-flex xs6>
-                <v-text-field prepend-icon="today" v-model="doctor.dob" label="Date of birth"></v-text-field>
+              <v-flex xs12 md6>
+                <v-menu
+                  v-model="dobMenu"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  lazy
+                  transition="scale-transition"
+                  offset-y
+                  full-width
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      prepend-icon="today"
+                      v-model="doctor.dob"
+                      readonly
+                      label="Date of birth"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="doctor.dob" @input="dobMenu = false"></v-date-picker>
+                </v-menu>
               </v-flex>
               <v-flex xs12>
                 <v-text-field
@@ -43,7 +63,7 @@
               <v-flex xs12>
                 <h4 class="title mb-3">Doctor Information</h4>
               </v-flex>
-              <v-flex xs6 pr-3>
+              <v-flex xs12 md6 pr-3>
                 <v-select
                   :items="languages"
                   prepend-icon="language"
@@ -51,7 +71,7 @@
                   label="Language"
                 ></v-select>
               </v-flex>
-              <v-flex xs6>
+              <v-flex xs12 md6>
                 <v-select
                   :items="specialties"
                   prepend-icon="business_center"
@@ -89,6 +109,7 @@
               :src="require('@/asset/avatar-placeholder.png')"
             ></v-img>
             <v-btn color="primary">Change avatar</v-btn>
+            <v-btn color="primary">Change password</v-btn>
           </v-layout>
         </v-flex>
       </v-layout>
@@ -106,6 +127,7 @@ export default {
   },
   data() {
     return {
+      dobMenu: false,
       specialties: [
         { text: "General Pratice", value: "general_practice" },
         { text: "Cardiology", value: "cardiology" },
