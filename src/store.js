@@ -38,6 +38,10 @@ export default new Vuex.Store({
     },
     setDrawerSize(state, size) {
       state.drawerSize = size;
+    },
+    switchDoctor(state, id) {
+      state.selectedDoctor = id;
+      localStorage.setItem('selectedDoctor', id)
     }
   },
   actions: {

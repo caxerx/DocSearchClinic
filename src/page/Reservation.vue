@@ -121,7 +121,10 @@
           </v-tab>
           <v-tab-item key="0">
             <v-divider></v-divider>
-            <v-list two-line style="background-color:transparent">
+            <v-list
+              two-line
+              style="background-color:transparent;overflow-y: scroll;overflow-x: hidden; height: calc(100vh - 64px - 48px)"
+            >
               <div v-for="r in reservations[1]" :key="r.id">
                 <v-list-tile class="pr-3">
                   <v-list-tile-avatar>
@@ -181,7 +184,10 @@
           </v-tab-item>
           <v-tab-item key="1">
             <v-divider></v-divider>
-            <v-list two-line style="background-color:transparent">
+            <v-list
+              two-line
+              style="background-color:transparent;overflow-y: scroll;overflow: hidden; height: calc(100vh - 64px - 48px)"
+            >
               <div v-for="r in reservations[0]" :key="r.id">
                 <v-list-tile class="pr-3">
                   <v-list-tile-avatar>
