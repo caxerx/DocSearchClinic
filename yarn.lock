@@ -4411,7 +4411,7 @@ graphql-upload@^8.0.2:
     http-errors "^1.7.2"
     object-path "^0.11.4"
 
-graphql@^14.1.1:
+graphql@^14.1.1, graphql@^14.2.1:
   version "14.2.1"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.2.1.tgz#779529bf9a01e7207b977a54c20670b48ca6e95c"
   integrity sha512-2PL1UbvKeSjy/lUeJqHk+eR9CvuErXoCNwJI4jm3oNFEeY+9ELqHNKO1ZuSxAkasPkpWbmT/iMRMFxd3cEL3tQ==
@@ -9005,6 +9005,11 @@ vuetify-loader@^1.0.5:
   integrity sha512-j6KWPuwQ4xTxPDksbFwbSJle7+3oSjNvJ/CViTEgbPLFPqnNsR8JUtRldURIQ0cmAmr0/CoLSZkj0B8JKqOBMA==
   dependencies:
     loader-utils "^1.1.0"
+
+vuetify-upload-button@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/vuetify-upload-button/-/vuetify-upload-button-1.2.2.tgz#0ab36c491b8a3fa7b4b8ec2fb7366b86c98bf8e1"
+  integrity sha512-WQmAevQl4F2musSLpPzyT3fCBCksFiL7V6Jh8qD1fxGxHjAvjGywJKWjPLMzXDHkJfo6q2OPJtynPU0QXN5hGA==
 
 vuetify@^1.5.5:
   version "1.5.12"

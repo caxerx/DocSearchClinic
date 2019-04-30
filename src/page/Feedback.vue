@@ -2,7 +2,7 @@
   <full-screen-container>
     <div style="height:100%; width:100%" class="pa-4">
       <h3 class="headline mb-3 --text">Feedback</h3>
-      <v-data-iterator :items="feedbacks" content-tag="v-layout" column>
+      <v-data-iterator :items="feedbacks" column>
         <template v-slot:item="props">
           <v-flex xs12>
             <v-card>
@@ -34,15 +34,12 @@
 </template>
 <script>
 import FullScreenContainer from "@/component/FullScreenContainer.vue";
-import { VLayout } from "vuetify";
 import gql from "graphql-tag";
 import moment from "moment";
 
 export default {
   components: {
-    "full-screen-container": FullScreenContainer,
-    /* eslint-disable-next-line */
-    "v-layout": VLayout
+    "full-screen-container": FullScreenContainer
   },
   data() {
     return {
