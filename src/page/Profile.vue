@@ -160,7 +160,7 @@ export default {
         }
       `,
       variables() {
-        return { doctorId: this.$store.state.userId };
+        return { doctorId: this.$store.state.selectedDoctor };
       },
       update({ doctor }) {
         doctor.dob = doctor.dob.substr(0, 10);

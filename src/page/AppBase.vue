@@ -173,6 +173,7 @@ export default {
         : (this.showDoctorList = 0);
     },
     switchDoctor(id) {
+      this.$store.commit("switchDoctor",id)
       this.showDoctorList = -1;
     },
     linkTo(link) {
