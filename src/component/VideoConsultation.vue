@@ -28,11 +28,14 @@
               <v-layout justify-space-between>
                 <v-flex xs9 style="word-wrap: break-word" v-text="i.message" v-if="i.type=='text'"></v-flex>
                 <v-flex xs9 style="word-wrap: break-word" v-if="i.type=='image'">
-                  <v-img :src="i.message"></v-img>
+                  <v-img :src="`https://dsapi.1lo.li${i.file.uri}`"></v-img>
                 </v-flex>
                 <v-flex xs9 style="word-wrap: break-word" v-if="i.type=='file'">
                   <v-icon>description</v-icon>
-                  <a :href="i.message" :download="i.fileName">{{i.fileName}}</a>
+                  <a
+                    :href="`https://dsapi.1lo.li${i.file.uri}`"
+                    :download="i.fileName"
+                  >{{i.fileName}}</a>
                 </v-flex>
                 <v-flex xs3 text-xs-right class="grey--text">{{getTimeDisplay(i.time)}}</v-flex>
               </v-layout>
@@ -84,7 +87,7 @@ export default {
   },
   data() {
     return {
-      emotion: "SAD AF",
+      emotion: "",
       messages: [],
       messageText: "",
       previewTracks: null
@@ -188,10 +191,13 @@ export default {
       let reader = new FileReader();
       reader.onloadend = () => {
         if (reader.result.startsWith("data:image")) {
-          this.sendImage(reader.result);
+          let file = this.$refs.input.files[0];
+          this.sendImage(file, file.name);
           return;
         }
-        this.sendFile(reader.result, this.file.name);
+
+        let file = this.$refs.input.files[0];
+        this.sendFile(file, file.name);
       };
       this.file = this.$refs.input.files[0];
       reader.readAsDataURL(this.file);
@@ -202,7 +208,7 @@ export default {
         message: img,
         avatar: this.$store.state.avatar
       };
-      this.send(msg);
+      this.sendFile_(msg, img);
     },
     sendFile(file, filename) {
       let msg = {
@@ -211,7 +217,7 @@ export default {
         avatar: this.$store.state.avatar,
         fileName: filename
       };
-      this.send(msg);
+      this.sendFile_(msg, file);
     },
     sendText() {
       if (this.messageSending || this.messageText == "") {
@@ -231,12 +237,46 @@ export default {
       await this.$apollo.mutate({
         mutation: gql`
           mutation sendChatMessage($message: String!, $consultationId: ID!) {
-            sendChatMessage(message: $message, consultationId: $consultationId)
+            sendChatMessage(
+              message: $message
+              consultationId: $consultationId
+            ) {
+              success
+              message
+            }
           }
         `,
         variables: {
           message: msg,
           consultationId: this.consultationId
+        }
+      });
+      this.messageSending = false;
+    },
+    async sendFile_(msg, file) {
+      msg = JSON.stringify(msg);
+      this.messageSending = true;
+      await this.$apollo.mutate({
+        mutation: gql`
+          mutation sendChatMessage(
+            $message: String!
+            $consultationId: ID!
+            $upload: Upload!
+          ) {
+            sendChatMessage(
+              message: $message
+              consultationId: $consultationId
+              file: $upload
+            ) {
+              success
+              message
+            }
+          }
+        `,
+        variables: {
+          message: msg,
+          consultationId: this.consultationId,
+          upload: file
         }
       });
       this.messageSending = false;
@@ -255,6 +295,10 @@ export default {
           subscription messageRecieve($id: ID!) {
             onChatMessage(consultationId: $id) {
               message
+              file {
+                name
+                uri
+              }
             }
           }
         `,
@@ -264,8 +308,11 @@ export default {
           };
         },
         result(data) {
+          console.log(data);
+          let dtx = data.data.onChatMessage.file;
           data = data.data.onChatMessage.message;
           let msg = JSON.parse(data);
+          msg.file = dtx;
           msg.time = +moment();
           this.messages.push(msg);
           setTimeout(() => {

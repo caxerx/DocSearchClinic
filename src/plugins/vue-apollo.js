@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueApollo from 'vue-apollo'
 import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client'
+import { createUploadLink } from 'apollo-upload-client'
 
 // Install the vue plugin
 Vue.use(VueApollo)
@@ -9,10 +10,17 @@ Vue.use(VueApollo)
 // Http endpoint
 const httpEndpoint = 'https://dsapi.1lo.li/api/graphql'
 
+
+
 // Config
 const defaultOptions = {
+  httpEndpoint, 
   // You can use `https` for secure connection (recommended in production)
-  httpEndpoint,
+  httpLinkOptions: {
+    httpLink: createUploadLink({
+      uri: httpEndpoint,
+    })
+  },
   // You can use `wss` for secure connection (recommended in production)
   // Use `null` to disable subscriptions
   wsEndpoint: 'wss://dsapi.1lo.li/subscriptions',

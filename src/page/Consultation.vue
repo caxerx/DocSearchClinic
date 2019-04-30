@@ -1,5 +1,10 @@
 <template>
-  <full-screen-container :style="`height:100%; padding-left:${drawerSize}px`">
+  <full-screen-container v-if="patientId">
+    <v-layout align-center justify-center fill-height>
+      <v-progress-circular width="5" size="50" color="primary" indeterminate></v-progress-circular>
+    </v-layout>
+  </full-screen-container>
+  <full-screen-container :style="`height:100%; padding-left:${drawerSize}px`" v-else>
     <v-layout fill-height row>
       <v-flex :class="(videoConsultation?'xs8':'xs12')">
         <v-layout column fill-height style="overflow-y: scroll">
@@ -90,7 +95,7 @@ export default {
   data() {
     return {
       videoConsultation: false,
-      patientId: "1",
+      patientId: null,
       editorOptions: {
         mode: "wysiwyg"
       },
