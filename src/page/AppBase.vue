@@ -25,11 +25,7 @@
         <v-list-tile avatar>
           <v-list-tile-avatar>
             <v-icon v-if="selectedDoctor.avatar==''" size="40">account_circle</v-icon>
-<<<<<<< HEAD
-            <v-img :src="`https://dsapi.1lo.li/assets/avatars/${selectedDoctor.avatar}`" v-else/>
-=======
             <v-img :src="getAvatar(selectedDoctor.avatar)" v-else/>
->>>>>>> 2120bc5200006bcff760efa440ac2a0c314e4e6a
           </v-list-tile-avatar>
 
           <v-list-tile-content>
