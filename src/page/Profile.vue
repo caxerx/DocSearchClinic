@@ -115,6 +115,8 @@
             ></v-img>
             <v-btn color="primary" @click="changeAvatar">Change avatar</v-btn>
             <v-btn color="primary" @click="changePassword">Change password</v-btn>
+            <v-divider class="my-3"></v-divider>
+            <v-btn color="primary" @click="saveProfile">Save profile</v-btn>
           </v-layout>
         </v-flex>
       </v-layout>
@@ -302,40 +304,50 @@ export default {
         });
     },
     saveProfile() {
-      this.$apollo.mutate({
-        mutation: gql`
-          mutation saveProfile($id: ID!, $data: DoctorInput!) {
-            editDoctor(id: $id, data: $data) {
-              id
-              name
-              dob
-              email
-              gender
-              phoneNo
-              hkid
-              language
-              specialty
-              experience
-              academic
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation saveProfile($id: ID!, $data: DoctorInput!) {
+              editDoctor(id: $id, data: $data) {
+                id
+                name
+                dob
+                email
+                gender
+                phoneNo
+                hkid
+                language
+                specialty
+                experience
+                academic
+              }
+            }
+          `,
+          variables: {
+            id: this.$store.state.userId,
+            data: {
+              name: this.doctor.name,
+              dob: this.doctor.dob,
+              email: this.doctor.email,
+              gender: this.doctor.gender,
+              phoneNo: this.doctor.phoneNo,
+              hkid: this.doctor.hkid,
+              language: this.doctor.language,
+              specialty: this.doctor.specialty,
+              experience: this.doctor.experience,
+              academic: this.doctor.academic
             }
           }
-        `,
-        variables: {
-          id: this.$store.state.userId,
-          data: {
-            name: this.doctor.name,
-            dob: this.doctor.dob,
-            email: this.doctor.email,
-            gender: this.doctor.gender,
-            phoneNo: this.doctor.phoneNo,
-            hkid: this.doctor.hkid,
-            language: this.doctor.language,
-            specialty: this.doctor.specialty,
-            experience: this.doctor.experience,
-            academic: this.doctor.academic
-          }
-        }
-      });
+        })
+        .then(data => {
+          this.snackbar = true;
+          this.snackbarMessage = "Profile saved successfully";
+        })
+        .catch(err => {
+          console.dir(err);
+          this.snackbar = true;
+          this.snackbarMessage = "Error saving profile";
+        });
     }
   },
   apollo: {
