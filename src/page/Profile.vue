@@ -105,7 +105,7 @@
               class="mb-4"
               v-if="doctor.avatar"
               aspect-ratio="1"
-              :src="`https://dsapi.1lo.li/assets/avatars/${doctor.avatar}`"
+              :src="`${store.state.avatarBase}${doctor.avatar}`"
             ></v-img>
             <v-img
               class="mb-4"
@@ -116,7 +116,10 @@
             <v-btn color="primary" @click="changeAvatar">Change avatar</v-btn>
             <v-btn color="primary" @click="changePassword">Change password</v-btn>
             <v-divider class="my-3"></v-divider>
-            <v-btn color="primary" @click="saveProfile">Save profile</v-btn>
+            <v-btn color="primary" @click="saveProfile">
+              <v-progress-circular indeterminate v-if="savingProfile"></v-progress-circular>
+              <template v-else>Save profile</template>
+            </v-btn>
           </v-layout>
         </v-flex>
       </v-layout>
@@ -144,19 +147,21 @@
     <!-- Change password dialog -->
     <v-dialog v-model="passwordDialog" max-width="400">
       <v-card class="pa-4">
-        <h1 class="headline mb-2">Change password</h1>
-        <v-layout column>
-          <v-text-field label="Current password" type="password" v-model="oldPassword"></v-text-field>
-          <v-text-field label="New password" type="password" v-model="newPassword"></v-text-field>
-          <v-text-field
-            class="mb-2"
-            label="Confirm password"
-            type="password"
-            v-model="confirmPassword"
-            :rules="[checkPassword]"
-          ></v-text-field>
-          <v-btn :disabled="!passwordMatch" color="primary" @click="setPassword">Change password</v-btn>
-        </v-layout>
+        <v-form @submit.prevent="setPassword">
+          <h1 class="headline mb-2">Change password</h1>
+          <v-layout column>
+            <v-text-field label="Current password" type="password" v-model="oldPassword"></v-text-field>
+            <v-text-field label="New password" type="password" v-model="newPassword"></v-text-field>
+            <v-text-field
+              class="mb-2"
+              label="Confirm password"
+              type="password"
+              v-model="confirmPassword"
+              :rules="[checkPassword]"
+            ></v-text-field>
+            <v-btn :disabled="!passwordMatch" color="primary" @click="setPassword">Change password</v-btn>
+          </v-layout>
+        </v-form>
       </v-card>
     </v-dialog>
     <v-snackbar v-model="snackbar">{{ snackbarMessage }}</v-snackbar>
@@ -183,15 +188,18 @@ export default {
       snackbar: false,
       snackbarMessage: "",
       dobMenu: false,
-      // TODO: Avatar
+      // Change Avatar
       avatarDialog: false,
       avatarFile: null,
       avatarUploading: false,
-      // TODO: Change password
+      // Change password
       passwordDialog: false,
       oldPassword: "",
       newPassword: "",
       confirmPassword: "",
+      changingPassword: false,
+      // Profile
+      savingProfile: false,
       specialties: [
         { text: "General Pratice", value: "general_practice" },
         { text: "Cardiology", value: "cardiology" },
@@ -224,6 +232,7 @@ export default {
         id: this.$store.state.userId,
         avatar: this.avatarFile
       };
+      this.avatarUploading = true;
       // console.log(vars);
       this.$apollo
         .mutate({
@@ -250,6 +259,7 @@ export default {
           console.log(err);
         })
         .finally(() => {
+          this.avatarUploading = false;
           this.avatarDialog = false;
         });
     },
@@ -265,6 +275,8 @@ export default {
       }
     },
     setPassword() {
+      if (!this.passwordMatch) return;
+      this.changingPassword = true;
       this.$apollo
         .mutate({
           mutation: gql`
@@ -300,10 +312,12 @@ export default {
           this.snackbarMessage = "Error changing password";
         })
         .finally(() => {
+          this.changingPassword = false;
           this.passwordDialog = false;
         });
     },
     saveProfile() {
+      this.savingProfile = true;
       this.$apollo
         .mutate({
           mutation: gql`
@@ -347,6 +361,9 @@ export default {
           console.dir(err);
           this.snackbar = true;
           this.snackbarMessage = "Error saving profile";
+        })
+        .finally(() => {
+          this.savingProfile = false;
         });
     }
   },
