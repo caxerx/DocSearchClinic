@@ -2,7 +2,7 @@
   <full-screen-container v-if="timeslots">
     <div style="height:100%; width:100%; overflow-y: scroll" class="pa-4">
       <h3 class="headline mb-3 --text">Calendar Setting</h3>
-      <v-layout row>
+      <v-layout row></v-layout>
         <v-card class="weekday-card mr-3" v-for="(t, i) in timeslots" :key="i">
           <v-card-title class="headline">{{ getWeekDay(daysArr[i]) }}</v-card-title>
           <v-divider></v-divider>
