@@ -15,7 +15,7 @@
           <v-card-title class="headline">
             {{ getWeekDay(daysArr[i]) }}
             <v-spacer></v-spacer>
-            <v-btn icon>
+            <v-btn icon @click="createTimeslot(i)">
               <v-icon>add</v-icon>
             </v-btn>
           </v-card-title>
@@ -24,24 +24,77 @@
             <template v-if="dayTimeslots.length > 0">
               <div v-for="(timeslot, j) in dayTimeslots" :key="j">
                 <v-card-title class="py-1">
-                  <v-checkbox hide-details class="pa-0 ma-0"></v-checkbox>
+                  <v-checkbox
+                    hide-details
+                    class="pa-0 ma-0"
+                    @change="handleSelect($event, timeslot)"
+                  ></v-checkbox>
                   <span>{{ timeslot.start }} - {{ timeslot.end }}</span>
                   <v-spacer></v-spacer>
-                  <v-btn icon>
+                  <v-btn icon @click="editTimeslot(timeslot)">
                     <v-icon color="info">edit</v-icon>
                   </v-btn>
-                  <v-btn icon>
+                  <v-btn icon @click="deleteTimeslot(timeslot)">
                     <v-icon color="error">delete</v-icon>
                   </v-btn>
                 </v-card-title>
                 <v-divider></v-divider>
               </div>
             </template>
-            <v-card-text class="italic grey--text subheading" v-else>No timeslots today</v-card-text>
+            <v-card-text class="italic grey--text subheading" v-else>No timeslots is set today</v-card-text>
           </div>
         </v-card>
       </div>
     </div>
+    <!-- Create/Edit timeslot -->
+    <v-dialog v-model="editDialog" max-width="300" persistent>
+      <v-card class="pa-3">
+        <span class="headline mb-3" v-if="editMode">Edit Timeslot</span>
+        <span class="headline mb-3" v-else>Create Timeslot</span>
+        <v-layout column>
+          <v-menu
+            v-model="startTimeMenu"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            lazy
+            transition="scale-transition"
+            offset-y
+            full-width
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field v-model="editingTimeslot.start" readonly label="Start time" v-on="on"></v-text-field>
+            </template>
+            <v-time-picker v-model="editingTimeslot.start" @input="startTimeMenu = false"></v-time-picker>
+          </v-menu>
+          <v-menu
+            v-model="endTimeMenu"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            lazy
+            transition="scale-transition"
+            offset-y
+            full-width
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field v-model="editingTimeslot.end" readonly label="End time" v-on="on"></v-text-field>
+            </template>
+            <v-time-picker v-model="editingTimeslot.end" @input="endTimeMenu = false"></v-time-picker>
+          </v-menu>
+
+          <v-btn @click="saveTimeslot" color="primary">Save</v-btn>
+        </v-layout>
+      </v-card>
+    </v-dialog>
+    <!-- Batch create -->
+    <v-dialog v-model="batchCreateDialog" max-width="800">
+      <v-card></v-card>
+    </v-dialog>
+    <!-- Batch delete -->
+    <v-dialog v-model="batchDeleteDialog" max-width="400">
+      <v-card></v-card>
+    </v-dialog>
   </full-screen-container>
   <full-screen-container v-else>
     <v-layout fill-height justify-center align-center>
@@ -60,6 +113,18 @@ export default {
   data() {
     return {
       timeslots: null,
+      editMode: false,
+      editingTimeslot: {
+        weekday: "mon",
+        start: "09:00",
+        end: "10:00"
+      },
+      startTimeMenu: false,
+      endTimeMenu: false,
+      editDialog: false,
+      batchCreateDialog: false,
+      batchDeleteDialog: false,
+      selectedTimeslots: new Map(),
       daysArr: ["sun", "mon", "tue", "wed", "thu", "fri", "sat"],
       daysMap: {
         sun: "Sunday",
@@ -73,6 +138,144 @@ export default {
     };
   },
   methods: {
+    createTimeslot(weekday) {
+      this.editMode = false;
+      let day = this.daysArr[weekday];
+      this.editingTimeslot.weekday = day;
+      this.editDialog = true;
+    },
+    editTimeslot(timeslot) {
+      this.editMode = true;
+      this.editingTimeslot = timeslot;
+      this.editDialog = true;
+    },
+    async deleteTimeslot(timeslot) {
+      try {
+        await this.$apollo.mutate({
+          mutation: gql`
+            mutation editTimeslot($id: ID!) {
+              removeTimeSlot(id: $id)
+            }
+          `,
+          variables: {
+            id: timeslot.id
+          }
+        });
+      } catch (err) {
+        console.dir(err);
+      }
+      await this.$apollo.queries.timeslots.refetch();
+    },
+    async saveTimeslot() {
+      if (this.editMode) {
+        // Edit
+        try {
+          await this.$apollo.mutate({
+            mutation: gql`
+              mutation editTimeslot(
+                $id: ID!
+                $start: String!
+                $end: String!
+                $weekday: String!
+                $doctorId: ID!
+              ) {
+                editTimeSlot(
+                  id: $id
+                  start: $start
+                  end: $end
+                  weekday: $weekday
+                  doctorId: $doctorId
+                ) {
+                  id
+                  start
+                  end
+                }
+              }
+            `,
+            variables: {
+              id: this.editingTimeslot.id,
+              start: this.editingTimeslot.start,
+              end: this.editingTimeslot.end,
+              weekday: this.editingTimeslot.weekday,
+              doctorId: this.$store.state.selectedDoctor
+            }
+          });
+        } catch (err) {
+          console.dir(err);
+        }
+      } else {
+        // Create
+        try {
+          await this.$apollo.mutate({
+            mutation: gql`
+              mutation editTimeslot(
+                $start: String!
+                $end: String!
+                $weekday: String!
+                $doctorId: ID!
+              ) {
+                createTimeSlot(
+                  start: $start
+                  end: $end
+                  weekday: $weekday
+                  doctorId: $doctorId
+                ) {
+                  id
+                  start
+                  end
+                }
+              }
+            `,
+            variables: {
+              start: this.editingTimeslot.start,
+              end: this.editingTimeslot.end,
+              weekday: this.editingTimeslot.weekday,
+              doctorId: this.$store.state.selectedDoctor
+            }
+          });
+        } catch (err) {
+          console.dir(err);
+        }
+      }
+      await this.$apollo.queries.timeslots.refetch();
+      this.editDialog = false;
+    },
+    batchCreateTimeslots() {},
+    batchDeleteTimeslots() {},
+    handleSelect(event, timeslot) {
+      console.log(event, timeslot);
+      if (event) {
+        this.selectedTimeslots.set(timeslot.id, timeslot);
+      } else {
+        this.selectedTimeslots.delete(timeslot.id);
+      }
+    },
+    async executeBatchDelete() {
+      // await Promise.all(
+      //   this.selectedTimeslots.values().map(ts => this.executeDelete(ts))
+      // );
+      this.selectedTimeslots.forEach();
+      // this.timeslots.forEach(day => {
+      //   day.forEach(timeslot => {
+      //     this.selectedTimeslots.forEach(ts, key => {
+      //       if (ts === timeslot) {
+      //       }
+      //     });
+      //   });
+      // });
+    },
+    async executeDelete(timeslot) {
+      this.$apollo.mutate({
+        mutation: gql`
+          mutation deleteTimeslot($id: ID!) {
+            removeTimeslot($id)
+          }
+        `,
+        variables: {
+          id: timeslot.id
+        }
+      });
+    },
     getWeekDay(day) {
       return this.daysMap[day];
     }
@@ -98,7 +301,16 @@ export default {
       },
       update(data) {
         // console.log(data);
-        let timeslots = data.doctor.timeSlots;
+        let timeslots = data.doctor.timeSlots.sort((a, b) => {
+          if (a.start < b.start) {
+            return -1;
+          }
+          if (a.start > b.start) {
+            return 1;
+          }
+          // equal
+          return 0;
+        });
         let dayTimeslot = [[], [], [], [], [], [], []];
         timeslots.forEach(ts => {
           dayTimeslot[this.daysArr.indexOf(ts.weekday)].push(ts);
