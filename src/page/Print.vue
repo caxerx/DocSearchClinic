@@ -52,7 +52,7 @@
             <v-divider></v-divider>
             <tui-viewer
               class="pa-3"
-              id="editor"
+              id="viewer"
               ref="tuiViewer"
               :value="preview"
               height="calc(100% - 81px)"
@@ -121,8 +121,35 @@ export default {
     selectConsultation(consultation) {
       this.selectedConsultation = consultation;
     },
-    print() {
+    async print() {
       // printJS("print-test", "html");
+      // console.log(this.preview)
+      try {
+        // const result = await this.$apollo.mutate({
+        //   mutation: gql`
+        //     mutation renderMarkdown($md: String!) {
+        //       renderMarkdown(markdown: $md) {
+        //         message
+        //         success
+        //         pdfUri
+        //       }
+        //     }
+        //   `,
+        //   variables: {
+        //     md: this.preview
+        //   }
+        // });
+        // console.log(data);
+        // printJS("viewer", "html");
+        html2canvas(document.querySelector("#viewer"), { scale: 1 }).then(
+          canvas => {
+            printJS(canvas.toDataURL(), "image");
+          }
+        );
+      } catch (err) {
+        console.dir(err);
+        this.showSnackbarMessage("Error trying to print document");
+      }
     }
   },
   computed: {
