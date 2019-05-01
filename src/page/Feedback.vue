@@ -1,10 +1,10 @@
 <template>
   <full-screen-container>
-    <div style="height:100%; width:100%" class="pa-4">
+    <div style="height:100%; width:100%; overflow-y: scroll" class="pa-4">
       <h3 class="headline mb-3 --text">Feedback</h3>
-      <v-data-iterator :items="feedbacks" column>
+      <v-data-iterator :items="feedbacks" content-tag="v-layout" row wrap>
         <template v-slot:item="props">
-          <v-flex xs12>
+          <v-flex xs6 pa-2>
             <v-card>
               <v-card-title>
                 <v-avatar color="primary" class="mr-3">
