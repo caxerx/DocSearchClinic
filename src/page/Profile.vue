@@ -221,7 +221,7 @@ export default {
   },
   methods: {
     getAvatar(avatar) {
-      return `https://dsapi.s1o.li/assets/avatars/${avatar}`;
+      return `https://dsapi.1lo.li/assets/avatars/${avatar}`;
     },
     changeAvatar() {
       this.avatarDialog = true;
