@@ -2,6 +2,8 @@
   <full-screen-container v-if="timeslots">
     <div style="height:100%; width:100%; overflow-y: scroll" class="pa-4">
       <h3 class="headline mb-3 --text">Calendar Setting</h3>
+      <v-btn class="mb-3" color="primary" outline>Delete all selected</v-btn>
+      <v-btn class="mb-3" color="primary" outline>Batch add timeslots</v-btn>
       <div class="horizontal-container pa-3">
         <v-card
           height="450"
