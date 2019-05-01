@@ -68,6 +68,20 @@ export default new Router({
           component: () =>
             import(/* webpackChunkName: "feedback" */ './page/Feedback.vue'),
           meta: { title: 'Feedback' }
+        },
+        {
+          path: '/template',
+          name: 'Template',
+          component: () =>
+            import(/* webpackChunkName: "template" */ './page/Template.vue'),
+          meta: { title: 'Template' }
+        },
+        {
+          path: '/print',
+          name: 'Print',
+          component: () =>
+            import(/* webpackChunkName: "print" */ './page/Print.vue'),
+          meta: { title: 'Print' }
         }
       ]
     },
