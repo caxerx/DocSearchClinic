@@ -2,16 +2,43 @@
   <full-screen-container v-if="timeslots">
     <div style="height:100%; width:100%; overflow-y: scroll" class="pa-4">
       <h3 class="headline mb-3 --text">Calendar Setting</h3>
-      <v-layout row></v-layout>
-        <v-card class="weekday-card mr-3" v-for="(t, i) in timeslots" :key="i">
-          <v-card-title class="headline">{{ getWeekDay(daysArr[i]) }}</v-card-title>
+      <div class="horizontal-container pa-3">
+        <v-card
+          height="450"
+          width="300"
+          class="weekday-card mr-3"
+          v-for="(dayTimeslots, i) in timeslots"
+          :key="i"
+        >
+          <v-card-title class="headline">
+            {{ getWeekDay(daysArr[i]) }}
+            <v-spacer></v-spacer>
+            <v-btn icon>
+              <v-icon>add</v-icon>
+            </v-btn>
+          </v-card-title>
           <v-divider></v-divider>
-          <div v-for="(ts, j) in t" :key="j">
-            <v-card-text>{{ ts.start }} - {{ ts.end }}</v-card-text>
-            <v-divider></v-divider>
+          <div style="overflow-y: scroll; height: 369px">
+            <template v-if="dayTimeslots.length > 0">
+              <div v-for="(timeslot, j) in dayTimeslots" :key="j">
+                <v-card-title class="py-1">
+                  <v-checkbox hide-details class="pa-0 ma-0"></v-checkbox>
+                  <span>{{ timeslot.start }} - {{ timeslot.end }}</span>
+                  <v-spacer></v-spacer>
+                  <v-btn icon>
+                    <v-icon color="info">edit</v-icon>
+                  </v-btn>
+                  <v-btn icon>
+                    <v-icon color="error">delete</v-icon>
+                  </v-btn>
+                </v-card-title>
+                <v-divider></v-divider>
+              </div>
+            </template>
+            <v-card-text class="italic grey--text subheading" v-else>No timeslots today</v-card-text>
           </div>
         </v-card>
-      </v-layout>
+      </div>
     </div>
   </full-screen-container>
   <full-screen-container v-else>
@@ -91,6 +118,6 @@ export default {
   white-space: nowrap;
 }
 .weekday-card {
-  width: 300px;
+  display: inline-block;
 }
 </style>
