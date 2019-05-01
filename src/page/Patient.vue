@@ -107,7 +107,7 @@ export default {
       );
     },
     filterToday(patients) {
-      console.log(patients)
+      console.log(patients);
       return patients.filter(p =>
         p.consultations.some(
           p => moment().diff(moment(p.startTime), "day") <= 1

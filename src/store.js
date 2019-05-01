@@ -23,6 +23,19 @@ export default new Vuex.Store({
     saveRoute(state, route) {
       state.lastRoute = route;
     },
+    logout(state) {
+      localStorage.removeItem('userId')
+      localStorage.removeItem('role')
+      localStorage.removeItem('workplace')
+      localStorage.removeItem('selectedDoctor')
+      localStorage.removeItem('avatar')
+      
+      state.userId = -1;
+      state.role = '';
+      state.workplace = -1;
+      state.selectedDoctor = -1;
+      state.avatar = ""
+    },
     loggedInAs(state, payload) {
       state.userId = payload.userId;
       state.role = payload.role;
