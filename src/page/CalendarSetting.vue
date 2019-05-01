@@ -2,7 +2,13 @@
   <full-screen-container v-if="timeslots">
     <div style="height:100%; width:100%; overflow-y: scroll" class="pa-4">
       <h3 class="headline mb-3 --text">Calendar Setting</h3>
-      <v-btn class="mb-3" color="primary" outline @click="batchDeleteTimeslots">Delete all selected</v-btn>
+      <v-btn
+        class="mb-3"
+        color="primary"
+        outline
+        @click="batchDeleteTimeslots"
+        :disabled="!canBatchDelete"
+      >Delete all selected</v-btn>
       <v-btn class="mb-3" color="primary" outline>Batch add timeslots</v-btn>
       <div class="horizontal-container pa-3">
         <v-card
@@ -83,9 +89,12 @@
             </template>
             <v-time-picker v-model="editingTimeslot.end" @input="endTimeMenu = false"></v-time-picker>
           </v-menu>
-
-          <v-btn @click="saveTimeslot" color="primary">Save</v-btn>
         </v-layout>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="editDialog = false" flat>Cancel</v-btn>
+          <v-btn @click="saveTimeslot" color="primary">Save</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
     <!-- Delete confirm -->
@@ -140,6 +149,7 @@ export default {
     return {
       snackbar: false,
       snackbarMessage: "",
+      canBatchDelete: false,
       timeslots: null,
       editMode: false,
       editingTimeslot: {
@@ -178,12 +188,15 @@ export default {
     createTimeslot(weekday) {
       this.editMode = false;
       let day = this.daysArr[weekday];
+      this.editingTimeslot = {};
       this.editingTimeslot.weekday = day;
+      this.editingTimeslot.start = "09:00";
+      this.editingTimeslot.end = "09:30";
       this.editDialog = true;
     },
     editTimeslot(timeslot) {
       this.editMode = true;
-      this.editingTimeslot = timeslot;
+      this.editingTimeslot = Object.assign({}, timeslot);
       this.editDialog = true;
     },
     async deleteTimeslot(timeslot) {
@@ -275,12 +288,13 @@ export default {
       this.batchDeleteDialog = true;
     },
     handleSelect(event, timeslot) {
-      console.log(event, timeslot);
+      // console.log(event, timeslot);
       if (event) {
         this.selectedTimeslots.set(timeslot.id, timeslot);
       } else {
         this.selectedTimeslots.delete(timeslot.id);
       }
+      this.canBatchDelete = this.selectedTimeslots.size > 0;
     },
     async executeBatchDelete() {
       try {
