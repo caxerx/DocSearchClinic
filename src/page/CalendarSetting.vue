@@ -2,7 +2,7 @@
   <full-screen-container v-if="timeslots">
     <div style="height:100%; width:100%; overflow-y: scroll" class="pa-4">
       <h3 class="headline mb-3 --text">Calendar Setting</h3>
-      <v-btn class="mb-3" color="primary" outline>Delete all selected</v-btn>
+      <v-btn class="mb-3" color="primary" outline @click="batchDeleteTimeslots">Delete all selected</v-btn>
       <v-btn class="mb-3" color="primary" outline>Batch add timeslots</v-btn>
       <div class="horizontal-container pa-3">
         <v-card
@@ -27,6 +27,7 @@
                   <v-checkbox
                     hide-details
                     class="pa-0 ma-0"
+                    :key="timeslot.id"
                     @change="handleSelect($event, timeslot)"
                   ></v-checkbox>
                   <span>{{ timeslot.start }} - {{ timeslot.end }}</span>
@@ -87,14 +88,39 @@
         </v-layout>
       </v-card>
     </v-dialog>
+    <!-- Delete confirm -->
+    <v-dialog v-model="deleteDialog" max-width="300" persistent>
+      <v-card class="pa-3">
+        <v-layout column>
+          <v-card-title class="pl-0 headline">Are you sure to delete this timeslot?</v-card-title>
+          <v-card-text class="subheading">This cannot be undone.</v-card-text>
+        </v-layout>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click="deleteDialog = false">Cancel</v-btn>
+          <v-btn color="error" @click="executeDelete">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <!-- Batch create -->
     <v-dialog v-model="batchCreateDialog" max-width="800">
       <v-card></v-card>
     </v-dialog>
     <!-- Batch delete -->
-    <v-dialog v-model="batchDeleteDialog" max-width="400">
-      <v-card></v-card>
+    <v-dialog v-model="batchDeleteDialog" max-width="540">
+      <v-card class="pa-3">
+        <v-layout column>
+          <v-card-title class="pl-0 headline">Are you sure to delete all selected timeslots?</v-card-title>
+          <v-card-text class="subheading">This cannot be undone.</v-card-text>
+        </v-layout>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click="batchDeleteDialog = false">Cancel</v-btn>
+          <v-btn color="error" @click="executeBatchDelete">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
+    <v-snackbar v-model="snackbar">{{ snackbarMessage }}</v-snackbar>
   </full-screen-container>
   <full-screen-container v-else>
     <v-layout fill-height justify-center align-center>
@@ -112,6 +138,8 @@ export default {
   },
   data() {
     return {
+      snackbar: false,
+      snackbarMessage: "",
       timeslots: null,
       editMode: false,
       editingTimeslot: {
@@ -119,9 +147,11 @@ export default {
         start: "09:00",
         end: "10:00"
       },
+      deletingTimeslot: null,
       startTimeMenu: false,
       endTimeMenu: false,
       editDialog: false,
+      deleteDialog: false,
       batchCreateDialog: false,
       batchDeleteDialog: false,
       selectedTimeslots: new Map(),
@@ -138,6 +168,13 @@ export default {
     };
   },
   methods: {
+    showSnackbarMessage(message) {
+      this.snackbar = false;
+      setTimeout(() => {
+        this.snackbarMessage = message;
+        this.snackbar = true;
+      }, 50);
+    },
     createTimeslot(weekday) {
       this.editMode = false;
       let day = this.daysArr[weekday];
@@ -150,21 +187,8 @@ export default {
       this.editDialog = true;
     },
     async deleteTimeslot(timeslot) {
-      try {
-        await this.$apollo.mutate({
-          mutation: gql`
-            mutation editTimeslot($id: ID!) {
-              removeTimeSlot(id: $id)
-            }
-          `,
-          variables: {
-            id: timeslot.id
-          }
-        });
-      } catch (err) {
-        console.dir(err);
-      }
-      await this.$apollo.queries.timeslots.refetch();
+      this.deletingTimeslot = timeslot;
+      this.deleteDialog = true;
     },
     async saveTimeslot() {
       if (this.editMode) {
@@ -200,7 +224,10 @@ export default {
               doctorId: this.$store.state.selectedDoctor
             }
           });
+          this.showSnackbarMessage("Timeslot saved");
+          await this.$apollo.queries.timeslots.refetch();
         } catch (err) {
+          this.showSnackbarMessage("Error saving timeslot");
           console.dir(err);
         }
       } else {
@@ -233,15 +260,20 @@ export default {
               doctorId: this.$store.state.selectedDoctor
             }
           });
+          this.showSnackbarMessage("Timeslot created");
+          await this.$apollo.queries.timeslots.refetch();
         } catch (err) {
+          this.showSnackbarMessage("Error creating timeslot");
           console.dir(err);
         }
       }
-      await this.$apollo.queries.timeslots.refetch();
+
       this.editDialog = false;
     },
     batchCreateTimeslots() {},
-    batchDeleteTimeslots() {},
+    batchDeleteTimeslots() {
+      this.batchDeleteDialog = true;
+    },
     handleSelect(event, timeslot) {
       console.log(event, timeslot);
       if (event) {
@@ -251,30 +283,47 @@ export default {
       }
     },
     async executeBatchDelete() {
-      // await Promise.all(
-      //   this.selectedTimeslots.values().map(ts => this.executeDelete(ts))
-      // );
-      this.selectedTimeslots.forEach();
-      // this.timeslots.forEach(day => {
-      //   day.forEach(timeslot => {
-      //     this.selectedTimeslots.forEach(ts, key => {
-      //       if (ts === timeslot) {
-      //       }
-      //     });
-      //   });
-      // });
+      try {
+        await Promise.all(
+          [...this.selectedTimeslots.values()].map(timeslot =>
+            this.$apollo.mutate({
+              mutation: gql`
+                mutation editTimeslot($id: ID!) {
+                  removeTimeSlot(id: $id)
+                }
+              `,
+              variables: {
+                id: timeslot.id
+              }
+            })
+          )
+        );
+        this.showSnackbarMessage("Timeslots deleted successfully");
+        await this.$apollo.queries.timeslots.refetch();
+      } catch (err) {
+        this.showSnackbarMessage("Error batch deleting timeslots");
+        console.dir(err);
+      }
+      this.batchDeleteDialog = false;
     },
-    async executeDelete(timeslot) {
-      this.$apollo.mutate({
-        mutation: gql`
-          mutation deleteTimeslot($id: ID!) {
-            removeTimeslot($id)
+    async executeDelete() {
+      try {
+        await this.$apollo.mutate({
+          mutation: gql`
+            mutation editTimeslot($id: ID!) {
+              removeTimeSlot(id: $id)
+            }
+          `,
+          variables: {
+            id: this.deletingTimeslot.id
           }
-        `,
-        variables: {
-          id: timeslot.id
-        }
-      });
+        });
+        this.showSnackbarMessage("Timeslot deleted");
+        await this.$apollo.queries.timeslots.refetch();
+      } catch (err) {
+        this.showSnackbarMessage("Error deleting timeslot");
+      }
+      this.deleteDialog = false;
     },
     getWeekDay(day) {
       return this.daysMap[day];
@@ -296,7 +345,7 @@ export default {
       `,
       variables() {
         return {
-          id: this.$store.state.userId
+          id: this.$store.state.selectedDoctor
         };
       },
       update(data) {
