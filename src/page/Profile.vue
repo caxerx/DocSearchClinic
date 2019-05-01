@@ -209,8 +209,8 @@ export default {
       languages: [
         { text: "English", value: "english" },
         { text: "Spanish", value: "spanish" },
-        { text: "Mandarin", value: "Mandarin" },
-        { text: "Cantonese", value: "Cantonese" }
+        { text: "Mandarin", value: "mandarin" },
+        { text: "Cantonese", value: "cantonese" }
       ]
     };
   },
