@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     getAvatar(avatar) {
-      return `https://dsapi.s1o.li/assets/avatars/${avatar}`;
+      return `https://dsapi.1lo.li/assets/avatars/${avatar}`;
     },
     getPostTime(time) {
       return moment(time).format("YYYY-MM-DD hh:mm:ss");
