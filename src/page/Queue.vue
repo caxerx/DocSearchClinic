@@ -79,8 +79,13 @@
             <v-layout fill-height column v-else>
               <v-toolbar flat color="primary" dark id="tb">
                 <v-toolbar-items>
-                  <v-btn flat :disabled="queueDisabled">
-                    <v-icon class="mr-1">check</v-icon>Start Consultation
+                  <v-btn
+                    flat
+                    :disabled="queueDisabled || startConsult=='Patient Not Ready'"
+                    @click="startConsultation"
+                  >
+                    <v-icon class="mr-1">check</v-icon>
+                    {{startConsult}}
                   </v-btn>
                   <v-divider vertical></v-divider>
                   <v-btn flat dark @click="cancelReservation" :disabled="queueDisabled">
@@ -88,7 +93,10 @@
                   </v-btn>
                 </v-toolbar-items>
               </v-toolbar>
-              <patient-details-card :patientId="selectedPatient"></patient-details-card>
+              <patient-details-card
+                :patientId="selectedPatient"
+                style="height: calc( 100% - 64px )"
+              ></patient-details-card>
             </v-layout>
           </v-card>
         </v-flex>
@@ -122,6 +130,18 @@ export default {
     "qrcode-stream": QrcodeStream,
     "patient-details-card": PatientDetailsCard
   },
+  computed: {
+    startConsult() {
+      if (this.selectedQueueObject.type == "online") {
+        if (!this.selectedQueueObject.reservation.consultation) {
+          return "Patient Not Ready";
+        } else {
+          return "Start Video Consultation";
+        }
+      }
+      return "Start Consultation";
+    }
+  },
   data() {
     return {
       err: false,
@@ -151,9 +171,37 @@ export default {
     clearInterval(this.rendererId);
   },
   methods: {
+    async startConsultation() {
+      let deq = await this.$apollo.mutate({
+        mutation: gql`
+          mutation($qid: ID!) {
+            dequeue(queueId: $qid) {
+              id
+            }
+          }
+        `,
+        variables: {
+          qid: this.selectedQueueObject.id
+        }
+      });
+
+      console.log(this.selectedQueueObject);
+      if (this.selectedQueueObject.type == "clinic") {
+        this.createConsultation(false);
+      } else {
+        this.$router.push({
+          path:
+            "/consultation/" +
+            this.selectedQueueObject.reservation.consultation.id,
+          query: {
+            isVideo: "true"
+          }
+        });
+      }
+    },
     async cancelReservation() {
       this.queueDisabled = true;
-      this.targetReservationId = this.selectedQueueObject.id;
+      this.targetReservationId = this.selectedQueueObject.reservation.id;
       await this.dequeue();
       await this.refectchTargetReservation();
       console.log("FIN");
@@ -171,6 +219,45 @@ export default {
       this.selectedPatient = queue.patient.id;
       this.selectedQueue = queue.id;
       this.selectedQueueObject = queue;
+    },
+    async createConsultation(vc) {
+      let data = await this.$apollo.mutate({
+        mutation: gql`
+          mutation(
+            $workplaceId: ID!
+            $doctorId: ID!
+            $patientId: ID!
+            $reservationId: ID!
+            $startTime: DateTime!
+          ) {
+            createConsultation(
+              data: {
+                workplaceId: $workplaceId
+                consultantId: $doctorId
+                patientId: $patientId
+                note: ""
+                startTime: $startTime
+                endTime: $startTime
+                type: "online"
+                diseaseIds: []
+                reservationId: $reservationId
+                prescription: ""
+              }
+            ) {
+              id
+            }
+          }
+        `,
+        variables: {
+          workplaceId: this.$store.state.workplace,
+          doctorId: this.$store.state.selectedDoctor,
+          patientId: this.selectedQueueObject.patient.id,
+          reservationId: this.selectedQueueObject.reservation.id,
+          startTime: moment().toISOString()
+        }
+      });
+      this.$router.push("/consultation/" + data.data.createConsultation.id);
+      console.log(data.data.createConsultation.id);
     },
     onDecode(str) {
       this.checkinString = str;
@@ -355,6 +442,9 @@ export default {
               }
               reservation {
                 id
+                consultation {
+                  id
+                }
               }
             }
           }

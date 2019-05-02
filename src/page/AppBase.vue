@@ -165,6 +165,7 @@
     <v-content>
       <router-view></router-view>
     </v-content>
+    <v-snackbar :value="true" right v-for="(v,idx) in notification" :key="idx">{{v}}</v-snackbar>
   </div>
 </template>
 
@@ -208,6 +209,7 @@ export default {
   },
   data() {
     return {
+      notification: [],
       navigationShow: false,
       showDoctorList: -1,
       selectedDoctor: {
@@ -230,6 +232,29 @@ export default {
     }
   },
   apollo: {
+    $subscribe: {
+      msg: {
+        query: gql`
+          subscription {
+            onChatMessage(consultationId: 99999) {
+              message
+            }
+          }
+        `,
+        result(data) {
+          let msg = data.data.onChatMessage.message;
+          let msgo = JSON.parse(msg);
+          if (
+            msgo.doctorId == this.$store.state.selectedDoctor ||
+            msgo.workplaceId == this.$store.state.workplace
+          ) {
+            this.notification.push(msgo.message);
+            var audio = new Audio("notification.mp3");
+            audio.play();
+          }
+        }
+      }
+    },
     selectedDoctor: {
       query: gql`
         query getDoctor($doctorId: ID!) {

@@ -319,6 +319,31 @@ export default {
           pp: this.consultation.prescription
         }
       });
+
+      await this.$apollo.mutate({
+        mutation: gql`
+          mutation($rid: ID!, $dt: ReservationInput!) {
+            editReservation(id: $rid, data: $dt) {
+              id
+            }
+          }
+        `,
+        variables: {
+          rid: this.consultation.reservation.id,
+          dt: {
+            reserverId: 1,
+            patientId: this.consultation.patient.id,
+            doctorId: this.$store.state.selectedDoctor,
+            workplaceId: this.$store.state.workplace,
+            consultationId: this.consultation.id,
+            note: this.consultation.reservation.note,
+            startTime: this.consultation.reservation.startTime,
+            endTime: this.consultation.reservation.endTime,
+            type: this.consultation.type,
+            status: "finished"
+          }
+        }
+      });
     }
   },
   computed: {
@@ -360,7 +385,7 @@ export default {
       this.pd();
     },
     cp() {
-      if (this.cp == null) {
+      if (this.cp == null || this.cp == "") {
         return;
       }
       this.prescription = JSON.parse(this.cp);
@@ -386,6 +411,9 @@ export default {
             endTime
             reservation {
               id
+              startTime
+              endTime
+              note
             }
             patient {
               avatar
