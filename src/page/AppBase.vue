@@ -151,20 +151,12 @@
             <v-list-tile-title>Received Feedback</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-divider></v-divider>
-        <v-list-tile @click="linkTo('consultation')">
-          <v-list-tile-action>
-            <v-icon>account_circle</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>TestConsultation</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-content>
       <router-view></router-view>
     </v-content>
+    <v-snackbar :value="true" right v-for="(v,idx) in notification" :key="idx">{{v}}</v-snackbar>
   </div>
 </template>
 
@@ -208,6 +200,7 @@ export default {
   },
   data() {
     return {
+      notification: [],
       navigationShow: false,
       showDoctorList: -1,
       selectedDoctor: {
@@ -230,6 +223,29 @@ export default {
     }
   },
   apollo: {
+    $subscribe: {
+      msg: {
+        query: gql`
+          subscription {
+            onChatMessage(consultationId: 99999) {
+              message
+            }
+          }
+        `,
+        result(data) {
+          let msg = data.data.onChatMessage.message;
+          let msgo = JSON.parse(msg);
+          if (
+            msgo.doctorId == this.$store.state.selectedDoctor ||
+            msgo.workplaceId == this.$store.state.workplace
+          ) {
+            this.notification.push(msgo.message);
+            var audio = new Audio("notification.mp3");
+            audio.play();
+          }
+        }
+      }
+    },
     selectedDoctor: {
       query: gql`
         query getDoctor($doctorId: ID!) {

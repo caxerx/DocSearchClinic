@@ -2,11 +2,11 @@
   <v-flex xs4>
     <v-layout fill-height column style="overflow: hidden">
       <v-flex xs6>
-        <div style="height: 100%; background-color:black;">
+        <div style="height: calc( 50vh - 64px ); background-color:black;">
           <div
-            style="position: absolute; font-weight:bold; text-shadow: 0px 0px 1px white, 0px 0px 2px white, 0px 0px 3px white; padding:20px;"
+            style="position: absolute; font-weight:bold; text-shadow: 0px 0px 1px white, 0px 0px 2px white, 0px 0px 3px white; padding:20px;text-transform: capitalize;"
             class="black--text headline"
-          >Neutral</div>
+          >{{emo}}</div>
           <div
             style="position: absolute; right:10px; top: calc( 50vh - 50px - 32px - 10px); z-index:10; height:100px; width:150px; background-color:white"
             class="black--text headline"
@@ -17,31 +17,25 @@
       </v-flex>
       <v-flex xs6>
         <div style="height: calc(50vh - 81px); width:100%; overflow-y:scroll" ref="chat">
-          <v-timeline dense clipped class="ml-4" style="min-height:100%;">
-            <v-timeline-item v-for="i in messages" :key="i.time" class="mr-3" large>
-              <template v-slot:icon>
-                <v-avatar>
-                  <v-icon class="white" v-if="i.avatar==''">account_circle</v-icon>
-                  <v-img :src="getAvatar(i.avatar)" v-else/>
-                </v-avatar>
-              </template>
-              <v-layout justify-space-between>
-                <v-flex xs9 style="word-wrap: break-word" v-text="i.message" v-if="i.type=='text'"></v-flex>
-                <v-flex xs9 style="word-wrap: break-word" v-if="i.type=='image'">
-                  <v-img :src="`https://dsapi.1lo.li${i.file.uri}`"></v-img>
-                </v-flex>
-                <v-flex xs9 style="word-wrap: break-word" v-if="i.type=='file'">
-                  <v-icon>description</v-icon>
-                  <a
-                    :href="`https://dsapi.1lo.li${i.file.uri}`"
-                    :download="i.fileName"
-                  >{{i.fileName}}</a>
-                </v-flex>
-                <v-flex xs3 text-xs-right class="grey--text">{{getTimeDisplay(i.time)}}</v-flex>
-              </v-layout>
-              <div class="mb-3"></div>
-            </v-timeline-item>
-          </v-timeline>
+          <v-divider></v-divider>
+          <v-list dense class="ml-4" style="min-height:100%;" two-line>
+            <div v-for="i in messages" :key="i.time">
+              <v-list-tile class="mr-3">
+                <v-list-tile-content>
+                  <v-list-tile-title v-if="i.type=='text'">{{i.message}}</v-list-tile-title>
+                  <v-list-tile-title v-else>
+                    <v-icon>description</v-icon>
+                    <a
+                      :href="`https://dsapi.1lo.li${i.file.uri}`"
+                      :download="i.fileName"
+                    >{{i.file.name}}</a>
+                  </v-list-tile-title>
+                  <v-list-tile-sub-title>By {{i.avatar}}</v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-divider></v-divider>
+            </div>
+          </v-list>
         </div>
         <v-divider></v-divider>
         <div style="height: 48px">
@@ -68,6 +62,7 @@
 import gql from "graphql-tag";
 import Video from "twilio-video";
 import moment from "moment";
+import axios from "axios";
 export default {
   props: { patientId: String, consultationId: String },
   mounted() {
@@ -76,6 +71,14 @@ export default {
     }
     this.setPreview();
     this.getTokenAndConnect();
+    this.dtabc = setInterval(() => {
+      if (this.lastVt) {
+        this.capture();
+      }
+    }, 1000);
+  },
+  beforeDestroy() {
+    clearInterval(this.dtabc);
   },
   computed: {
     sendIcon() {
@@ -87,20 +90,49 @@ export default {
   },
   data() {
     return {
+      dtabc: null,
       emotion: "",
       messages: [],
       messageText: "",
       previewTracks: null,
-      lastVt: null
+      lastVt: null,
+      emo: "face not detected",
+      curl:
+        "https://eastasia.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=emotion",
+      tkn: "4c2da3240f8649c5a264a89058a7d51f"
     };
   },
   methods: {
-    capture() {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      canvas.getContext("2d").drawImage(video, 0, 0);
+    async capture() {
+      console.log("1");
+      let canvas = document.createElement("canvas");
+      console.log(this.lastVt);
+      canvas.width = this.lastVt.videoWidth;
+      canvas.height = this.lastVt.videoHeight;
+      canvas.getContext("2d").drawImage(this.lastVt, 0, 0);
       // Other browsers will fall back to image/png
-      img.src = canvas.toDataURL("image/webp");
+      let b = this._base64ToArrayBuffer(canvas.toDataURL("image/jpeg"));
+      let b2 = new Blob([b], { type: "image/jpeg" });
+      let dt = await axios.post(this.curl, b2, {
+        headers: {
+          "Ocp-Apim-Subscription-Key": this.tkn,
+          "Content-Type": `application/octet-stream`
+        }
+      });
+      if (dt.data.length == 0) {
+        this.emo = "face not detected";
+      } else {
+        let fc = dt.data[0]["faceAttributes"]["emotion"];
+        let max = "face not detected";
+        let maxv = -9999999;
+        Object.keys(fc).forEach(a => {
+          if (fc[a] > maxv) {
+            max = a;
+            maxv = fc[a];
+          }
+        });
+        this.emo = max;
+      }
     },
     setPreview() {
       var localTracksPromise = this.previewTracks
@@ -162,6 +194,16 @@ export default {
         );
       });
     },
+    _base64ToArrayBuffer(base64) {
+      base64 = base64.replace("data:image/jpeg;base64,", "");
+      var binary_string = window.atob(base64);
+      var len = binary_string.length;
+      var bytes = new Uint8Array(len);
+      for (var i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+      }
+      return bytes.buffer;
+    },
     participantConnected(participant) {
       console.log('Participant "%s" connected', participant.identity);
 
@@ -187,10 +229,12 @@ export default {
       document.getElementById(participant.sid).remove();
     },
     trackSubscribed(div, track) {
-      if (track.tagName == "video") {
-        this.lastVt = track;
+      let trk = track.attach();
+      if (trk.tagName == "VIDEO") {
+        console.log("lvt");
+        this.lastVt = trk;
       }
-      div.appendChild(track.attach());
+      div.appendChild(trk);
     },
     trackUnsubscribed(track) {
       track.detach().forEach(element => element.remove());
@@ -217,7 +261,7 @@ export default {
       let msg = {
         type: "image",
         message: img,
-        avatar: this.$store.state.avatar
+        avatar: "Doctor"
       };
       this.sendFile_(msg, img);
     },
@@ -225,7 +269,7 @@ export default {
       let msg = {
         type: "file",
         message: file,
-        avatar: this.$store.state.avatar,
+        avatar: "Doctor",
         fileName: filename
       };
       this.sendFile_(msg, file);
@@ -237,7 +281,7 @@ export default {
       let msg = {
         type: "text",
         message: this.messageText,
-        avatar: this.$store.state.avatar
+        avatar: "Doctor"
       };
       this.send(msg);
       this.messageText = "";
@@ -346,6 +390,5 @@ export default {
 video {
   height: 100%;
   width: 100%;
-  object-fit: cover;
 }
 </style>

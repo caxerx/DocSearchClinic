@@ -346,12 +346,37 @@ export default {
       }
     },
     async approve(reservation) {
+      this.$apollo.mutate({});
       await this.changeReservationStatus(reservation, "approved");
       this.$apollo.queries.reservations.refetch();
+      await this.sendPush(
+        "Reservation Approved",
+        "You have a pending reservation has been approved",
+        reservation.patient.id
+      );
     },
     async reject(reservation) {
       await this.changeReservationStatus(reservation, "rejected");
       this.$apollo.queries.reservations.refetch();
+      await this.sendPush(
+        "Reservation Rejected",
+        "You have a pending reservation has been rejected",
+        reservation.patient.id
+      );
+    },
+    async sendPush(t, msg, pid) {
+      return await this.$apollo.mutate({
+        mutation: gql`
+          mutation($msg: String!, $title: String!, $pid: ID!) {
+            sendPushNotification(message: $msg, title: $title, patientId: $pid)
+          }
+        `,
+        variables: {
+          msg: msg,
+          title: t,
+          pid: pid
+        }
+      });
     },
     async changeReservationStatus(reservation, status) {
       let rinput = {
