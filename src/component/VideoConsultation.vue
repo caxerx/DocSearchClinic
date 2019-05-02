@@ -90,10 +90,18 @@ export default {
       emotion: "",
       messages: [],
       messageText: "",
-      previewTracks: null
+      previewTracks: null,
+      lastVt: null
     };
   },
   methods: {
+    capture() {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext("2d").drawImage(video, 0, 0);
+      // Other browsers will fall back to image/png
+      img.src = canvas.toDataURL("image/webp");
+    },
     setPreview() {
       var localTracksPromise = this.previewTracks
         ? Promise.resolve(this.previewTracks)
@@ -179,6 +187,9 @@ export default {
       document.getElementById(participant.sid).remove();
     },
     trackSubscribed(div, track) {
+      if (track.tagName == "video") {
+        this.lastVt = track;
+      }
       div.appendChild(track.attach());
     },
     trackUnsubscribed(track) {

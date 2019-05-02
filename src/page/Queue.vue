@@ -94,6 +94,18 @@
         </v-flex>
       </v-layout>
     </div>
+    <v-dialog v-model="err" max-width="500">
+      <v-card>
+        <v-card-title class="headline">Check In Error</v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>The Reservation is not in this clinic or not belong to this doctor.</v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat color="primary" @click="err=false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </full-screen-container>
 </template>
 <script>
@@ -112,6 +124,7 @@ export default {
   },
   data() {
     return {
+      err: false,
       targetReservationId: null,
       targetReservation: null,
       checkInDialog: false,
@@ -177,9 +190,15 @@ export default {
       try {
         let arr = JSON.parse(atob(this.checkinString));
         if (arr.length == 5) {
+          if (arr[0] != this.$store.state.selectedDoctor) {
+            this.err = true;
+            return;
+          }
           this.targetReservationId = arr[3];
           await this.refectchTargetReservation();
           await this.checkInToQueue(this.targetReservation);
+        } else {
+          this.err = true;
         }
       } catch (e) {
         console.error("BOOM", e);

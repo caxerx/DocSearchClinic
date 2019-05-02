@@ -11,6 +11,18 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn flat @click="endConsultation" v-if="$store.state.inConsultation">Finish Consultation</v-btn>
+        <v-menu offset-y>
+          <v-btn icon slot="activator">
+            <v-icon>arrow_drop_down</v-icon>
+          </v-btn>
+          <div>
+            <v-list>
+              <v-list-tile @click="logout">
+                <v-list-tile-title>Logout</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </div>
+        </v-menu>
       </v-toolbar-items>
     </v-toolbar>
     <v-navigation-drawer
@@ -173,7 +185,7 @@ export default {
         : (this.showDoctorList = 0);
     },
     switchDoctor(id) {
-      this.$store.commit("switchDoctor",id)
+      this.$store.commit("switchDoctor", id);
       this.showDoctorList = -1;
     },
     linkTo(link) {
@@ -184,6 +196,9 @@ export default {
     },
     endConsultation() {
       this.$store.commit("setConsultation", false);
+    },
+    logout() {
+      this.$store.commit("logout");
     }
   },
   watch: {
@@ -211,8 +226,7 @@ export default {
   },
   computed: {
     enableDoctorList() {
-      //return this.$store.state.role=='S'
-      return true;
+      return this.$store.state.role == "S";
     }
   },
   apollo: {
