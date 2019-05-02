@@ -2,8 +2,19 @@
   <full-screen-container v-if="timeslots">
     <div style="height:100%; width:100%; overflow-y: scroll" class="pa-4">
       <h3 class="headline mb-3 --text">Calendar Setting</h3>
-      <v-btn class="mb-3" color="primary" outline @click="batchDeleteTimeslots">Delete all selected</v-btn>
-      <v-btn class="mb-3" color="primary" outline>Batch add timeslots</v-btn>
+      <v-btn
+        class="mb-3"
+        color="primary"
+        outline
+        @click="batchDeleteTimeslots"
+        :disabled="!canBatchDelete"
+      >Delete selected timeslots</v-btn>
+      <v-btn
+        class="mb-3"
+        color="primary"
+        outline
+        @click="batchCreateDialog = true"
+      >Batch create timeslots</v-btn>
       <div class="horizontal-container pa-3">
         <v-card
           height="450"
@@ -83,9 +94,12 @@
             </template>
             <v-time-picker v-model="editingTimeslot.end" @input="endTimeMenu = false"></v-time-picker>
           </v-menu>
-
-          <v-btn @click="saveTimeslot" color="primary">Save</v-btn>
         </v-layout>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="editDialog = false" flat>Cancel</v-btn>
+          <v-btn @click="saveTimeslot" color="primary">Save</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
     <!-- Delete confirm -->
@@ -103,8 +117,118 @@
       </v-card>
     </v-dialog>
     <!-- Batch create -->
-    <v-dialog v-model="batchCreateDialog" max-width="800">
-      <v-card></v-card>
+    <v-dialog v-model="batchCreateDialog" max-width="1000">
+      <v-card class="pa-3">
+        <v-card-title class="pl-0 headline">Batch create timeslots</v-card-title>
+        <v-layout row>
+          <v-flex xs6>
+            <span class="pl-0 subheading">Weekday</span>
+            <v-layout row wrap pa-3>
+              <v-flex xs4>
+                <v-checkbox hide-details v-model="batchDays.sun" label="Sunday"></v-checkbox>
+              </v-flex>
+              <v-flex xs4>
+                <v-checkbox hide-details v-model="batchDays.mon" label="Monday"></v-checkbox>
+              </v-flex>
+              <v-flex xs4>
+                <v-checkbox hide-details v-model="batchDays.tue" label="Tuesday"></v-checkbox>
+              </v-flex>
+              <v-flex xs4>
+                <v-checkbox hide-details v-model="batchDays.wed" label="Wednesday"></v-checkbox>
+              </v-flex>
+              <v-flex xs4>
+                <v-checkbox hide-details v-model="batchDays.thu" label="Thursday"></v-checkbox>
+              </v-flex>
+              <v-flex xs4>
+                <v-checkbox hide-details v-model="batchDays.fri" label="Friday"></v-checkbox>
+              </v-flex>
+              <v-flex xs4>
+                <v-checkbox hide-details v-model="batchDays.sat" label="Saturday"></v-checkbox>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+          <v-flex xs6>
+            <v-card>
+              <v-card-title>
+                <span class="subheading">Timeslots</span>
+                <v-spacer></v-spacer>
+                <v-btn @click="batchCreateSingleDialog = true" icon>
+                  <v-icon>add</v-icon>
+                </v-btn>
+              </v-card-title>
+
+              <v-divider></v-divider>
+              <v-list>
+                <v-list-tile v-for="(timeslot, i) in batchTimeslots" :key="i">
+                  <v-layout align-center>
+                    <span>{{ timeslot.start }} - {{ timeslot.end }}</span>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click="removeFromList(i)">
+                      <v-icon color="error">delete</v-icon>
+                    </v-btn>
+                  </v-layout>
+                </v-list-tile>
+              </v-list>
+            </v-card>
+          </v-flex>
+        </v-layout>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click="resetBatchCreate">Cancel</v-btn>
+          <v-btn color="primary" :disabled="!batchVaild" @click="executeBatchCreate">Create</v-btn>
+        </v-card-actions>
+      </v-card>
+      <v-dialog v-model="batchCreateSingleDialog" max-width="400">
+        <v-card class="pa-3">
+          <v-menu
+            ref="batchStart"
+            v-model="batchCreateSingleStartMenu"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            :return-value.sync="batchCreateSingleStart"
+            lazy
+            transition="scale-transition"
+            offset-y
+            full-width
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field v-model="batchCreateSingleStart" label="Start time" readonly v-on="on"></v-text-field>
+            </template>
+            <v-time-picker v-model="batchCreateSingleStart">
+              <v-spacer></v-spacer>
+              <v-btn flat color="primary" @click="batchCreateSingleStartMenu = false">Cancel</v-btn>
+              <v-btn flat color="primary" @click="$refs.batchStart.save(batchCreateSingleStart)">OK</v-btn>
+            </v-time-picker>
+          </v-menu>
+          <v-menu
+            ref="batchEnd"
+            v-model="batchCreateSingleEndMenu"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            :return-value.sync="batchCreateSingleEnd"
+            lazy
+            transition="scale-transition"
+            offset-y
+            full-width
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field v-model="batchCreateSingleEnd" label="End time" readonly v-on="on"></v-text-field>
+            </template>
+            <v-time-picker v-model="batchCreateSingleEnd">
+              <v-spacer></v-spacer>
+              <v-btn flat color="primary" @click="batchCreateSingleEndMenu = false">Cancel</v-btn>
+              <v-btn flat color="primary" @click="$refs.batchEnd.save(batchCreateSingleEnd)">OK</v-btn>
+            </v-time-picker>
+          </v-menu>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn flat @click="batchCreateSingleDialog = false">Cancel</v-btn>
+            <v-btn color="primary" @click="addToList">Add</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-dialog>
     <!-- Batch delete -->
     <v-dialog v-model="batchDeleteDialog" max-width="540">
@@ -140,6 +264,17 @@ export default {
     return {
       snackbar: false,
       snackbarMessage: "",
+      batchDays: {
+        sun: false,
+        mon: false,
+        tue: false,
+        wed: false,
+        thu: false,
+        fri: false,
+        sat: false
+      },
+      batchTimeslots: [],
+      canBatchDelete: false,
       timeslots: null,
       editMode: false,
       editingTimeslot: {
@@ -153,6 +288,11 @@ export default {
       editDialog: false,
       deleteDialog: false,
       batchCreateDialog: false,
+      batchCreateSingleDialog: false,
+      batchCreateSingleStart: "09:00",
+      batchCreateSingleStartMenu: false,
+      batchCreateSingleEnd: "09:30",
+      batchCreateSingleEndMenu: false,
       batchDeleteDialog: false,
       selectedTimeslots: new Map(),
       daysArr: ["sun", "mon", "tue", "wed", "thu", "fri", "sat"],
@@ -167,7 +307,27 @@ export default {
       }
     };
   },
+  computed: {
+    batchVaild() {
+      let valid = false;
+      // Check selected days
+      for (let i in this.batchDays) {
+        if (this.batchDays[i]) valid = true;
+      }
+      return this.batchTimeslots.length > 0 && valid;
+    }
+  },
   methods: {
+    addToList() {
+      this.batchTimeslots.push({
+        start: this.batchCreateSingleStart,
+        end: this.batchCreateSingleEnd
+      });
+      this.batchCreateSingleDialog = false;
+    },
+    removeFromList(index) {
+      this.batchTimeslots.splice(index, 1);
+    },
     showSnackbarMessage(message) {
       this.snackbar = false;
       setTimeout(() => {
@@ -178,12 +338,15 @@ export default {
     createTimeslot(weekday) {
       this.editMode = false;
       let day = this.daysArr[weekday];
+      this.editingTimeslot = {};
       this.editingTimeslot.weekday = day;
+      this.editingTimeslot.start = "09:00";
+      this.editingTimeslot.end = "09:30";
       this.editDialog = true;
     },
     editTimeslot(timeslot) {
       this.editMode = true;
-      this.editingTimeslot = timeslot;
+      this.editingTimeslot = Object.assign({}, timeslot);
       this.editDialog = true;
     },
     async deleteTimeslot(timeslot) {
@@ -235,7 +398,7 @@ export default {
         try {
           await this.$apollo.mutate({
             mutation: gql`
-              mutation editTimeslot(
+              mutation createTimeslot(
                 $start: String!
                 $end: String!
                 $weekday: String!
@@ -270,17 +433,33 @@ export default {
 
       this.editDialog = false;
     },
-    batchCreateTimeslots() {},
+    batchCreateTimeslots() {
+      this.batchCreateDialog = true;
+    },
     batchDeleteTimeslots() {
       this.batchDeleteDialog = true;
     },
+    resetBatchCreate() {
+      this.batchDays = {
+        sun: false,
+        mon: false,
+        tue: false,
+        wed: false,
+        thu: false,
+        fri: false,
+        sat: false
+      };
+      this.batchTimeslots = [];
+      this.batchCreateDialog = false;
+    },
     handleSelect(event, timeslot) {
-      console.log(event, timeslot);
+      // console.log(event, timeslot);
       if (event) {
         this.selectedTimeslots.set(timeslot.id, timeslot);
       } else {
         this.selectedTimeslots.delete(timeslot.id);
       }
+      this.canBatchDelete = this.selectedTimeslots.size > 0;
     },
     async executeBatchDelete() {
       try {
@@ -324,6 +503,57 @@ export default {
         this.showSnackbarMessage("Error deleting timeslot");
       }
       this.deleteDialog = false;
+    },
+    async executeBatchCreate() {
+      let timeslots = [];
+      for (let i in this.batchDays) {
+        if (this.batchDays[i]) {
+          for (let j of this.batchTimeslots) {
+            timeslots.push({
+              weekday: i,
+              ...j
+            });
+          }
+        }
+      }
+      try {
+        await Promise.all(
+          timeslots.map(timeslot =>
+            this.$apollo.mutate({
+              mutation: gql`
+                mutation createTimeslot(
+                  $start: String!
+                  $end: String!
+                  $weekday: String!
+                  $doctorId: ID!
+                ) {
+                  createTimeSlot(
+                    start: $start
+                    end: $end
+                    weekday: $weekday
+                    doctorId: $doctorId
+                  ) {
+                    id
+                    start
+                    end
+                  }
+                }
+              `,
+              variables: {
+                ...timeslot,
+                doctorId: this.$store.state.selectedDoctor
+              }
+            })
+          )
+        );
+        this.showSnackbarMessage("Timeslots created successfully");
+        await this.$apollo.queries.timeslots.refetch();
+      } catch (err) {
+        this.showSnackbarMessage("Error batch creatting timeslots");
+        console.dir(err);
+      }
+      this.resetBatchCreate();
+      // console.log(timeslots);
     },
     getWeekDay(day) {
       return this.daysMap[day];
