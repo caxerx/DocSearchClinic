@@ -239,8 +239,8 @@
                   <v-list-tile-action>
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on }">
-                        <v-btn icon v-on="on">
-                          <v-icon color="error">close</v-icon>
+                        <v-btn icon v-on="on" @click="reject(r)">
+                          <v-icon color="success">check</v-icon>
                         </v-btn>
                       </template>
                       <span>Reject</span>
