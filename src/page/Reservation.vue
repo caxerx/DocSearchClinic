@@ -240,7 +240,7 @@
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on }">
                         <v-btn icon v-on="on" @click="reject(r)">
-                          <v-icon color="success">check</v-icon>
+                          <v-icon color="error">clear</v-icon>
                         </v-btn>
                       </template>
                       <span>Reject</span>
